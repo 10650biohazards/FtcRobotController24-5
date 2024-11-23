@@ -35,9 +35,9 @@ public class RobotInitialize {
     public CRServo intake; // This is a special continuous rotation servo which allows it to act
     // like a motor
     public Servo hangR;
-    Servo hangL;
+    //Servo hangL;
 
-    Servo pitch;
+    public Servo pitch;
     public Servo clawRoll;
 
 
@@ -131,6 +131,7 @@ public class RobotInitialize {
             //Initial conditions of the liftPitch MOTOR
             //PIDFCoefficients pid = new PIDFCoefficients(1, 1, 1, 1); (This does nothing)
             //PIDF Coefficients for the liftPitch MOTOR
+        //d use to be -2.5
             liftPitch.setVelocityPIDFCoefficients(1,1,-2.5, 3);
             liftPitch.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -143,8 +144,8 @@ public class RobotInitialize {
         //Manipulator Servos
 
             // Hang on submersible servos
-        hangL = opMode.hardwareMap.get(Servo.class, "hang l");
-        hangL.setPosition(0);
+        //hangL = opMode.hardwareMap.get(Servo.class, "hang l");
+        //hangL.setPosition(0);
 
 
         hangR = opMode.hardwareMap.get(Servo.class, "hang r");
@@ -160,6 +161,7 @@ public class RobotInitialize {
         clawRoll = opMode.hardwareMap.get(Servo.class, "roll");
         clawRoll.setPosition(0);
         pitch = opMode.hardwareMap.get(Servo.class, "pitch");
+       //chae back to 0.0481 immeiatley
         pitch.setPosition(0.0481);
 
 //        roll.setDirection(Servo.Direction.FORWARD);

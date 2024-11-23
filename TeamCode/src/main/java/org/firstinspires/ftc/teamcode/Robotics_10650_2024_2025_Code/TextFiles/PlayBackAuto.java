@@ -57,7 +57,9 @@ public class PlayBackAuto extends LinearOpMode {
                 double pitchVelocity = Double.parseDouble(values[6]);
                 double intakeVelocity = Double.parseDouble(values[7]);
                 double clawPosition = Double.parseDouble(values[8]);
-                double hangRPosition = Double.parseDouble(values[9]);
+                double pitchPosition = Double.parseDouble(values[9]);
+
+                double hangRPosition = Double.parseDouble(values[10]);
 
 
 
@@ -93,6 +95,7 @@ public class PlayBackAuto extends LinearOpMode {
 
                 robot.intake.setPower(intakeVelocity);
                 robot.clawRoll.setPosition(clawPosition);
+                robot.pitch.setPosition(pitchPosition);
 
 
 

@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-    @TeleOp(name = "RecordDriverInputs", group = "Linear Opmode")
+    @TeleOp(name = "Record_Tele", group = "Linear Opmode")
     public class captureTele extends LinearOpMode {
         ProgBotInitialize robot;
 

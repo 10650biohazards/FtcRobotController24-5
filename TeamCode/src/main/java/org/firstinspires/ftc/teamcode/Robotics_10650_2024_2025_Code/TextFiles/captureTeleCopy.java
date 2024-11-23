@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.RobotInitial
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-@TeleOp(name = "COPYRecordDriverInputs", group = "Linear Opmode")
+@TeleOp(name = "COPY_RecordTele", group = "Linear Opmode")
 public class captureTeleCopy extends LinearOpMode {
     RobotInitialize robot;
     int liftPitchPosition = 0;
@@ -55,6 +55,7 @@ public class captureTeleCopy extends LinearOpMode {
 
                 double intakeVel = 0;
                 double clawPitchPos = 0;
+                double clawRollPos = 0.0481;
 
                 double hangRPos = 1;
 
@@ -348,9 +349,22 @@ public class captureTeleCopy extends LinearOpMode {
 //                robot.hangR.setPosition(0.9611);
 //                robot.hangL.setPosition(0.0439);
                     }
+                    if (gamepad2.dpad_left) {
+                        //roll turns down
+                        clawRollPos =  robot.pitch.getPosition();
+                        robot.pitch.setPosition(0);
+                    }
+
+                    if (gamepad2.dpad_right) {
+                        //roll turns up
+                        //before: 0.0461
+                        clawRollPos = robot.pitch.getPosition();
+
+                        robot.pitch.setPosition(0.0481);
+                    }
 
                     // Record inputs with timestamp
-                    recordedInputs.add((System.currentTimeMillis() - startTime) + "," + (fleftVel) + "," + (frightVel) + "," + (bleftVel) + "," + (brightVel)+","+ (extenderVel)+","+(pitchVel)+","+(intakeVel)+","+(clawPitchPos)+","+(hangRPos));
+                    recordedInputs.add((System.currentTimeMillis() - startTime) + "," + (fleftVel) + "," + (frightVel) + "," + (bleftVel) + "," + (brightVel)+","+ (extenderVel)+","+(pitchVel)+","+(intakeVel)+","+(clawPitchPos)+","+(clawRollPos)+","+(hangRPos));
 
 //                    telemetry.addData("Recording", "fleft Velocity: %.2f, fright Velocity: %.2f, bleft Velocity: %.2f, bright Velocity %.2f,", (startTime),(fleftVel),(frightVel),(bleftVel), (brightVel));
                     telemetry.update();
