@@ -13,10 +13,10 @@ public class pidTele extends LinearOpMode {
 
     int liftPitchPosition = 0;
     int liftExtenderPosition = 0;
-    double p = 0;
-    double i = 0;
+    double p = 2.67;
+    double i = 2.05;
     double d = 0;
-    double f = 0;
+    double f = 3.3;
 
 
     @Override
