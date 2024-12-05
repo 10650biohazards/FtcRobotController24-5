@@ -5,18 +5,19 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 
-@TeleOp(name = "pid")
-public class pidTele extends LinearOpMode {
+@TeleOp(name = "pidExtender")
+public class pidExtender extends LinearOpMode {
 
     // Run the initialize function
     RobotInitialize robot;
 
     int liftPitchPosition = 0;
     int liftExtenderPosition = 0;
-    double p = 0;
-    double i = 0;
+
+    double p = 2.67;
+    double i = 2.05;
     double d = 0;
-    double f = 0;
+    double f = 3.3;
 
 
     @Override
@@ -35,25 +36,25 @@ public class pidTele extends LinearOpMode {
 
     public void controllerInput() {
         if ((Math.abs(gamepad2.right_stick_y)>0.2)
-                &&(liftExtenderPosition<=2780)
+                &&(liftExtenderPosition<=5000)
                 &&(liftExtenderPosition>=0)
                 ||(robot.liftExtender.getCurrentPosition()<0&&gamepad2.right_stick_y<0)
-                ||(robot.liftExtender.getCurrentPosition()>2780&&gamepad2.right_stick_y>0)) {
+                ||(robot.liftExtender.getCurrentPosition()>5000&&gamepad2.right_stick_y>0)) {
 
             liftExtenderPosition = liftExtenderPosition - (int)(30*gamepad2.right_stick_y);
             if(liftExtenderPosition < 0)
                 liftExtenderPosition = 0;
-            if(liftExtenderPosition > 2780)
-                liftExtenderPosition = 2780;
+            if(liftExtenderPosition > 5000)
+                liftExtenderPosition = 5000;
         }
         //Determines if the liftExtender should go up or down based on the controller inputs
         if (liftExtenderPosition<=5&&robot.liftExtender.getCurrentPosition()<=5) {
             robot.liftExtender.setVelocity(0);
         }else if(Math.abs(robot.liftExtender.getCurrentPosition()-liftExtenderPosition)>25) {
             if (robot.liftExtender.getCurrentPosition() < liftExtenderPosition) {
-                robot.liftExtender.setVelocity(1500);
+                robot.liftExtender.setVelocity(5000);
             } else if (robot.liftExtender.getCurrentPosition() >= liftExtenderPosition) {
-                robot.liftExtender.setVelocity(-1500);
+                robot.liftExtender.setVelocity(-5000);
             }
             //If no input, make sure the liftExtender motor does not move
         }else {
