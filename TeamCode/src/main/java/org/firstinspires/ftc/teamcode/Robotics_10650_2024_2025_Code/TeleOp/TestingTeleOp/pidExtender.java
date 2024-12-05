@@ -49,11 +49,11 @@ public class pidExtender extends LinearOpMode {
         //Determines if the liftExtender should go up or down based on the controller inputs
         if (liftExtenderPosition<=5&&robot.liftExtender.getCurrentPosition()<=5) {
             robot.liftExtender.setVelocity(0);
-        }else if(Math.abs(robot.liftExtender.getCurrentPosition()-liftExtenderPosition)>25) {
+        }else if(Math.abs(robot.liftExtender.getCurrentPosition()-liftExtenderPosition)>100) {
             if (robot.liftExtender.getCurrentPosition() < liftExtenderPosition) {
-                robot.liftExtender.setVelocity(5000);
+                robot.liftExtender.setVelocity(6000);
             } else if (robot.liftExtender.getCurrentPosition() >= liftExtenderPosition) {
-                robot.liftExtender.setVelocity(-5000);
+                robot.liftExtender.setVelocity(-6000);
             }
             //If no input, make sure the liftExtender motor does not move
         }else {
