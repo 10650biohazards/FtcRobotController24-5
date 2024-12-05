@@ -130,7 +130,7 @@ public class RobotInitialize {
             //PIDFCoefficients pid = new PIDFCoefficients(1, 1, 1, 1); (This does nothing)
             //PIDF Coefficients for the liftPitch MOTOR
             liftPitch.setVelocityPIDFCoefficients(1,1,-2.5, 3);
-            //liftPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+            liftPitch.setDirection(DcMotorSimple.Direction.REVERSE);
 
         if (isAuto) {
             liftPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Needs to not reset once teleop begins
