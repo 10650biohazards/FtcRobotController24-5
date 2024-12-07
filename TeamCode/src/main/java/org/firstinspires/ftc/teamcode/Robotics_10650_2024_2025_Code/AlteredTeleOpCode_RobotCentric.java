@@ -211,11 +211,14 @@ public class AlteredTeleOpCode_RobotCentric extends LinearOpMode {
             //determines the speed
 
             if (Math.abs(robot.liftPitch.getCurrentPosition()-liftPitchPosition)>50){
-                if (robot.liftPitch.getCurrentPosition()<liftPitchPosition){
+                if (robot.liftPitch.getCurrentPosition()<liftPitchPosition){//down
                     robot.liftPitch.setVelocity(2250);
-                } else if (robot.liftPitch.getCurrentPosition()>= liftPitchPosition) {
+                    //possible equation: vel = 1225/1297*(get curremt position)
+                } else if (robot.liftPitch.getCurrentPosition()>= liftPitchPosition) {//up
                     //used to be -2250
                     robot.liftPitch.setVelocity(-2250);
+                    //possible equations: vel = -1225/1297*(get current position)+2450
+                                        // vel  = 
                     if (liftPitchPosition>1500){
                         robot.liftPitch.setVelocity(-2450);
                     }
