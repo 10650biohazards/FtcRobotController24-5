@@ -38,7 +38,6 @@ public class RobotInitialize {
     //Servo hangL;
 
     public Servo pitch;
-    public Servo clawRoll;
 
 
     // Create the empty normal motor variables
@@ -49,7 +48,8 @@ public class RobotInitialize {
 
     // Create the empty lift control variables
     public DcMotorEx liftExtender; //Extends the lift outwards and pulls it inwards
-    public DcMotorEx liftPitch; //Makes the lift up and down on a vertical tilt (uses worm gear)
+    public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
+    // with the drivetrain (uses worm gear)
 
     // Create empty gyroscope variable and its settings
     public BHI260IMU gyroScope;
@@ -66,7 +66,7 @@ public class RobotInitialize {
     // Enables the class to be referenced in other classes such as the Autonomous Code
     // and the TeleOpCode_RobotCentric
     public RobotInitialize(LinearOpMode opMode, boolean isAuto) {
-        this.opMode = opMode;
+        this.opMode = opMode; //Sets the argument for opMode to be the current opMode
         initialize(isAuto);
     }
 
@@ -154,23 +154,19 @@ public class RobotInitialize {
 
         //Continuous rotation Servo
         intake = opMode.hardwareMap.get(CRServo.class, "intake");
+
         //Initial conditions of the intake SERVO
         intake.setPower(0); // Off by default
         intake.setDirection(CRServo.Direction.REVERSE);
+
         //Regular Servos
-        clawRoll = opMode.hardwareMap.get(Servo.class, "roll");
-        clawRoll.setPosition(0);
         pitch = opMode.hardwareMap.get(Servo.class, "pitch");
        //chae back to 0.0481 immeiatley
         pitch.setPosition(0.0481);
 
-//        roll.setDirection(Servo.Direction.FORWARD);
-//        roll.setPosition(0);
-
 //        pitch.setDirection(Servo.)
         { //This was causing problems
             //claw.setPosition(0);
-            //roll.setPosition(0);
             //pitch.setPosition(0);
         }
 
@@ -405,8 +401,8 @@ public class RobotInitialize {
         stopMechanisms();
     }
 
-    // This is the new turn function that includes setVelocity instead of setPower
-    public void newTurnFunction(int degrees) {
+    //This makes the robot turn to the specified position from it's starting position in degrees
+    public void turnFunction(int degrees) {
         // When turning left, counterclockwise is a positive gyro value
         // When turning right, clockwise is a negative gyro value
         // ABSOLUTE POSITIONING IN USE (will go to exact values)
@@ -434,13 +430,6 @@ public class RobotInitialize {
         stopMechanisms();
     }
 
-//    public void intakeToggle(double power) {
-//    intake.setPower(power);
-//    }
-
-    public void moveRoll(double position, double velocity) {
-        //clawRoll.setPosition(position);
-    }
     public void movePitch(double position, double velocity) {
         //pitch.setPosition(position);
     }
@@ -450,10 +439,6 @@ public class RobotInitialize {
         return ((Math.abs(fRight.getCurrentPosition())+Math.abs(bRight.getCurrentPosition())+Math.abs(fLeft.getCurrentPosition())+ Math.abs(bLeft.getCurrentPosition()))/4);
     }
 
-    //
-//    public int getPosStrafeL() {
-//        return ((-fright.getCurrentPosition()+ bright.getCurrentPosition()+fleft.getCurrentPosition()- bleft.getCurrentPosition())/4);
-//    }
     // Calculates the average encoder value
     // It takes the left and right motor encoder locations, then averages them
     public int getAverageEncoderValue() {
@@ -494,11 +479,6 @@ public class RobotInitialize {
         // Lift motors
         liftExtender.setVelocity(velocity);
         liftPitch.setVelocity(velocity);
-
-
-        // Regular servos
-        //clawRoll.(); // Try to find way to temporarily disable servos
-        //pitch.(); // Try to find way to temporarily disable servos
     }
 
     // Stops the motors by setting the velocity to 0
