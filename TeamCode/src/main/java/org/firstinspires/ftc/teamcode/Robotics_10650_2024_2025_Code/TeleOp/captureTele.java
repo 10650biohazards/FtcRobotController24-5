@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
                     robot = new ProgBotInitialize(this, false);
 
-                    // InitileftDrivealize hardware
+                    // Initialize hardware
 
 
                     recordedInputs = new ArrayList<>();
