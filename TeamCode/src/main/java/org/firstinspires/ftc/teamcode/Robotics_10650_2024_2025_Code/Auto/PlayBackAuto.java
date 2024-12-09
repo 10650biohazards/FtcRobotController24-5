@@ -72,11 +72,6 @@ public class PlayBackAuto extends LinearOpMode {
                     telemetry.addData("Current time", System.currentTimeMillis());
                     telemetry.addData("Start time", startTime);
                     telemetry.addData("Timestamp", timestamp);
-                    telemetry.addData("hang r pos", hangRPosition);
-                    telemetry.addData("hang r pos", robot.parkingServo.getPosition());
-
-
-                    telemetry.update();
 
 
                 }
@@ -92,14 +87,33 @@ public class PlayBackAuto extends LinearOpMode {
                 robot.liftPitch.setVelocity(pitchVelocity);
 
                 robot.intake.setPower(intakeVelocity);
-                //robot.clawRoll.setPosition(clawPosition);
+                robot.pitch.setPosition(clawPosition);
 
 
 
                 robot.parkingServo.setPosition(hangRPosition);
 
-                //telemetry.addData("Replaying", "fleft Velocity: %.2f, fright Velocity: %.2f, bleft Velocity: %.2f, bright Velocity %.2f,", strafeVelocity - straightMovementVelocity + turnVelocity, -strafeVelocity - straightMovementVelocity - turnVelocity, (strafeVelocity + straightMovementVelocity - turnVelocity), (-strafeVelocity + straightMovementVelocity + turnVelocity));
-               // telemetry.update();
+//                telemetry.addData("Replaying", "fleft Velocity: %.2f, fright Velocity: %.2f, bleft Velocity: %.2f, bright Velocity %.2f,", strafeVelocity, straightMovementVelocity, turnVelocity, strafeVelocity, straightMovementVelocity, turnVelocity, (strafeVelocity + straightMovementVelocity - turnVelocity), (-strafeVelocity + straightMovementVelocity + turnVelocity));
+                telemetry.addData("fleft", fLeftVelocity);
+                telemetry.addData("bleft", bLeftVelocity);
+                telemetry.addData("fright", fRightVelocity);
+                telemetry.addData("bright", bRightVelocity);
+
+                telemetry.addData("extender", extenderVelocity);
+                telemetry.addData("lift pitch", pitchVelocity);
+                telemetry.addData("fleft", fLeftVelocity);
+                telemetry.addData("fleft", fLeftVelocity);
+
+
+
+
+
+
+
+                telemetry.update();
+                // telemetry.update();
+
+
             }
         }
 
