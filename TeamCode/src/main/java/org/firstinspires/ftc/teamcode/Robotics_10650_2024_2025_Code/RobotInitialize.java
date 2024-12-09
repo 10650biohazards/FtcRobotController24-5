@@ -47,7 +47,7 @@ public class RobotInitialize {
     public DcMotorEx bLeft;
 
     // Create the empty lift control variables
-    public DcMotorEx liftExtender; //Extends the lift outwards and pulls it inwards
+    public DcMotor liftExtender; //Extends the lift outwards and pulls it inwards
     public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
     // with the drivetrain (uses worm gear)
 
@@ -111,10 +111,10 @@ public class RobotInitialize {
 
             //Lift motors
 
-        liftExtender = opMode.hardwareMap.get(DcMotorEx.class, "liftExtender");
+        liftExtender = opMode.hardwareMap.get(DcMotor.class, "liftExtender");
 
             //Initial conditions of the liftExtender MOTOR
-        liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
+        //liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
 
         liftExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -476,7 +476,7 @@ public class RobotInitialize {
         bRight.setVelocity(-velocity);
 
         // Lift motors
-        liftExtender.setVelocity(velocity);
+        //liftExtender.setVelocity(velocity);
         liftPitch.setVelocity(velocity);
     }
 
