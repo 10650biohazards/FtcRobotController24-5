@@ -166,7 +166,6 @@ public class RobotInitialize {
 
 //        pitch.setDirection(Servo.)
         { //This was causing problems
-            //claw.setPosition(0);
             //pitch.setPosition(0);
         }
 
