@@ -273,19 +273,14 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
                     liftExtenderPosition = (int) maxLifEtxtension;  //change to max lift xtension
                 }
 
-                if (gamepad2.left_stick_y > 0.2) {//going down
-                    liftPitchPosition = liftPitchPosition - 25;
+                    liftPitchPosition = liftPitchPosition + 40;
 
-                    if (liftPitchPosition>1500){//if it low, go slow
-                        liftPitchPosition = liftPitchPosition - 15;
+                } else if (gamepad2.left_stick_y > 0.2) {//going down
+
+                    liftPitchPosition = liftPitchPosition - 35;
+                    if (liftPitchPosition > 1500) {
+                        liftPitchPosition = liftPitchPosition - 25;
                     }
-
-
-                } else if (gamepad2.left_stick_y< -0.2) {//going up
-                    liftPitchPosition = liftPitchPosition + 70;//value used to be 25 justin case
-
-
-
 
 
 //                    if (robot.liftPitch.getCurrentPosition()<400) {
