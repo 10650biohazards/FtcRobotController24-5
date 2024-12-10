@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
+
 @TeleOp (name = "Experimental TeleOp")
 public class ExperimentalTeleOp_RobotCentric extends LinearOpMode {
 
@@ -35,7 +37,7 @@ public class ExperimentalTeleOp_RobotCentric extends LinearOpMode {
 
         //edit this to be valid for the dual mode servo
         //initial position
-        robot.clawRoll.setPosition(0.1606);
+
 
         //robot.intake.setPower(0);
 
@@ -467,7 +469,7 @@ public class ExperimentalTeleOp_RobotCentric extends LinearOpMode {
                 //original value:0.1867
 
                 //edit this to be valid for the dual mode servo
-                robot.clawRoll.setPosition(0);
+
 
             }
             if(gamepad2.dpad_up){
@@ -475,7 +477,6 @@ public class ExperimentalTeleOp_RobotCentric extends LinearOpMode {
                 //original value 0.125
 
                 //edit this to be valid for the dual mode servo
-                robot.clawRoll.setPosition(0.1606);
             }
 
             if (gamepad1.dpad_left) {
