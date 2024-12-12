@@ -24,6 +24,7 @@ public class pidTele extends LinearOpMode {
 // create and define the initialization variable
         robot = new RobotInitialize(this, false);
 
+        robot.liftExtender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // initialization of the control of the robot when start is pressed
         waitForStart();
@@ -35,29 +36,40 @@ public class pidTele extends LinearOpMode {
 
     public void controllerInput() {
         if ((Math.abs(gamepad2.right_stick_y)>0.2)
-                &&(liftExtenderPosition<=2780)
+                &&(liftExtenderPosition<=900)
                 &&(liftExtenderPosition>=0)
                 ||(robot.liftExtender.getCurrentPosition()<0&&gamepad2.right_stick_y<0)
-                ||(robot.liftExtender.getCurrentPosition()>2780&&gamepad2.right_stick_y>0)) {
+                ||(robot.liftExtender.getCurrentPosition()>900&&gamepad2.right_stick_y>0)) {
 
-            liftExtenderPosition = liftExtenderPosition - (int)(30*gamepad2.right_stick_y);
+            liftExtenderPosition = liftExtenderPosition - (int)(10*gamepad2.right_stick_y);
             if(liftExtenderPosition < 0)
                 liftExtenderPosition = 0;
-            if(liftExtenderPosition > 2780)
-                liftExtenderPosition = 2780;
+            if(liftExtenderPosition > 900)
+                liftExtenderPosition = 900;
         }
         //Determines if the liftExtender should go up or down based on the controller inputs
         if (liftExtenderPosition<=5&&robot.liftExtender.getCurrentPosition()<=5) {
-            robot.liftExtender.setVelocity(0);
-        }else if(Math.abs(robot.liftExtender.getCurrentPosition()-liftExtenderPosition)>25) {
+            robot.liftExtender.setPower(0);
+           // robot.liftExtender.setVelocity(0);
+            telemetry.addLine("RESTING");
+
+        }else if(Math.abs(robot.liftExtender.getCurrentPosition()-liftExtenderPosition)>5) {
             if (robot.liftExtender.getCurrentPosition() < liftExtenderPosition) {
-                robot.liftExtender.setVelocity(1500);
+                telemetry.addLine("MOVING UP");
+                robot.liftExtender.setPower(.6);
+                //robot.liftExtender.setVelocity(300);
             } else if (robot.liftExtender.getCurrentPosition() >= liftExtenderPosition) {
-                robot.liftExtender.setVelocity(-1500);
+                robot.liftExtender.setPower(-.6);
+               // robot.liftExtender.setVelocity(-300);
+                telemetry.addLine("MOVING DOWN");
+
             }
             //If no input, make sure the liftExtender motor does not move
         }else {
-            robot.liftExtender.setVelocity(1);
+            robot.liftExtender.setPower(0.01);
+//            robot.liftExtender.setVelocity(0);
+            telemetry.addLine("BRAKING");
+
         }
 
 
@@ -83,7 +95,7 @@ public class pidTele extends LinearOpMode {
         }
 
 
-        robot.liftExtender.setVelocityPIDFCoefficients(p, i, d, f);
+        //robot.liftExtender.setVelocityPIDFCoefficients(p, i, d, f);
 
         telemetry.addData("p", p);
         telemetry.addData("d", d);
