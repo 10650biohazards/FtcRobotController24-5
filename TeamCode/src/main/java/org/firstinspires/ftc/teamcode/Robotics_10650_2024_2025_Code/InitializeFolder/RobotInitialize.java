@@ -52,7 +52,6 @@ public class RobotInitialize {
 
     // Create empty gyroscope variable and its settings
     public BHI260IMU gyroScope;
-    public int liftPitchPosition;
     BHI260IMU.Parameters settings;
 
     // A constructor that makes a new instance of
