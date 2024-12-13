@@ -19,6 +19,8 @@ public class CaptureTelePosition extends LinearOpMode {
 
 
 
+
+
     private ArrayList<String> recordedInputs;
 
         // Variable for speed control
@@ -59,6 +61,7 @@ public class CaptureTelePosition extends LinearOpMode {
                 double clawPitchPos = 0;
 
                 double hangRPos = 1;
+
 
 
                 while (opModeIsActive()&&!gamepad1.share) {
@@ -135,18 +138,18 @@ public class CaptureTelePosition extends LinearOpMode {
 //            }
 
                         //determines the speed
-                        if (Math.abs(robot.liftPitch.getCurrentPosition() - robot.liftPitchPosition) > 25) {
-                            if (robot.liftPitch.getCurrentPosition() < robot.liftPitchPosition) {
-                                robot.liftPitch.setVelocity(2150);
-                            } else if (robot.liftPitch.getCurrentPosition() >= robot.liftPitchPosition) {
-                                robot.liftPitch.setVelocity(-2150);
-                                if (robot.liftPitchPosition > 1500) {
-                                    robot.liftPitch.setVelocity(-3000);
-                                }
-                            }
-                        }else {
-                            robot.liftPitch.setVelocity(0);
-                        }
+//                        if (Math.abs(robot.liftPitch.getCurrentPosition() - robot.liftPitchPosition) > 25) {
+//                            if (robot.liftPitch.getCurrentPosition() < robot.liftPitchPosition) {
+//                                robot.liftPitch.setVelocity(2150);
+//                            } else if (robot.liftPitch.getCurrentPosition() >= robot.liftPitchPosition) {
+//                                robot.liftPitch.setVelocity(-2150);
+//                                if (robot.liftPitchPosition > 1500) {
+//                                    robot.liftPitch.setVelocity(-3000);
+//                                }
+//                            }
+//                        }else {
+//                            robot.liftPitch.setVelocity(0);
+//                        }
                         telemetry.addData(" extender curent pos", robot.liftExtender.getCurrentPosition());
                         telemetry.addData("extender target pos", liftExtenderPosition);
                         telemetry.addData(" pitch curent pos", robot.liftPitch.getCurrentPosition());
