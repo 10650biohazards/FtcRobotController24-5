@@ -103,7 +103,7 @@ public class RobotInitialize {
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //without odom: bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //without odom: bright.setMode(DcMotor.RunMode.tUSING_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Manipulator mechanisms
@@ -113,7 +113,9 @@ public class RobotInitialize {
         liftExtender = opMode.hardwareMap.get(DcMotorEx.class, "liftExtender");
 
             //Initial conditions of the liftExtender MOTOR
+        //liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
         liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
+
 
         liftExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -138,10 +140,6 @@ public class RobotInitialize {
         }
             liftPitch.setZeroPowerBehavior(BRAKE);
 
-        liftPitch.setTargetPosition(783);
-        liftPitch.setPower(.1);
-
-        liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION); // Needs to not reset once teleop begins
 
         //Manipulator Servos
 

@@ -45,11 +45,11 @@ public class AutonomousCodeHighBasket extends LinearOpMode {
 
         robot.strafeR(120, 500);
         robot.goStraight(470, 500); // 500 is good velocity for now
-        robot.liftExtender(2702, 800);
-        robot.liftPitch(172, 300);
+        robot.liftExtender(3265, 800);
+        robot.liftPitch(1000, 300);
         robot.extake(1000);
         //robot.clawRoll.setPosition(0.3372);
-        robot.liftPitch(0, 600);
+        robot.liftPitch(885, 600);
 
         robot.liftExtender(0, 800);
 

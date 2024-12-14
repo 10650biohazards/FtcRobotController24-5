@@ -12,3 +12,5 @@ that it says it is connected to REV Robotics Control Hub v1.0
 Step 7: When the green arrow symbol pointing right with the grey square on it appears next to
 the REV Robotics Control Hub v1.0 dropdown press it to download the code to the robot
 Step 8: After waiting, the code should be installed!
+
+IP Address is: 192.168.43.1:5555

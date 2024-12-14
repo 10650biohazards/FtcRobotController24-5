@@ -236,7 +236,7 @@ public class captureTeleMainRobot extends LinearOpMode {
                     if (pitchAngle>=31.25){
                         maxLifEtxtension = 1210/(Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
                     } else{
-                        maxLifEtxtension = 2780;
+                        maxLifEtxtension = 2290;
                     }
 
                     if (gamepad2.left_stick_button){ //when this button is pressed
@@ -254,7 +254,7 @@ public class captureTeleMainRobot extends LinearOpMode {
                     if (pitchAngle>=31.25){
                         maxLifEtxtension = 1210/(Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
                     } else{
-                        maxLifEtxtension = 2780;
+                        maxLifEtxtension = 3000;
 
                     }
 
