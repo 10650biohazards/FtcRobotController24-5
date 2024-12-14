@@ -14,3 +14,5 @@ the REV Robotics Control Hub v1.0 dropdown press it to download the code to the 
 Step 8: After waiting, the code should be installed!
 
 IP Address is: 192.168.43.1:5555
+
+Unknown host 'repo.maven.apache.org: nodename nor servname provided, or not known'. You may need to adjust the proxy settings in Gradle.

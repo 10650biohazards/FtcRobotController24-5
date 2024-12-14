@@ -46,6 +46,10 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
         //robot.intake.setPower(0);
 
+        robot.liftExtender.setTargetPosition(0);
+        robot.liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.liftExtender.setTargetPositionTolerance(100);
+
 
         // loop while the program is running
         // waits for controller input then runs the associated code
@@ -349,11 +353,12 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
             // maxLifEtxtension = 2780;
             //}
 
-            if (gamepad2.left_stick_button) { //when this button is pressed
+            if (gamepad2.options) { //when this button is pressed
                 robot.liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                telemetry.addLine("yep options is pressed");
                 //press this button to set the zero point after adjusting with right stick button
             } else {
-                robot.liftExtender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                robot.liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             }
             telemetry.addData("max lift etension", 1567 / (Math.sin(Math.toRadians(pitchAngle))));
@@ -386,22 +391,27 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
 
             //Determines if the liftExtender should go up or down based on the controller inputs
-            if (liftExtenderPosition <= (5) && robot.liftExtender.getCurrentPosition() <= (5) && !gamepad2.right_bumper) {
-                //when down, save power
-                robot.liftExtender.setVelocity(0);
-            } else if (Math.abs(robot.liftExtender.getCurrentPosition() - liftExtenderPosition) > 25) { //Is the error value range
-                //if far from target position
+//            if (liftExtenderPosition <= (5) && robot.liftExtender.getCurrentPosition() <= (5) && !gamepad2.right_bumper) {
+//                //when down, save power
+//                robot.liftExtender.setVelocity(0);
+//            } else if ((Math.abs(robot.liftExtender.getCurrentPosition() - liftExtenderPosition) > 25 && robot.liftExtender.getCurrentPosition()<2000) || (robot.liftExtender.getCurrentPosition()>2000&&(robot.liftExtender.getCurrentPosition() - liftExtenderPosition <-25||robot.liftExtender.getCurrentPosition() - liftExtenderPosition > 100 ))) { //Is the error value range
+//                //if far from target position
+//                    telemetry.addLine("moving");
+//                //next if own or up
+//                if (robot.liftExtender.getCurrentPosition() < liftExtenderPosition) {
+//                    robot.liftExtender.setVelocity(1580);
+//                } else if (robot.liftExtender.getCurrentPosition() >= liftExtenderPosition) {
+//                    robot.liftExtender.setPower(-1580);
+//                }
+//                //If no input, make sure the liftExtender motor does not move
+//            } else {
+                    //telemetry.addLine("velocity 1");
 
-                //next if own or up
-                if (robot.liftExtender.getCurrentPosition() < liftExtenderPosition) {
-                    robot.liftExtender.setVelocity(1580);
-                } else if (robot.liftExtender.getCurrentPosition() >= liftExtenderPosition) {
-                    robot.liftExtender.setPower(-1580);
-                }
-                //If no input, make sure the liftExtender motor does not move
-            } else {
-                robot.liftExtender.setVelocity(1);
-            }
+//                robot.liftExtender.setVelocity(1);
+//            }
+
+            robot.liftExtender.setTargetPosition(liftExtenderPosition);
+            robot.liftExtender.setPower(0.5);
 //
             //ejaculates the block
             if (gamepad2.left_trigger != 0) {
