@@ -46,7 +46,7 @@ public class RobotInitialize {
     public DcMotorEx bLeft;
 
     // Create the empty lift control variables
-    public DcMotor liftExtender; //Extends the lift outwards and pulls it inwards
+    public DcMotorEx liftExtender; //Extends the lift outwards and pulls it inwards
     public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
     // with the drivetrain (uses worm gear)
 
@@ -103,17 +103,19 @@ public class RobotInitialize {
         bLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         bRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //without odom: bright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //without odom: bright.setMode(DcMotor.RunMode.tUSING_ENCODER);
         bRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Manipulator mechanisms
 
             //Lift motors
 
-        liftExtender = opMode.hardwareMap.get(DcMotor.class, "liftExtender");
+        liftExtender = opMode.hardwareMap.get(DcMotorEx.class, "liftExtender");
 
             //Initial conditions of the liftExtender MOTOR
         //liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
+        liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
+
 
         liftExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -138,10 +140,6 @@ public class RobotInitialize {
         }
             liftPitch.setZeroPowerBehavior(BRAKE);
 
-        liftPitch.setTargetPosition(783);
-        liftPitch.setPower(.1);
-
-        liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION); // Needs to not reset once teleop begins
 
         //Manipulator Servos
 

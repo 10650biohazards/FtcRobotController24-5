@@ -6,7 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 @TeleOp(name = "RecordDriverPosition", group = "Linear Opmode")
@@ -167,8 +171,81 @@ public class CaptureTelePosition extends LinearOpMode {
 //
 //
 //            }
-                        if (robot.liftPitchPosition <= 2325 && robot.liftPitchPosition >= -600 ||
-                                (robot.liftPitchPosition >= 2325 && gamepad2.left_stick_y > 0) || // 3200 goes to the
+                        if (Math.abs(robot.liftPitch.getCurrentPosition() - robot.liftPitchPosition) > 25) {
+                            if (robot.liftPitch.getCurrentPosition() < robot.liftPitchPosition) {
+                                robot.liftPitch.setVelocity(2000);
+                            } else if (robot.liftPitch.getCurrentPosition() >= robot.liftPitchPosition) {
+                                robot.liftPitch.setVelocity(-2000);
+                                if (robot.liftPitchPosition > 1500) {
+                                    robot.liftPitch.setVelocity(-2000);
+                                }
+                            }
+                        }else {
+                            robot.liftPitch.setVelocity(0);
+                        }
+                        telemetry.addData(" extender curent pos", robot.liftExtender.getCurrentPosition());
+                        telemetry.addData("extender target pos", liftExtenderPosition);
+                        telemetry.addData(" pitch curent pos", robot.liftPitch.getCurrentPosition());
+                        telemetry.addData("pitch target pos", robot.liftPitchPosition);
+
+
+                        //telemetry.addData("Pitch TargetPos",liftPitchPosition);
+
+//            if (gamepad1.left_bumper) {
+//                //edit this to be valid for the dual mode servo
+//            }
+//            if (gamepad1.right_bumper) {
+//                //edit this to be valid for the dual mode servo
+//            }
+//
+//            if (gamepad2.cross) {
+//                robot.liftExtender(0, 0.3);
+//            }
+
+//            int pitchSpeed  = 25;
+//            //telemetry.addData("joystick pos", gamepad2.left_stick_y);
+//            if (gamepad2.right_bumper){
+//                pitchSpeed = 10;
+//            } else if (!gamepad2.right_bumper){
+//                pitchSpeed = 25;
+
+//            }
+
+
+                        telemetry.addData("is right stick pressed?", gamepad2.right_stick_button);
+                        telemetry.addData("is left stick pressed?", gamepad2.left_stick_button);
+
+
+//            if (gamepad2.share) {
+//                telemetry.addData("is share pressed?", "yes");
+//                robot.liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            } //else{
+                        //robot.liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                        //robot.liftExtender.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // Needs to not reset once teleop begins
+
+                        //}
+
+//            if (gamepad2.options) {
+//                minLiftExtension = -2300;
+//                telemetry.addData("is options pressed?", "yes");
+//
+//            }else{
+//                minLiftExtension = 0;
+//
+//            }
+
+//                robot.liftExtender(0, 0.3);
+
+//            }
+                        telemetry.addData("ground mode pitch pos", Math.asin(53.78 / robot.liftExtender.getCurrentPosition()));
+
+//            if (gamepad2.circle){
+//                telemetry.addData("ground mode pitch pos", Math.asin(53.78/robot.liftExtender.getCurrentPosition()));
+//
+//
+//            }
+                        if (robot.liftPitchPosition <= 3210 && robot.liftPitchPosition >= -600 ||
+                                (robot.liftPitchPosition >= 3210 && gamepad2.left_stick_y > 0) || // 3200 goes to the
                                 // maximum horizontal position and further (try something less than this)
                                 (robot.liftPitchPosition <= -600 && gamepad2.left_stick_y < 0)) {
                             if (liftExtenderPosition > maxLifEtxtension) {
@@ -178,14 +255,14 @@ public class CaptureTelePosition extends LinearOpMode {
                             if (gamepad2.left_stick_y < -0.2) {//going up
 
                                 robot.liftPitchPosition = robot.liftPitchPosition + 40;
-                                if (robot.liftPitchPosition > 2090) {
+                                if (robot.liftPitchPosition > 2800) {
                                     robot.liftPitchPosition = robot.liftPitchPosition + 10;
                                 }
 
                             } else if (gamepad2.left_stick_y > 0.2) {//going down
 
                                 robot.liftPitchPosition = robot.liftPitchPosition - 35;
-                                if (robot.liftPitchPosition > 2090) {
+                                if (robot.liftPitchPosition > 2800) {
                                     robot.liftPitchPosition = robot.liftPitchPosition - 10;
                                 }
 
@@ -206,8 +283,8 @@ public class CaptureTelePosition extends LinearOpMode {
 
                             if (robot.liftPitchPosition < -600) {
                                 robot.liftPitchPosition = -600;
-                            } else if (robot.liftPitchPosition > 2300) {
-                                robot.liftPitchPosition = 2300;  //change to max lift xtension
+                            } else if (robot.liftPitchPosition > 3185) {
+                                robot.liftPitchPosition = 3185;  //change to max lift xtension
                             }
                             // double targetAngle = liftPitchPosition * (90) / 2595;
 
@@ -221,6 +298,7 @@ public class CaptureTelePosition extends LinearOpMode {
 
                             //1300
                         }//2700
+
 
 
                         //lift pitch horizontal bounds
@@ -274,7 +352,7 @@ public class CaptureTelePosition extends LinearOpMode {
                                 gamepad2.right_stick_y < 0) || (robot.liftExtender.getCurrentPosition() >
                                 maxLifEtxtension && gamepad2.right_stick_y > 0)) {
 
-                            liftExtenderPosition = liftExtenderPosition - (int) (23 * gamepad2.right_stick_y);
+                            liftExtenderPosition = liftExtenderPosition - (int) (45 * gamepad2.right_stick_y);
 
 
                             if (liftExtenderPosition < 0) {
@@ -289,19 +367,19 @@ public class CaptureTelePosition extends LinearOpMode {
                         //Determines if the liftExtender should go up or down based on the controller inputs
                         if (liftExtenderPosition <= (5) && robot.liftExtender.getCurrentPosition() <= (5) && !gamepad2.right_bumper) {
                             //when down, save power
-                            robot.liftExtender.setPower(0);
+                            robot.liftExtender.setVelocity(0);
                         } else if (Math.abs(robot.liftExtender.getCurrentPosition() - liftExtenderPosition) > 25) { //Is the error value range
                             //if far from target position
 
                             //next if own or up
                             if (robot.liftExtender.getCurrentPosition() < liftExtenderPosition) {
-                                robot.liftExtender.setPower(.6);
+                                robot.liftExtender.setVelocity(1580);
                             } else if (robot.liftExtender.getCurrentPosition() >= liftExtenderPosition) {
-                                robot.liftExtender.setPower(-.6);
+                                robot.liftExtender.setPower(-1580);
                             }
                             //If no input, make sure the liftExtender motor does not move
                         } else {
-                            robot.liftExtender.setPower(0.01);
+                            robot.liftExtender.setVelocity(1);
                         }
 //
                         //ejaculates the block
@@ -343,7 +421,7 @@ public class CaptureTelePosition extends LinearOpMode {
 
                         if (gamepad2.circle) {
 //                before 2167
-                            robot.liftPitchPosition = 2207;
+                            robot.liftPitchPosition = 3006;
                             liftExtenderPosition = 0;
 
                             //edit this to be valid for the dual mode servo
@@ -354,20 +432,30 @@ public class CaptureTelePosition extends LinearOpMode {
 
                     if (gamepad2.square) {//slaps it in
                         liftExtenderPosition = 0;
-                        robot.liftPitchPosition = 272;
+                        robot.liftPitchPosition = 1157;
                     }
 
                     if (gamepad2.triangle) {//to score hifh basket
 //                robot.liftPitch(0, 0.2);
 //                telemetry.addData("Pitchpos", robot.liftPitch.getCurrentPosition());
-                        robot.liftPitchPosition = 272;
-                        liftExtenderPosition = 901;
+                        robot.liftPitchPosition = 1157;
+                        liftExtenderPosition = 3265;
                     }
+                    //up pos = 0.3372
+//            if (gamepad2.left_bumper){
+//            } if (gamepad1.square){
+//                robot.hangL.setPosition(robot.hangL.getPosition()+ (0.002));
+//            }
+//            if (gamepad2.right_bumper){
+//            } //if (gamepad1.triangle)
+//              robot.hangL.setPosition(robot.hangL.getPosition()- (0.002));
+//            }Customize Toolbar...
 
-                    // Record inputs with timestamp
-                    if(gamepad2.options) {
-                        recordedInputs.add((System.currentTimeMillis() - startTime) + "," + (robot.fLeft.getCurrentPosition()) + "," + (robot.fRight.getCurrentPosition()) + "," + (robot.bLeft.getCurrentPosition()) + "," + (robot.bRight.getCurrentPosition()) );
-                    }
+                    //i=i+Math.round(gamepad2.right_stick_y);
+                    recordedInputs.add((System.currentTimeMillis() - startTime) + "," + (robot.fLeft.getCurrentPosition()) + "," + (robot.fRight.getCurrentPosition()) + "," + (robot.bLeft.getCurrentPosition()) + "," + (robot.bRight.getCurrentPosition()));
+                    telemetry.addData("positions:", (robot.fLeft.getCurrentPosition()) + ", " + (robot.fRight.getCurrentPosition()) + ", " + (robot.bLeft.getCurrentPosition()) + ", " + (robot.bRight.getCurrentPosition()) );
+                    //telemetry.addData("hang l pos", robot.hangL.getPosition());
+
 //                    telemetry.addData("Recording", "fleft Velocity: %.2f, fright Velocity: %.2f, bleft Velocity: %.2f, bright Velocity %.2f,", (startTime),(fleftVel),(frightVel),(bleftVel), (brightVel));
                     telemetry.update();
                 }
@@ -375,6 +463,7 @@ public class CaptureTelePosition extends LinearOpMode {
                 // Save recorded inputs after the session
 
                 saveInputsToFile("/sdcard/FIRST/recordedInputsOnce.txt");
+            //File file = new File(context.getFilesDir(), "/sdcard/FIRST/recordedInputsOnce.txt\")
 
         }
 
@@ -388,8 +477,28 @@ public class CaptureTelePosition extends LinearOpMode {
                 telemetry.addData("Error", e.getMessage());
             }
             telemetry.update();
+//            log.d("FILEOUTPUT", "FILE CONTENT: "+readFromFile("/sdcard/FIRST/recordedInputsOnce.txt"));
         }
-    }
+
+//    private Object readFromFile(String s) {
+//        StringBuilder fileContents = new StringBuilder();  // Use StringBuilder to efficiently append file lines
+//
+//        try {
+//            // Open the file
+//            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+//            String line;
+//
+//            // Read each line and append it to the StringBuilder
+//            while ((line = reader.readLine()) != null) {
+//                fileContents.append(line).append("\n");  // Add a newline for better formatting
+//            }
+//            reader.close();  // Close the file after reading
+//        } catch (IOException e) {
+//            // Handle the exception if the file is not found or cannot be read
+//            return "Error reading file: " + e.getMessage();
+//
+//    }
+}
 
 
 
