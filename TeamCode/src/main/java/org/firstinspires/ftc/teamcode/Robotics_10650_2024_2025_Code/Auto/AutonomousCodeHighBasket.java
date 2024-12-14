@@ -34,7 +34,10 @@ public class AutonomousCodeHighBasket extends LinearOpMode {
 
 
 //        robot.stopMechanisms();
-//        sleep(10000);
+        sleep(1000);
+
+
+        robot.liftPitch(885, 300);
 
 
         // Phase 1 auto program (go forward, raise arm device, place pre-loaded sample, then strafe
@@ -44,9 +47,13 @@ public class AutonomousCodeHighBasket extends LinearOpMode {
 
 
         robot.strafeR(120, 500);
-        robot.goStraight(470, 500); // 500 is good velocity for now
+        robot.goStraight(470, 500);
+        robot.pitch.setPosition(0.1606/5);
+// 500 is good velocity for now
         robot.liftExtender(3265, 800);
         robot.liftPitch(1000, 300);
+        sleep(1000);
+
         robot.extake(1000);
         //robot.clawRoll.setPosition(0.3372);
         robot.liftPitch(885, 600);
@@ -61,7 +68,7 @@ public class AutonomousCodeHighBasket extends LinearOpMode {
         robot.strafeR(340, 500); //Adjust this
         robot.goStraight(1780, 500);
         robot.turnFunction(-180);
-        robot.goStraight(770, 500);
+        robot.goStraight(900, 500);
         //goal = 0.946
         robot.parkingServo.setPosition(0.946);
         sleep(1000);

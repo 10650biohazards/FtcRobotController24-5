@@ -277,7 +277,7 @@ public class RobotInitialize {
         // Go forwards or backwards
         //if difference <10 then stop
         // 10 is the accuracy tolerance in 10 encoder ticks
-        while (opMode.opModeIsActive() && Math.abs(getPosStrafe() - relativeDistance) >= 14) {
+        while (opMode.opModeIsActive() && getPosStrafe() - relativeDistance <= 14) {
             //if
             opMode.telemetry.addData("velocity", fLeft.getVelocity());
 
