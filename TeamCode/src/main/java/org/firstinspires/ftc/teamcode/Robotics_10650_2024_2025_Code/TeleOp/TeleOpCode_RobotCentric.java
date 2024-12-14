@@ -300,7 +300,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
                // double targetAngle = liftPitchPosition * (90) / 2595;
 
 
-                if(robot.liftPitchPosition>=1793&&robot.liftExtender.getCurrentPosition()>=1808){
+                if(robot.liftPitchPosition>=1793&&robot.liftExtender.getCurrentPosition()>=1808&&liftExtenderPosition>=1808){
                     liftExtenderPosition = 1808;
                 }
 
@@ -411,7 +411,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 //            }
 
             robot.liftExtender.setTargetPosition(liftExtenderPosition);
-            robot.liftExtender.setPower(0.5);
+            robot.liftExtender.setPower(0.95);
 //
             //ejaculates the block
             if (gamepad2.left_trigger != 0) {
