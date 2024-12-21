@@ -290,16 +290,16 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
                 }
 
-                if (robot.liftPitchPosition < 700) {
-                    robot.liftPitchPosition = 700;
+                if (robot.liftPitchPosition < 300) {
+                    robot.liftPitchPosition = 300;
                 } else if (robot.liftPitchPosition > 3185) {
                     robot.liftPitchPosition = 3185;  //change to max lift xtension
                 }
                // double targetAngle = liftPitchPosition * (90) / 2595;
 
 
-                if(robot.liftPitchPosition>=1793&&robot.liftExtender.getCurrentPosition()>=1808&&liftExtenderPosition>=1808){
-                    liftExtenderPosition = 1808;
+                if(robot.liftPitchPosition>=1793&&robot.liftExtender.getCurrentPosition()>=1808&&liftExtenderPosition>=483){
+                    liftExtenderPosition = 483;
                 }
 
                 // TODO: Prevent liftPitch from going above a certain amount IF the liftExtender currentPos is not retracted
@@ -330,10 +330,10 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
             if (pitchAngle >= 31.25) {
                 //maxLifEtxtension = 121 / (Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
-                maxLifEtxtension = 1808;
+                maxLifEtxtension = 482;
 
             } else {
-                maxLifEtxtension = 3310;
+                maxLifEtxtension = 880;
             }
 
 
@@ -376,7 +376,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
                     gamepad2.right_stick_y < 0) || (robot.liftExtender.getCurrentPosition() >
                     maxLifEtxtension && gamepad2.right_stick_y > 0)) {
 
-                liftExtenderPosition = liftExtenderPosition - (int) (45 * gamepad2.right_stick_y);
+                liftExtenderPosition = liftExtenderPosition - (int) (20 * gamepad2.right_stick_y);
 
 
                 if (liftExtenderPosition < 0) {
@@ -409,7 +409,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 //            }
 
             robot.liftExtender.setTargetPosition(liftExtenderPosition);
-            robot.liftExtender.setPower(0.95);
+            robot.liftExtender.setPower(0.5);
 //
             //spits out the block
             if (gamepad2.left_trigger != 0) {
@@ -426,14 +426,15 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
             if (gamepad2.dpad_down) {
 
-                //robot.pitch.setPosition(0);//valuable
-                robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
+                robot.pitch.setPosition(0);//valuable
+                //robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
 
             }
             if (gamepad2.dpad_up) {
 
                 //robot.pitch.setPosition(0.1606/5); valuable
-                robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
+                robot.pitch.setPosition(0.0339);
+                //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
             }
             if(gamepad1.options){
                 telemetry.addData("fleft,fright,bleft,bright", (robot.fLeft.getCurrentPosition()) + ", " + (robot.fRight.getCurrentPosition()) + ", " + (robot.bLeft.getCurrentPosition()) + ", " + (robot.bRight.getCurrentPosition()));
@@ -460,7 +461,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
             if (gamepad2.circle) {
 //                before 2167
-                robot.liftPitchPosition = 3006;
+                robot.liftPitchPosition = 3111;
                 liftExtenderPosition = 0;
 
                 //edit this to be valid for the dual mode servo
@@ -478,7 +479,13 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 //                robot.liftPitch(0, 0.2);
 //                telemetry.addData("Pitchpos", robot.liftPitch.getCurrentPosition());
             robot.liftPitchPosition = 1157;
-            liftExtenderPosition = 3265;
+            liftExtenderPosition = 850;
+        }
+
+        if(gamepad1.square){
+            liftExtenderPosition = 0;
+            robot.liftPitchPosition = 2235;
+
         }
         //up pos = 0.3372
 //            if (gamepad2.left_bumper){
