@@ -413,7 +413,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
             robot.liftExtender.setTargetPosition(liftExtenderPosition);
             robot.liftExtender.setPower(0.95);
 //
-            //ejaculates the block
+            //spits out the block
             if (gamepad2.left_trigger != 0) {
                 robot.intake.setPower(-1.0);
                 telemetry.addData("intake power", robot.intake.getPower());
@@ -428,13 +428,20 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
             if (gamepad2.dpad_down) {
 
-                robot.pitch.setPosition(0);
+                //robot.pitch.setPosition(0);//valuable
+                robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
 
             }
             if (gamepad2.dpad_up) {
 
-                robot.pitch.setPosition(0.1606/5);
+                //robot.pitch.setPosition(0.1606/5); valuable
+                robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
             }
+            if(gamepad1.options){
+                telemetry.addData("fleft,fright,bleft,bright", (robot.fLeft.getCurrentPosition()) + ", " + (robot.fRight.getCurrentPosition()) + ", " + (robot.bLeft.getCurrentPosition()) + ", " + (robot.bRight.getCurrentPosition()));
+
+            }
+            telemetry.addData("pitch claw pos", (robot.pitch.getPosition()));
 
             if (gamepad1.dpad_left) {
                 robot.parkingServo.setPosition(robot.parkingServo.getPosition() + 0.002);
@@ -448,6 +455,9 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 //                robot.hangR.setPosition(0.9611);
 //                robot.hangL.setPosition(0.0439);
             }
+
+
+
             telemetry.addData("hang r pos", robot.parkingServo.getPosition());
 
             if (gamepad2.circle) {
