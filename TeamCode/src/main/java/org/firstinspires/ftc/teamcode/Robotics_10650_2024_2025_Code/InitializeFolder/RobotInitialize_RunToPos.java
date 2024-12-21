@@ -119,17 +119,13 @@ public class RobotInitialize_RunToPos {
             //Lift motors
 
         liftExtender = opMode.hardwareMap.get(DcMotorEx.class, "liftExtender");
-
-            //Initial conditions of the liftExtender MOTOR
-        //liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
-        liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
-
-
         liftExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
         if (isAuto) {
-            liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Needs to not reset once teleop begins
-            liftExtender.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // Needs to not reset once teleop begins
+            liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            liftExtender.setTargetPosition(0);// Needs to not reset once teleop begins
+            liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftExtender.setTargetPositionTolerance(10);// Needs to not reset once teleop begins
         }
             liftExtender.setZeroPowerBehavior(BRAKE);
 
@@ -369,23 +365,29 @@ public class RobotInitialize_RunToPos {
         bLeft.setPower(0.6);
         bRight.setPower(0.6);
     }
+    public void extenderToPos(int targetPos){
+        liftExtender.setTargetPosition(targetPos);
+        liftExtender.setPower(0.2);
+    }
 
     // Extends the lift outwards and retracts it inwards
-    public void liftExtender(int position, double velocity){
-        liftExtender.setTargetPosition(position);
-        liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while (Math.abs(liftExtender.getCurrentPosition()-position)>10 && opMode.opModeIsActive()) {
-            opMode.telemetry.addData("needs to be >10", Math.abs(liftExtender.getCurrentPosition()-position));
-            opMode.telemetry.addData("position", liftExtender.getCurrentPosition());
-            opMode.telemetry.update();
-            if (liftExtender.getCurrentPosition()<position) {
-                liftExtender.setPower(velocity);
+//    public void liftExtender(int position, double velocity){
+//        liftExtender.setTargetPosition(position);
+//        liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        while (Math.abs(liftExtender.getCurrentPosition()-position)>10 && opMode.opModeIsActive()) {
+//            opMode.telemetry.addData("needs to be >10", Math.abs(liftExtender.getCurrentPosition()-position));
+//            opMode.telemetry.addData("position", liftExtender.getCurrentPosition());
+//            opMode.telemetry.update();
+//            if (liftExtender.getCurrentPosition()<position) {
+//                liftExtender.setPower(velocity);
+//
+//            } else if (liftExtender.getCurrentPosition()>=position){
+//                liftExtender.setPower(-velocity);
+//            }
+//        }
+//    }
 
-            } else if (liftExtender.getCurrentPosition()>=position){
-                liftExtender.setPower(-velocity);
-            }
-        }
-    }
+
 
     // Makes the robot strafe left by determining where the robot is currently
     // located and where it is trying to go it does not return anything and
