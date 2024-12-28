@@ -20,6 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
@@ -50,6 +51,9 @@ public class RobotInitialize {
     public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
     // with the drivetrain (uses worm gear)
 
+    public GoBildaPinpointDriver odom;
+
+
     // Create empty gyroscope variable and its settings
     public BHI260IMU gyroScope;
     BHI260IMU.Parameters settings;
@@ -79,6 +83,11 @@ public class RobotInitialize {
         bRight = opMode.hardwareMap.get(DcMotorEx.class, "bright");
         fRight = opMode.hardwareMap.get(DcMotorEx.class, "fright");
         bLeft = opMode.hardwareMap.get(DcMotorEx.class, "bleft");
+
+
+        odom = opMode.hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        odom.resetPosAndIMU();
+        odom.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
         // The front left and back right motors are reversed so all wheels go in the same direction
         // When a positive or negative value is used

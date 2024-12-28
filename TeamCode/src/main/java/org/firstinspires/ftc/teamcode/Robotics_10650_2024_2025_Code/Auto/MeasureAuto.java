@@ -7,14 +7,14 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.Auto;
 // Import all of the necessary FTC libraries and code
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize_RunToPos;
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
-@Autonomous(name = "AutoMeet3", preselectTeleOp = "TeleOpCode_RobotCentric")
-public class AutonomousMeet3 extends LinearOpMode {
+@Autonomous(name = "Measure Auto", preselectTeleOp = "TeleOpCode_RobotCentric")
+public class MeasureAuto extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class
     RobotInitialize_RunToPos robot;
@@ -28,37 +28,14 @@ public class AutonomousMeet3 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
-        robot.moveLiftPitch(800, 0.2);
-        robot.pitch.setPosition(0.0339);
-        robot.extenderToPos(849, 0.2);
-        robot.liftPitch(1000, 0.5);
-        sleep(500);
-        robot.extake(1000);
-        robot.moveLiftPitch(800, 0.2);
-        robot.extenderToPos(0, 0.2);
 
-
-
-//
-
-        robot.executeMoveAlt(60, 210, 0, 1000, false); //First position
-        robot.executeMoveAlt(0, 0, -41, 1000, true); // Turn before second position
-        robot.executeMoveAlt(711, 25, -41, 2000, false);
-        robot.moveLiftPitch(800, 0.2);
-        robot.pitch.setPosition(0.0339);
-        robot.moveLiftPitch(3090, 0.6);
-        robot.intake();
-        robot.executeMoveAlt(0, 300, -41, 2000, false);
-        robot.intake.setPower(0);
-
-//
-
-
-
-
-
-
-
+        while (opModeIsActive()) {
+            robot.odom.update();
+            telemetry.addData("xpos", robot.odom.getPosX());
+            telemetry.addData("ypos", robot.odom.getPosY());
+            telemetry.addData("gyro", robot.gyroScope.getRobotYawPitchRollAngles().getYaw());
+            telemetry.update();
+        }
 
 
 

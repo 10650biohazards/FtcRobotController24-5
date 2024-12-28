@@ -439,7 +439,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
                 //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
             }
             if(gamepad1.options){
-                telemetry.addData("fleft,fright,bleft,bright", (robot.fLeft.getCurrentPosition()) + ", " + (robot.fRight.getCurrentPosition()) + ", " + (robot.bLeft.getCurrentPosition()) + ", " + (robot.bRight.getCurrentPosition()));
+                telemetry.addData("odomX, odomY", robot.odom.getPosX() + ", " + robot.odom.getPosY());
 
             }
             telemetry.addData("pitch claw pos", (robot.pitch.getPosition()));
