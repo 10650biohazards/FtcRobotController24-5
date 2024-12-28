@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFo
 
 import java.io.FileWriter;
 import java.util.ArrayList;
-
+@Disabled
 @TeleOp(name = "COPYRecordDriverInputs", group = "Linear Opmode")
 public class captureTeleMainRobot extends LinearOpMode {
     RobotInitialize robot;

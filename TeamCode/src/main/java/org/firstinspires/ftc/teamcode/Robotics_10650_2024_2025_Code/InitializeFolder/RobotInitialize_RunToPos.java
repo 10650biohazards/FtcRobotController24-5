@@ -547,19 +547,6 @@ public class RobotInitialize_RunToPos {
             }
         }
     }
-    public void getToPos(int fLeftPos, int fRightPos, int bLeftPos, int bRightPos, double power){
-        fLeft.setTargetPosition(fLeftPos);
-        fRight.setTargetPosition(fRightPos);
-        bLeft.setTargetPosition(bLeftPos);
-        bRight.setTargetPosition(bRightPos);
-        
-        fLeft.setPower(power);
-        fRight.setPower(power);
-        bLeft.setPower(power);
-        bRight.setPower(power);
-
-        while(opMode.opModeIsActive()&&Math.abs(fLeft.getTargetPosition() - fLeft.getCurrentPosition()) >= fLeft.getTargetPositionTolerance());
-    }
     public void extenderToPos(int targetPos, double power){
         liftExtender.setTargetPosition(targetPos);
         liftExtender.setPower(power);
@@ -569,7 +556,6 @@ public class RobotInitialize_RunToPos {
         }
 
     }
-
     // Extends the lift outwards and retracts it inwards
 //    public void liftExtender(int position, double velocity){
 //        liftExtender.setTargetPosition(position);

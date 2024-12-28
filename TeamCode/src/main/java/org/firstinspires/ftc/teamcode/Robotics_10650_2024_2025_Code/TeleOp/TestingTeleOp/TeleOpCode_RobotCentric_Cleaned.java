@@ -17,7 +17,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
 
     int liftExtenderPosition = 0;
     double maxLifEtxtension = 0;
-    int speed = 1400;
+    int speed;
 
 
 
@@ -205,11 +205,11 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             robot.intake.setPower(0.0);
             telemetry.addData("intake power", robot.intake.getPower());
         }
+
         if (gamepad2.dpad_down) {//pitch claw down
             robot.pitch.setPosition(0);
             //robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
-        }
-        if (gamepad2.dpad_up) {//pitch claw up
+        } else if (gamepad2.dpad_up) {//pitch claw up
             robot.pitch.setPosition(0.0339);
             //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
         }
@@ -224,25 +224,26 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
         if (gamepad2.circle) {//reaches into submersible
             robot.liftPitchPosition = 3111;
             liftExtenderPosition = 0;
-        }
-        if (gamepad2.square) {//slaps it in
+        } else if (gamepad2.square) {//slaps it in
             liftExtenderPosition = 0;
             robot.liftPitchPosition = 1157;
-        }
-        if (gamepad2.triangle) {//to score high basket
+        } else if (gamepad2.triangle) {//to score high basket
             robot.liftPitchPosition = 1157;
             liftExtenderPosition = 850;
         }
+
         if (gamepad2.options) {//sets the zero point after adjusting with right stick button
             robot.liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             telemetry.addLine("yep options is pressed");
         } else {//normal mode
             robot.liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
+
         if (gamepad1.square) {//raises to get out of submersible
             liftExtenderPosition = 0;
             robot.liftPitchPosition = 2235;
         }
+
         if (gamepad1.right_bumper) {
             robot.parkingServo.setPosition(0.946); //Where it can touch the bar
         } else {

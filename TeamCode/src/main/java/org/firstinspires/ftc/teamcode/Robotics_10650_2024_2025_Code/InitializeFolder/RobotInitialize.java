@@ -359,12 +359,6 @@ public class RobotInitialize {
             }
         }
     }
-    public void getToPos(int fLeftPos, int fRightPos, int bLeftPos, int bRightPos){
-        fLeft.setTargetPosition(fLeftPos);
-        fRight.setTargetPosition(fRightPos);
-        bLeft.setTargetPosition(bLeftPos);
-        bRight.setTargetPosition(bRightPos);
-    }
 
     // Extends the lift outwards and retracts it inwards
     public void liftExtender(int position, double velocity){
