@@ -232,6 +232,8 @@ public class RobotInitialize_RunToPos {
         opMode.telemetry.update();
 
     }
+
+    //z represents rotation not z axis movement
     public void setVel(int x, int y, int z){
         x = (int)(x*1.6);
         int fleftVel = -x-y+z;
@@ -344,6 +346,7 @@ public class RobotInitialize_RunToPos {
             if (Math.abs(xerr) <= 20 && Math.abs(yerr) <= 20 && zerr <2) {
                 break;
             }
+
             double yPercent = odom.getPosY()/yDist;
             double xPercent= odom.getPosX()/xDist;
 

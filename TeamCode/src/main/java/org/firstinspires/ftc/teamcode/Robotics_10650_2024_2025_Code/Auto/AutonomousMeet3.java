@@ -28,14 +28,14 @@ public class AutonomousMeet3 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
-        robot.moveLiftPitch(800, 0.2);
-        robot.pitch.setPosition(0.0339);
-        robot.extenderToPos(849, 0.2);
-        robot.liftPitch(1000, 0.5);
-        sleep(500);
-        robot.extake(1000);
-        robot.moveLiftPitch(800, 0.2);
-        robot.extenderToPos(0, 0.2);
+//        robot.moveLiftPitch(800, 0.2);
+//        robot.pitch.setPosition(0.0339);
+//        robot.extenderToPos(849, 0.2);
+//        robot.liftPitch(1000, 0.5);
+//        sleep(500);
+//        robot.extake(1000);
+//        robot.moveLiftPitch(800, 0.2);
+//        robot.extenderToPos(0, 0.2);
 
 
 
