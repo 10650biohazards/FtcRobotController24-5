@@ -129,8 +129,8 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
 //
 //            }
 
-        if (robot.liftPitchPosition <= 3185 && robot.liftPitchPosition >= 0 ||
-                (robot.liftPitchPosition >= 3185 && gamepad2.left_stick_y > 0) || // 3200 goes to the
+        if (robot.liftPitchPosition <= 3238 && robot.liftPitchPosition >= 0 ||
+                (robot.liftPitchPosition >= 3237 && gamepad2.left_stick_y > 0) || // 3200 goes to the
                 (robot.liftPitchPosition <= 0 && gamepad2.left_stick_y < 0)) {
 
             robot.liftPitchPosition += (int)(-40*Math.pow(gamepad2.left_stick_y, 3));
@@ -138,8 +138,8 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             //cannot go outside these bounds
             if (robot.liftPitchPosition < 885) {
                 robot.liftPitchPosition = 885;
-            } else if (robot.liftPitchPosition > 3185) {
-                robot.liftPitchPosition = 3185;
+            } else if (robot.liftPitchPosition > 3237) {
+                robot.liftPitchPosition = 3237;
             }
 
             //horizontal bound
