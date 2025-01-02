@@ -1,3 +1,7 @@
+// Program created by: Danny and William
+// Purpose: FTC Robot Software
+
+// The file path of the class
 package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.Auto;
 
 // Import all of the necessary FTC libraries and code
@@ -8,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
-@Autonomous(name = "AutonomousCodeCloserToPark", preselectTeleOp = "TeleOpCode_RobotCentric")
-public class AutoCodeJustPark extends LinearOpMode {
+@Autonomous(name = "AutonomousMeet2", preselectTeleOp = "TeleOpCode_RobotCentric")
+public class AutonomousMeet2 extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class
     RobotInitialize robot;
@@ -26,25 +30,54 @@ public class AutoCodeJustPark extends LinearOpMode {
 //        robot.newTurnFunction(-90);
 
 
+
+
+
+//        robot.stopMechanisms();
+        sleep(1000);
+
+
+        robot.liftPitch(885, 300);
+
+
         // Phase 1 auto program (go forward, raise arm device, place pre-loaded sample, then strafe
         // into the ascent zone and use the arm device to touch the first bar
         // Fairly accurate but might need improvement
 
-        //robot.claw.setPower(.5);
-        //robot.liftExtender.setTargetPosition(0);
 
-        //Positive values make the lift go backwards
-        //Negative values make the lift go forwards
-//        robot.liftPitch(200, 0.05);
-//        robot.intakeToggle(1);
 
-        // Main movement of drivetrain during Auto
-        //robot.goStraight(1100, 500); // 500 is good velocity for now
-//        robot.goStraight(200, 500); // 500 is good velocity for now
-//        robot.newTurnFunction(90); // 500 is good velocity for now
-        //telemetry.addData("angle", getAngle() );
-        robot.goStraight(200, 500);
-        robot.strafeR(2000, 500);
+        robot.strafeR(120, 500);
+        robot.goStraight(470, 500);
+        robot.pitch.setPosition(0.1606/5);
+// 500 is good velocity for now
+        robot.liftExtender(3265, 800);
+        robot.liftPitch(1000, 300);
+        sleep(1000);
+
+        robot.extake(1000);
+        //robot.clawRoll.setPosition(0.3372);
+        robot.liftPitch(885, 600);
+
+        robot.liftExtender(0, 800);
+
+
+
+        //to park in ascent zone
+        robot.turnFunction(-90);
+        //robot.clawRoll.setPosition(0);
+        robot.strafeR(340, 500); //Adjust this
+        robot.goStraight(1780, 500);
+        robot.turnFunction(-180);
+        robot.goStraight(900, 500);
+        //goal = 0.946
+        robot.parkingServo.setPosition(0.946);
+        sleep(1000);
+
+
+
+
+
+
 
 
         //to par in observation
@@ -54,17 +87,34 @@ public class AutoCodeJustPark extends LinearOpMode {
 //
 
 
+
+
         //robot.goStraight(3300, 500);
+
+
+
+
 
 
         //robot.liftPitch(1042, 500);
 
 
+
+
         //robot.strafeR(200, 500);
+
+
+
+
+
+
+
 
 
         //robot.newTurnFunction()
         //robot.strafeL(11, 500);
+
+
 
 
         //Log.d("Testing Value ", String.valueOf((robot.inchesToEncoderTicks)));

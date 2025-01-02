@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
@@ -9,8 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
 @Autonomous(name="PlayBackAutoPositions")
+@Disabled
 public class PlayBackAutoPositions extends LinearOpMode {
     RobotInitialize robot;
 

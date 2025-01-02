@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,7 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+@Disabled
 @TeleOp(name = "RecordDriverPosition", group = "Linear Opmode")
 public class CaptureTelePosition extends LinearOpMode {
     RobotInitialize robot;

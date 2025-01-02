@@ -359,12 +359,6 @@ public class RobotInitialize {
             }
         }
     }
-    public void getToPos(int fLeftPos, int fRightPos, int bLeftPos, int bRightPos){
-        fLeft.setTargetPosition(fLeftPos);
-        fRight.setTargetPosition(fRightPos);
-        bLeft.setTargetPosition(bLeftPos);
-        bRight.setTargetPosition(bRightPos);
-    }
 
     // Extends the lift outwards and retracts it inwards
     public void liftExtender(int position, double velocity){
@@ -382,6 +376,8 @@ public class RobotInitialize {
             }
         }
     }
+
+
 
     // Makes the robot strafe left by determining where the robot is currently
     // located and where it is trying to go it does not return anything and
