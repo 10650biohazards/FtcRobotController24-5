@@ -133,7 +133,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
                 (robot.liftPitchPosition >= 3185 && gamepad2.left_stick_y > 0) || // 3200 goes to the
                 (robot.liftPitchPosition <= 0 && gamepad2.left_stick_y < 0)) {
 
-            robot.liftPitchPosition = (int)(40*Math.pow(gamepad2.left_stick_y, 3));
+            robot.liftPitchPosition += (int)(-40*Math.pow(gamepad2.left_stick_y, 3));
 
             //cannot go outside these bounds
             if (robot.liftPitchPosition < 300) {
