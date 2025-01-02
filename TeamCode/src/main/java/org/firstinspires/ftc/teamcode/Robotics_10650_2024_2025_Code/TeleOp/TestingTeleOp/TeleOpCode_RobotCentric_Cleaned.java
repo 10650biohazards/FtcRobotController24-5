@@ -63,12 +63,18 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
 
 
         if (gamepad1.circle) {
-            speed = 270;
+            speed = 540;
         } else if (gamepad1.cross) {
-            speed = 2800; //DcMotorEx max speed (encoder ticks per second): 2,787.625
+            speed = 3600; //DcMotorEx max speed (encoder ticks per second): 2,787.625
         } else {
-            speed = 1400;
+            speed = 2400;
         }
+        telemetry.addData("drive speed", speed);
+
+
+
+        // TESTING??????
+//        speed = speed*2;
 
 
         double strafeVelocity; // (left stick x-axis movement)
@@ -95,6 +101,8 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
         } else {
             straightMovementVelocity = 0;
         }
+        telemetry.addData("straight velocity", straightMovementVelocity);
+
 
 
         // Set velocity of the motors (drivetrain)
