@@ -34,7 +34,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 public class RobotInitialize_RunToPos {
 
     // Initialization Phase
-    public int liftPitchPosition =783;
+    public int liftPitchPosition = 783;
 
     // Create servo variables
     public CRServo intake; // This is a special continuous rotation servo which allows it to act
@@ -369,11 +369,10 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("xpos", odom.getPosX());
             opMode.telemetry.addData("ypos", odom.getPosY());
             opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
-            opMode.telemetry.addData("gyro", odom.getPosX());
 
             opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
             opMode.telemetry.update();
-            setVel(clamp((int) (xerr * kP + xI * kI), xVel), clamp((int) (yerr * kP + yI * kI), yVel), zErr);
+            setVel((int)Math.copySign(clamp((int) (xerr * kP + xI * kI), xVel), xVel), (int)Math.copySign(clamp((int) (yerr * kP + yI * kI), yVel),yVel), zErr);
         }
 
         setVel(0, 0, 0);
@@ -389,12 +388,13 @@ public class RobotInitialize_RunToPos {
         return Math.copySign(Math.min(Math.abs(val), Math.abs(maxScalar)), val);
     }
 
-    public void moveLiftPitch(int position, double power){
+    public void moveLiftPitch(int position, double power, boolean block){
         liftPitch.setTargetPosition(position);
         liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftPitch.setPower(power);
-        while(Math.abs(liftPitch.getTargetPosition() - liftPitch.getCurrentPosition()) >= liftPitch.getTargetPositionTolerance());
-
+        if(block) {
+            while(Math.abs(liftPitch.getTargetPosition() - liftPitch.getCurrentPosition()) >= liftPitch.getTargetPositionTolerance());
+        }
     }
 
     // Gets the angle that the robot is currently facing in from the gyroscope
@@ -550,13 +550,16 @@ public class RobotInitialize_RunToPos {
             }
         }
     }
-    public void extenderToPos(int targetPos, double power){
+    public void extenderToPos(int targetPos, double power, boolean block){
         liftExtender.setTargetPosition(targetPos);
         liftExtender.setPower(power);
-        while(opMode.opModeIsActive()&&Math.abs(liftExtender.getTargetPosition() - liftExtender.getCurrentPosition()) >= liftExtender.getTargetPositionTolerance()){
-            opMode.telemetry.addData("extender pos", liftExtender.getCurrentPosition());
-            opMode.telemetry.update();
+        if (block) {
+            while(opMode.opModeIsActive()&&Math.abs(liftExtender.getTargetPosition() - liftExtender.getCurrentPosition()) >= liftExtender.getTargetPositionTolerance()){
+                opMode.telemetry.addData("extender pos", liftExtender.getCurrentPosition());
+                opMode.telemetry.update();
+            }
         }
+
 
     }
     // Extends the lift outwards and retracts it inwards

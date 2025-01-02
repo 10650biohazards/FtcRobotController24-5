@@ -19,6 +19,18 @@ public class AutonomousMeet3 extends LinearOpMode {
     // Execute the function from the RobotInitialize class
     RobotInitialize_RunToPos robot;
 
+    public void score() {
+        robot.moveLiftPitch(800, 0.8,false);
+        robot.pitch.setPosition(0.0339);
+        robot.extenderToPos(880, 0.8,false);
+        sleep(350);
+        robot.moveLiftPitch(965, 0.5,true);
+        sleep(800);
+        robot.extake(500);
+        robot.moveLiftPitch(800, 0.9,true);
+        robot.extenderToPos(0, 0.4,false);
+    }
+
     // The code that runs in Auto
     @Override
     public void runOpMode() throws InterruptedException {
@@ -28,38 +40,34 @@ public class AutonomousMeet3 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
-//        robot.moveLiftPitch(800, 0.2);
-//        robot.pitch.setPosition(0.0339);
-//        robot.extenderToPos(849, 0.2);
-//        robot.liftPitch(1000, 0.5);
-//        sleep(500);
-//        robot.extake(1000);
-//        robot.moveLiftPitch(800, 0.2);
-//        robot.extenderToPos(0, 0.2);
+        robot.moveLiftPitch(800, 0.8,false);
+        robot.executeMoveAlt(60, 345, 0, 2500, false); //First position
 
+        //Process of scoring preloaded sample
+        score();
 
-
-//
-
-        robot.executeMoveAlt(60, 210, 0, 1000, false); //First position
-        robot.executeMoveAlt(0, 0, -41, 1000, true); // Turn before second position
-        robot.executeMoveAlt(711, 25, -41, 2000, false);
-        robot.moveLiftPitch(800, 0.2);
+        //TEMPORARY COMMENT: Might need to backup slightly to get back to initial position before next move
+        robot.executeMoveAlt(950, -400, 0, 2500, false);
         robot.pitch.setPosition(0.0339);
-        robot.moveLiftPitch(3090, 0.6);
+        robot.moveLiftPitch(3090, 0.8,false);
         robot.intake();
-        robot.executeMoveAlt(0, 300, -41, 2000, false);
+        robot.executeMoveAlt(0, 200, 0, 3500, false);
         robot.intake.setPower(0);
+        robot.moveLiftPitch(800, 0.8,true);
+        robot.executeMoveAlt(-950, 200, 0, 2500, false); //First position again
 
-//
+        score();
 
+        robot.executeMoveAlt(964, -200, 0, 2500, false);
+        robot.pitch.setPosition(0.0339);
+        robot.moveLiftPitch(3090, 0.8,false);
+        robot.intake();
+        robot.executeMoveAlt(0, 150, 0, 3500, false);
+        robot.intake.setPower(0);
+        robot.moveLiftPitch(800, 0.8,true);
+        robot.executeMoveAlt(-921, 20, 0, 2500, false); //First position again
 
-
-
-
-
-
-
+        score();
 
 
 
