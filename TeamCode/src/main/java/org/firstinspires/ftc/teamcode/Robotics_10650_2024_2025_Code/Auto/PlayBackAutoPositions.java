@@ -10,9 +10,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+@Autonomous(name="PlayBackAutoPositions")
 @Disabled
-@Autonomous(name="PlayBackAuto")
-public class PlayBackAuto extends LinearOpMode {
+public class PlayBackAutoPositions extends LinearOpMode {
     RobotInitialize robot;
 
     public void runOpMode() {
@@ -50,15 +50,11 @@ public class PlayBackAuto extends LinearOpMode {
                 // Parse recorded input
                 String[] values = input.split(",");
                 long timestamp = Long.parseLong(values[0]);
-                double fLeftVelocity = Double.parseDouble(values[1]);
-                double fRightVelocity = Double.parseDouble(values[2]);
-                double bLeftVelocity = Double.parseDouble(values[3]);
-                double bRightVelocity = Double.parseDouble(values[4]);
-                double extenderVelocity = Double.parseDouble(values[5]);
-                double pitchVelocity = Double.parseDouble(values[6]);
-                double intakeVelocity = Double.parseDouble(values[7]);
-                double clawPosition = Double.parseDouble(values[8]);
-                double hangRPosition = Double.parseDouble(values[9]);
+                double fLeftPos = Double.parseDouble(values[1]);
+                double fRightPos = Double.parseDouble(values[2]);
+                double bLeftPos = Double.parseDouble(values[3]);
+                double bRightPos = Double.parseDouble(values[4]);
+
 
 
 
@@ -73,7 +69,6 @@ public class PlayBackAuto extends LinearOpMode {
                     telemetry.addData("Current time", System.currentTimeMillis());
                     telemetry.addData("Start time", startTime);
                     telemetry.addData("Timestamp", timestamp);
-                    telemetry.addData("hang r pos", hangRPosition);
                     telemetry.addData("hang r pos", robot.parkingServo.getPosition());
 
 
@@ -83,21 +78,13 @@ public class PlayBackAuto extends LinearOpMode {
                 }
 
                 // Set motor powers
-                robot.fLeft.setVelocity(fLeftVelocity);
-                robot.bLeft.setVelocity(bLeftVelocity);
+                robot.fLeft.setVelocity(fLeftPos);
+                robot.bLeft.setVelocity(bLeftPos);
 
-                robot.fRight.setVelocity(fRightVelocity);
-                robot.bRight.setVelocity(bRightVelocity);
+                robot.fRight.setVelocity(fRightPos);
+                robot.bRight.setVelocity(bRightPos);
 
                 //robot.liftExtender.setVelocity(extenderVelocity);
-                robot.liftPitch.setVelocity(pitchVelocity);
-
-                robot.intake.setPower(intakeVelocity);
-                //robot.clawRoll.setPosition(clawPosition);
-
-
-
-                robot.parkingServo.setPosition(hangRPosition);
 
                 //telemetry.addData("Replaying", "fleft Velocity: %.2f, fright Velocity: %.2f, bleft Velocity: %.2f, bright Velocity %.2f,", strafeVelocity - straightMovementVelocity + turnVelocity, -strafeVelocity - straightMovementVelocity - turnVelocity, (strafeVelocity + straightMovementVelocity - turnVelocity), (-strafeVelocity + straightMovementVelocity + turnVelocity));
                // telemetry.update();

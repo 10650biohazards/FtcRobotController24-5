@@ -180,7 +180,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 //            }
 
             //determines the speed
-            if (Math.abs(robot.liftPitch.getCurrentPosition() - robot.liftPitchPosition) > 25) {
+            if (Math.abs(robot.liftPitch.getCurrentPosition() - robot.liftPitchPosition) > 20) {
                 if (robot.liftPitch.getCurrentPosition() < robot.liftPitchPosition) {
                     robot.liftPitch.setVelocity(2000);
                 } else if (robot.liftPitch.getCurrentPosition() >= robot.liftPitchPosition) {
@@ -262,18 +262,20 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
                 }
                 //determines where the lift pitch goes
                 if (gamepad2.left_stick_y < -0.2) {//going up
-
-                    robot.liftPitchPosition = robot.liftPitchPosition + 40;
-                    if (robot.liftPitchPosition > 2800) {
+                    if (robot.liftPitchPosition > 2800&&!gamepad2.left_bumper) {
                         robot.liftPitchPosition = robot.liftPitchPosition + 10;
+                    } else {
+                        robot.liftPitchPosition = robot.liftPitchPosition + 40;
                     }
+
 
                 } else if (gamepad2.left_stick_y > 0.2) {//going down
-
-                    robot.liftPitchPosition = robot.liftPitchPosition - 35;
-                    if (robot.liftPitchPosition > 2800) {
+                    if (robot.liftPitchPosition > 2800&&!gamepad2.left_bumper) {
                         robot.liftPitchPosition = robot.liftPitchPosition - 10;
+                    } else {
+                        robot.liftPitchPosition = robot.liftPitchPosition - 35;
                     }
+
 
 
 //                    if (robot.liftPitch.getCurrentPosition()<400) {
@@ -437,7 +439,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
                 //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
             }
             if(gamepad1.options){
-                telemetry.addData("fleft,fright,bleft,bright", (robot.fLeft.getCurrentPosition()) + ", " + (robot.fRight.getCurrentPosition()) + ", " + (robot.bLeft.getCurrentPosition()) + ", " + (robot.bRight.getCurrentPosition()));
+                telemetry.addData("odomX, odomY", robot.odom.getPosX() + ", " + robot.odom.getPosY());
 
             }
             telemetry.addData("pitch claw pos", (robot.pitch.getPosition()));

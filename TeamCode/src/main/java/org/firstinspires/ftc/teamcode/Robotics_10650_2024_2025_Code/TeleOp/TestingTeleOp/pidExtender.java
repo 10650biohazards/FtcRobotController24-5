@@ -74,7 +74,12 @@ public class pidExtender extends LinearOpMode {
 
         }
 
-
+        if (gamepad2.right_trigger == 1){
+            p=0;
+            i=0;
+            d=0;
+            f=0;
+        }
 
         if (gamepad2.dpad_up){
             p += 0.01;
@@ -89,7 +94,7 @@ public class pidExtender extends LinearOpMode {
         if (gamepad2.triangle){
             p -= 0.01;
         }if (gamepad2.cross){
-            i -= 0.01;
+            i -= 0.01; //Avoid negative i value because it damages the motor
         }if (gamepad2.circle){
             d -= 0.01;
         }if (gamepad2.square){

@@ -8,18 +8,23 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeF
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
@@ -49,6 +54,9 @@ public class RobotInitialize_RunToPos {
     public DcMotorEx liftExtender; //Extends the lift outwards and pulls it inwards
     public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
     // with the drivetrain (uses worm gear)
+
+    public GoBildaPinpointDriver odom;
+
 
     // Create empty gyroscope variable and its settings
     public BHI260IMU gyroScope;
@@ -80,10 +88,18 @@ public class RobotInitialize_RunToPos {
         fRight = opMode.hardwareMap.get(DcMotorEx.class, "fright");
         bLeft = opMode.hardwareMap.get(DcMotorEx.class, "bleft");
 
+
+        // The odometry pods are wired so that the odometry pods reference that +Y is forwards and
+        // +X is to the right
+        odom = opMode.hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        odom.resetPosAndIMU();
+        odom.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+
+
         // The front left and back right motors are reversed so all wheels go in the same direction
         // When a positive or negative value is used
-        fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        bRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        fRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
 
@@ -114,6 +130,15 @@ public class RobotInitialize_RunToPos {
         bRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         bRight.setTargetPositionTolerance(10);
 
+        opMode.telemetry.addData("PID", fLeft.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION).toString());
+
+        PIDFCoefficients posiitonCoeff = new PIDFCoefficients(10, 0.049988, 0, 0);
+
+        bLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, posiitonCoeff);
+        bRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, posiitonCoeff);
+        fLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, posiitonCoeff);
+        fRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, posiitonCoeff);
+
         //Manipulator mechanisms
 
             //Lift motors
@@ -125,19 +150,22 @@ public class RobotInitialize_RunToPos {
             liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             liftExtender.setTargetPosition(0);// Needs to not reset once teleop begins
             liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftExtender.setTargetPositionTolerance(10);// Needs to not reset once teleop begins
+            liftExtender.setTargetPositionTolerance(20);// Needs to not reset once teleop begins
         }
-            liftExtender.setZeroPowerBehavior(BRAKE);
+        liftExtender.setZeroPowerBehavior(BRAKE);
 
 
 
         liftPitch = opMode.hardwareMap.get(DcMotorEx.class, "liftPitch");
 
             //Initial conditions of the liftPitch MOTOR
-            //PIDFCoefficients pid = new PIDFCoefficients(1, 1, 1, 1); (This does nothing)
             //PIDF Coefficients for the liftPitch MOTOR
-            liftPitch.setVelocityPIDFCoefficients(1,1,-2.5, 3);
+            // important liftPitch.setVelocityPIDFCoefficients(1,1,-2.5, 3);
             liftPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+            liftPitch.setTargetPosition(0);
+            liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftPitch.setTargetPositionTolerance(100);
+
 
         if (isAuto) {
             liftPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Needs to not reset once teleop begins
@@ -201,8 +229,173 @@ public class RobotInitialize_RunToPos {
 
         //final int x = ;
 
+        opMode.telemetry.update();
+
     }
 
+    //z represents rotation not z axis movement
+    public void setVel(int x, int y, int z){
+        x = (int)(x*1.6);
+        int fleftVel = -x-y+z;
+        int frightVel = x-y-z;
+        int bleftVel = -x+y-z;
+        int brightVel = x+y+z;
+
+        fLeft.setVelocity(fleftVel);
+        fRight.setVelocity(frightVel);
+        bLeft.setVelocity(bleftVel);
+        bRight.setVelocity(brightVel);
+    }
+
+    public void executeMove(int xDist, int yDist, int heading, int maxSpeed){
+        // Reset position
+        odom.update();
+        odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+
+        opMode.sleep(500);
+
+        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Odometry references to x and y Dist need to be made
+        while(opMode.opModeIsActive()){
+            odom.update();
+
+            if (Math.abs(xDist) - Math.abs(odom.getPosX()) <= 10 && Math.abs(yDist) - Math.abs(odom.getPosY()) <= 10 && Math.abs(heading-gyroScope.getRobotYawPitchRollAngles().getYaw())<2) {
+                break;
+            }
+            double yPercent = odom.getPosY()/yDist;
+            double xPercent= odom.getPosX()/xDist;
+
+            int xCorrecter;
+
+            if (yDist == 0) {
+                xCorrecter = 0;
+            } else {
+                xCorrecter = (int) ((yPercent - xPercent) * 1000);
+            }
+
+            int xCorrectSign = xVel == 0 ? 1 : (int) Math.signum(xVel);
+
+
+
+            int zErr = clamp((int) ((heading-(gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
+            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("xvel", xVel);
+            opMode.telemetry.addData("yvel", yVel);
+            opMode.telemetry.addData("xpos", odom.getPosX());
+            opMode.telemetry.addData("ypos", odom.getPosY());
+            opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
+            opMode.telemetry.addData("gyro", odom.getPosX());
+
+            opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+            opMode.telemetry.update();
+            setVel(xVel + xCorrecter * xCorrectSign, yVel, zErr);
+        }
+
+        setVel(0, 0, 0);
+    }
+
+    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly){
+        final int kP = 4;
+        final double kI = 0.07;
+
+        // Reset position
+        odom.update();
+        odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double xI = 0;
+        double yI = 0;
+
+        //Odometry references to x and y Dist need to be made
+        while(opMode.opModeIsActive()){
+            odom.update();
+            double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
+            double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
+            double zerr = Math.abs(heading-gyroScope.getRobotYawPitchRollAngles().getYaw());
+
+            xI += xerr;
+            yI += yerr;
+
+            xI  = clamp(xI, 200 / kI);
+            yI  = clamp(yI, 200 / kI);
+
+            if (turnOnly && zerr < 2) {
+                break;
+            }
+
+            if (Math.abs(xerr) <= 20 && Math.abs(yerr) <= 20 && zerr <2) {
+                break;
+            }
+
+            double yPercent = odom.getPosY()/yDist;
+            double xPercent= odom.getPosX()/xDist;
+
+            int xCorrecter;
+
+            if (yDist == 0) {
+                xCorrecter = 0;
+            } else {
+                xCorrecter = (int) ((yPercent - xPercent) * 1000);
+            }
+
+            int xCorrectSign = xVel == 0 ? 1 : (int) Math.signum(xVel);
+
+
+
+            int zErr = clamp((int) ((heading-(gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
+            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("xerr", xerr);
+            opMode.telemetry.addData("yerr", yerr);
+            opMode.telemetry.addData("xpos", odom.getPosX());
+            opMode.telemetry.addData("ypos", odom.getPosY());
+            opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
+            opMode.telemetry.addData("gyro", odom.getPosX());
+
+            opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+            opMode.telemetry.update();
+            setVel(clamp((int) (xerr * kP + xI * kI), xVel), clamp((int) (yerr * kP + yI * kI), yVel), zErr);
+        }
+
+        setVel(0, 0, 0);
+    }
+
+    public int clamp(int val, int maxScalar) {
+        return Math.round(Math.copySign(Math.min(Math.abs(val), Math.abs(maxScalar)), val));
+    }
+
+
+
+    public double clamp(double val, double maxScalar) {
+        return Math.copySign(Math.min(Math.abs(val), Math.abs(maxScalar)), val);
+    }
+
+    public void moveLiftPitch(int position, double power){
+        liftPitch.setTargetPosition(position);
+        liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftPitch.setPower(power);
+        while(Math.abs(liftPitch.getTargetPosition() - liftPitch.getCurrentPosition()) >= liftPitch.getTargetPositionTolerance());
+
+    }
 
     // Gets the angle that the robot is currently facing in from the gyroscope
     private double getAngle() {
@@ -306,6 +499,9 @@ public class RobotInitialize_RunToPos {
         setDrivetrainMotorVelocity(0);
         //stopMechanisms();
     }
+    public void intake(){
+        intake.setPower(1);
+    }
     // Parameter of time that it is run in milliseconds
     public void extake(double time){
         double intakeRunTime = time;
@@ -354,22 +550,15 @@ public class RobotInitialize_RunToPos {
             }
         }
     }
-    public void getToPos(int fLeftPos, int fRightPos, int bLeftPos, int bRightPos){
-        fLeft.setTargetPosition(fLeftPos);
-        fRight.setTargetPosition(fRightPos);
-        bLeft.setTargetPosition(bLeftPos);
-        bRight.setTargetPosition(bRightPos);
-        
-        fLeft.setPower(0.6);
-        fRight.setPower(0.6);
-        bLeft.setPower(0.6);
-        bRight.setPower(0.6);
-    }
-    public void extenderToPos(int targetPos){
+    public void extenderToPos(int targetPos, double power){
         liftExtender.setTargetPosition(targetPos);
-        liftExtender.setPower(0.2);
-    }
+        liftExtender.setPower(power);
+        while(opMode.opModeIsActive()&&Math.abs(liftExtender.getTargetPosition() - liftExtender.getCurrentPosition()) >= liftExtender.getTargetPositionTolerance()){
+            opMode.telemetry.addData("extender pos", liftExtender.getCurrentPosition());
+            opMode.telemetry.update();
+        }
 
+    }
     // Extends the lift outwards and retracts it inwards
 //    public void liftExtender(int position, double velocity){
 //        liftExtender.setTargetPosition(position);
