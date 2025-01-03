@@ -235,7 +235,7 @@ public class RobotInitialize_RunToPos {
 
     //z represents rotation not z axis movement
     public void setVel(int x, int y, int z){
-        x = (int)(x*1.6);
+        x = (int)(x*1.7);
         int fleftVel = -x-y+z;
         int frightVel = x-y-z;
         int bleftVel = -x+y-z;
@@ -288,8 +288,8 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("zerr", zErr);
             opMode.telemetry.addData("xvel", xVel);
             opMode.telemetry.addData("yvel", yVel);
-            opMode.telemetry.addData("xpos", odom.getPosX());
-            opMode.telemetry.addData("ypos", odom.getPosY());
+            opMode.telemetry.addData("xpercent", xPercent);
+            opMode.telemetry.addData("ypercent",yPercent);
             opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
             opMode.telemetry.addData("gyro", odom.getPosX());
 
@@ -366,13 +366,15 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("zerr", zErr);
             opMode.telemetry.addData("xerr", xerr);
             opMode.telemetry.addData("yerr", yerr);
-            opMode.telemetry.addData("xpos", odom.getPosX());
-            opMode.telemetry.addData("ypos", odom.getPosY());
+
+            opMode.telemetry.addData("xpercent", xPercent);
+            opMode.telemetry.addData("ypercent",yPercent);
             opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
 
             opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
             opMode.telemetry.update();
             setVel((int)Math.copySign(clamp((int) (xerr * kP + xI * kI), xVel), xVel), (int)Math.copySign(clamp((int) (yerr * kP + yI * kI), yVel),yVel), zErr);
+
         }
 
         setVel(0, 0, 0);
