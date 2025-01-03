@@ -38,7 +38,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
 
         robot.liftExtender.setTargetPosition(0);
         robot.liftExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.liftExtender.setTargetPositionTolerance(100);
+        robot.liftExtender.setTargetPositionTolerance(70);
 
 
         // loop while the program is running
@@ -174,7 +174,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             //maxLifEtxtension = 121 / (Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
             maxLifEtxtension = 482;
         } else {
-            maxLifEtxtension = 880;
+            maxLifEtxtension = 980;
         }
 
 
@@ -193,10 +193,10 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
                 liftExtenderPosition = (int) maxLifEtxtension;
             }
         }
-
+        telemetry.addData("liftPos", robot.liftExtender.getCurrentPosition());
 
         robot.liftExtender.setTargetPosition(liftExtenderPosition);
-        robot.liftExtender.setPower(0.5);
+        robot.liftExtender.setPower(0.7);
 
 
 
@@ -234,10 +234,10 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             liftExtenderPosition = 0;
         } else if (gamepad2.square) {//slaps it in
             liftExtenderPosition = 0;
-            robot.liftPitchPosition = 1157;
+            robot.liftPitchPosition = 1051;
         } else if (gamepad2.triangle) {//to score high basket
-            robot.liftPitchPosition = 1157;
-            liftExtenderPosition = 850;
+            robot.liftPitchPosition = 1051;
+            liftExtenderPosition = 940;
         }
 
         if (gamepad2.options) {//sets the zero point after adjusting with right stick button
