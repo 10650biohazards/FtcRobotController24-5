@@ -83,7 +83,7 @@ public class AutonomousMeet3 extends LinearOpMode {
         robot.intake.setPower(0);
         robot.moveLiftPitch(840, 0.9,true);
         robot.pitch.setPosition(BASKET_PITCH_POS);
-        robot.executeMoveAlt(-1011, -85, 0, 3000, false, 860, 600); //First position again
+        robot.executeMoveAlt(-1011, -85, 0, 3000, false, 860, 600,1,2); //First position again
 
         score(); //Third sample in the high basket
 
