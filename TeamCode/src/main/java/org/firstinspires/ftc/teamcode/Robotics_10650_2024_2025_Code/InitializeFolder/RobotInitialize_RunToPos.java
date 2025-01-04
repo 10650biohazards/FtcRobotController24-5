@@ -301,7 +301,11 @@ public class RobotInitialize_RunToPos {
         setVel(0, 0, 0);
     }
 
-    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly){
+    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly) {
+        executeMoveAlt(xDist,yDist,heading,maxSpeed,turnOnly,Integer.MIN_VALUE,Integer.MIN_VALUE);
+    }
+
+    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay) {
         final int kP = 4;
         final double kI = 0.07;
 
@@ -309,11 +313,8 @@ public class RobotInitialize_RunToPos {
         odom.update();
         odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        long startTime = System.currentTimeMillis();
+        while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
 
         int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
         int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
@@ -325,6 +326,9 @@ public class RobotInitialize_RunToPos {
 
         double xI = 0;
         double yI = 0;
+
+        boolean extenderMoved = false;
+        startTime = System.currentTimeMillis();
 
         //Odometry references to x and y Dist need to be made
         while(opMode.opModeIsActive()){
@@ -389,6 +393,7 @@ public class RobotInitialize_RunToPos {
 
             // Calculate the velocity with PID constants
             int calcXVelocityBeforeClamp = (int) (xerr * kP + xI * kI);
+
             int calcYVelocityBeforeClamp = (int) (yerr * kP + yI * kI);
 
             // Clamp to max speed found in xVel and yVel
@@ -406,9 +411,29 @@ public class RobotInitialize_RunToPos {
 
             opMode.telemetry.update();
 
+
+            // EXTENDER MOVE CODE
+            if(extenderPos != Integer.MIN_VALUE && delay != Integer.MIN_VALUE) {
+                if(!extenderMoved) {
+                    if((System.currentTimeMillis() - startTime) >= delay) {
+                        extenderMoved = true;
+                        extenderToPos(extenderPos, 0.9, false);
+                    }
+                }
+            }
+
         }
 
         setVel(0, 0, 0);
+
+        // Check to see if the extender still hasn't moved. If it hasn't, move it.
+        if(extenderPos != Integer.MIN_VALUE && delay != Integer.MIN_VALUE) {
+            if(!extenderMoved) {
+                while(opMode.opModeIsActive() && (System.currentTimeMillis() - startTime) <= delay) {}
+                extenderMoved = true;
+                extenderToPos(extenderPos, 0.8, false);
+            }
+        }
     }
 
     public int clamp(int val, int maxScalar) {
@@ -420,6 +445,8 @@ public class RobotInitialize_RunToPos {
     public double clamp(double val, double maxScalar) {
         return Math.copySign(Math.min(Math.abs(val), Math.abs(maxScalar)), val);
     }
+
+
 
     public void moveLiftPitch(int position, double power, boolean block){
         liftPitch.setTargetPosition(position);
