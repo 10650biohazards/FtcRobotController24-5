@@ -21,15 +21,17 @@ public class AutonomousMeet3 extends LinearOpMode {
 
     public void score() {
         robot.moveLiftPitch(840, 0.8,false);
-        robot.pitch.setPosition(0.0339);
-        robot.extenderToPos(904, 0.8,true);
-        robot.moveLiftPitch(1060, 0.5,true);
-        sleep(800);
+        robot.extenderToPos(860, 0.8,true);
+        robot.moveLiftPitch(1030, 0.5,true);
+        robotSleep(800);
         robot.extake(500);
-        sleep(700);
+        robotSleep(300);
         robot.moveLiftPitch(800, 0.9,true);
         robot.extenderToPos(0, 0.4,false);
     }
+
+    final double GROUND_PITCH_POS = 0.0339;
+    final double BASKET_PITCH_POS = 0.0309;
 
     // The code that runs in Auto
     @Override
@@ -40,41 +42,61 @@ public class AutonomousMeet3 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
+        robot.pitch.setPosition(BASKET_PITCH_POS);
+
         robot.moveLiftPitch(840, 0.8,false);
-        robot.executeMoveAlt(30, 300, 0, 2500, false); //ydist was 345
+        robot.executeMoveAlt(20, 315, 0, 3000, false); //ydist was 345
         //First position
 
 
         //Process of scoring preloaded sample
         score();
 
-        robot.executeMoveAlt(1000, -345, 0, 3000, false);
-        robot.pitch.setPosition(0.0339);
-        robot.moveLiftPitch(3100, 0.8,false);
+        //Pushes first spike mark sample out of the way
+        robot.executeMoveAlt(1110, -360, 0, 3000, false);
+
+        robot.pitch.setPosition(GROUND_PITCH_POS);
+
+        //Moves back left to get second spike mark sample
+        robot.executeMoveAlt(-125, -0, 0, 5000, false);
+
+        robot.moveLiftPitch(3100, 0.9,false);
         robot.intake();
-        robot.executeMoveAlt(0, 189, 0, 3500, false);
+        robot.executeMoveAlt(0, 189, 0, 4500, false);
         robot.intake.setPower(0);
-        robot.moveLiftPitch(840, 0.8,false);//maybe chnage to true
-        robot.executeMoveAlt(-1000, 145, 0, 2500, false); //First position again
+        robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
+       // robot.extenderToPos(890, 0.8,false);
+
+        robot.pitch.setPosition(BASKET_PITCH_POS);
+
+        robot.executeMoveAlt(-1015, 145, 0, 2500, false, 860, 600); //First position again
 
         score(); //Second sample in the high basket
 
-        robot.executeMoveAlt(994, -102, 0, 3000, false);
-        robot.pitch.setPosition(0.0339);
-        robot.moveLiftPitch(3100, 0.8,false);
+        robot.pitch.setPosition(GROUND_PITCH_POS);
+
+        robot.executeMoveAlt(1025, -70, 0, 3000, false);
+
+        robot.moveLiftPitch(3100, 0.9,false);
         robot.intake();
-        robot.executeMoveAlt(0, 230, 0, 3500, false);
+        robot.executeMoveAlt(0, 168, 0, 3500, false);
         robot.intake.setPower(0);
-        robot.moveLiftPitch(840, 0.8,true);
-        robot.executeMoveAlt(-981, -115, 0, 3000, false); //First position again
+        robot.moveLiftPitch(840, 0.9,true);
+        robot.pitch.setPosition(BASKET_PITCH_POS);
+        robot.executeMoveAlt(-1011, -85, 0, 3000, false, 860, 600); //First position again
 
         score(); //Third sample in the high basket
 
+
         robot.executeMoveAlt(400, 0, 0, 2000, false);
 
-
-
-
-
     }
+
+    public void robotSleep(int delay){
+        long startTime = System.currentTimeMillis();
+        while (opModeIsActive() && System.currentTimeMillis()-startTime < delay) {
+
+        }
+    }
+
 }
