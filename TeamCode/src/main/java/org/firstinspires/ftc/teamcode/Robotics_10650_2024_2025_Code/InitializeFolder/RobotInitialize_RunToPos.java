@@ -452,6 +452,239 @@ public class RobotInitialize_RunToPos {
 
 
 
+
+
+
+    public void executeMoveLastStrafe(int xDist, int yDist, int heading, int maxSpeed) {
+        final int kP = 4;
+        final double kI = 0.07;
+
+        // Reset position
+        odom.update();
+        odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+
+        long startTime = System.currentTimeMillis();
+        while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
+
+        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double xI = 0;
+        double yI = 0;
+
+        startTime = System.currentTimeMillis();
+
+        //Odometry references to x and y Dist need to be made
+        while(opMode.opModeIsActive()){
+            odom.update();
+            double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
+            double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
+            double zerr = Math.abs(heading-gyroScope.getRobotYawPitchRollAngles().getYaw());
+
+            xI += xerr;
+            yI += yerr;
+
+            xI  = clamp(xI, 200 / kI);
+            yI  = clamp(yI, 200 / kI);
+
+
+            if (xerr <= 20 && zerr <3) {
+                break;
+            }
+
+            double yPercent = odom.getPosY()/yDist;
+            double xPercent= odom.getPosX()/xDist;
+
+            int xCorrecter;
+
+            if (yDist == 0) {
+                xCorrecter = 0;
+            } else {
+                xCorrecter = (int) ((yPercent - xPercent) * 1000);
+            }
+
+            int xCorrectSign = xVel == 0 ? 1 : (int) Math.signum(xVel);
+
+
+
+            int zErr = clamp((int) ((heading-(gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
+            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("xerr", xerr);
+            opMode.telemetry.addData("yerr", yerr);
+
+            opMode.telemetry.addData("xpercent", xPercent);
+            opMode.telemetry.addData("ypercent",yPercent);
+            opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
+
+            opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+
+
+            // The values from which the final velocity will inherit its sign from
+            double xSignVal = xerr*xVel;
+            double ySignVal = yerr*yVel;
+            // Calculated from:
+            //       +xVel    -xVel
+            //       ----------------
+            // +xErr | +v   |  -v   |
+            // -xErr | -v   |  +v   |
+            //       ----------------
+
+            opMode.telemetry.addData("xSignVal",xSignVal);
+            opMode.telemetry.addData("ySignVal",ySignVal);
+
+            // Calculate the velocity with PID constants
+            int calcXVelocityBeforeClamp = (int) ((xerr * kP + xI * kI)*2);
+
+            int calcYVelocityBeforeClamp = (int) ((yerr * kP + yI * kI)*2);
+
+            // Clamp to max speed found in xVel and yVel
+            int calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
+            int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
+
+            // Copy the sign of the sign variables
+            int finalXVelocity = (int)(Math.copySign(calcXVelocity, xSignVal));
+            int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal));
+
+            opMode.telemetry.addData("finalXVelocity",finalXVelocity);
+            opMode.telemetry.addData("finalYVelocity",finalYVelocity);
+
+            setVel(finalXVelocity, finalYVelocity, zErr);
+
+            opMode.telemetry.update();
+
+
+            // EXTENDER MOVE CODE
+
+
+        }
+
+        setVel(0, 0, 0);
+
+        // Check to see if the extender still hasn't moved. If it hasn't, move it.
+    }
+
+    public void executeMoveLastStraight(int xDist, int yDist, int heading, int maxSpeed) {
+        final int kP = 4;
+        final double kI = 0.07;
+
+        // Reset position
+        odom.update();
+        odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+
+        long startTime = System.currentTimeMillis();
+        while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
+
+        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double xI = 0;
+        double yI = 0;
+
+        startTime = System.currentTimeMillis();
+
+        //Odometry references to x and y Dist need to be made
+        while(opMode.opModeIsActive()){
+            odom.update();
+            double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
+            double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
+            double zerr = Math.abs(heading-gyroScope.getRobotYawPitchRollAngles().getYaw());
+
+            xI += xerr;
+            yI += yerr;
+
+            xI  = clamp(xI, 200 / kI);
+            yI  = clamp(yI, 200 / kI);
+
+
+            if (yerr <= 20 && zerr <3) {
+                break;
+            }
+
+            double yPercent = odom.getPosY()/yDist;
+            double xPercent= odom.getPosX()/xDist;
+
+            int xCorrecter;
+
+            if (yDist == 0) {
+                xCorrecter = 0;
+            } else {
+                xCorrecter = (int) ((yPercent - xPercent) * 1000);
+            }
+
+            int xCorrectSign = xVel == 0 ? 1 : (int) Math.signum(xVel);
+
+
+
+            int zErr = clamp((int) ((heading-(gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
+            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("xerr", xerr);
+            opMode.telemetry.addData("yerr", yerr);
+
+            opMode.telemetry.addData("xpercent", xPercent);
+            opMode.telemetry.addData("ypercent",yPercent);
+            opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
+
+            opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+
+
+            // The values from which the final velocity will inherit its sign from
+            double xSignVal = xerr*xVel;
+            double ySignVal = yerr*yVel;
+            // Calculated from:
+            //       +xVel    -xVel
+            //       ----------------
+            // +xErr | +v   |  -v   |
+            // -xErr | -v   |  +v   |
+            //       ----------------
+
+            opMode.telemetry.addData("xSignVal",xSignVal);
+            opMode.telemetry.addData("ySignVal",ySignVal);
+
+            // Calculate the velocity with PID constants
+            int calcXVelocityBeforeClamp = (int) ((xerr * kP + xI * kI)*2);
+
+            int calcYVelocityBeforeClamp = (int) ((yerr * kP + yI * kI)*2);
+
+            // Clamp to max speed found in xVel and yVel
+            int calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
+            int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
+
+            // Copy the sign of the sign variables
+            int finalXVelocity = (int)(Math.copySign(calcXVelocity, xSignVal));
+            int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal));
+
+            opMode.telemetry.addData("finalXVelocity",finalXVelocity);
+            opMode.telemetry.addData("finalYVelocity",finalYVelocity);
+
+            setVel(finalXVelocity, finalYVelocity, zErr);
+
+            opMode.telemetry.update();
+
+
+            // EXTENDER MOVE CODE
+
+
+        }
+
+        setVel(0, 0, 0);
+
+        // Check to see if the extender still hasn't moved. If it hasn't, move it.
+    }
+
+
+
+
+
     public void moveLiftPitch(int position, double power, boolean block){
         liftPitch.setTargetPosition(position);
         liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -532,9 +765,9 @@ public class RobotInitialize_RunToPos {
     // and the velocity that it moves (measured in encoder ticks per second)
 
     public void strafeR(int distance, int velocity){
+
+
         int relativeDistance = distance + getPosStrafe();
-
-
         // Go forwards or backwards
         //if difference <10 then stop
         // 10 is the accuracy tolerance in 10 encoder ticks
@@ -542,7 +775,7 @@ public class RobotInitialize_RunToPos {
             //if
             opMode.telemetry.addData("velocity", fLeft.getVelocity());
 
-            if (getPosStrafe() < relativeDistance) {
+            if (getPosStrafe() <= relativeDistance) {
                 // Change into a function with a parameter, function name: setMotorVelocity
                 // Forwards (+ positive relativeDistance value)
                 //setMotorVelocity(Math.abs(velocity));
@@ -556,12 +789,9 @@ public class RobotInitialize_RunToPos {
                 opMode.telemetry.addData("old pos", getAverageEncoderValue());
                 opMode.telemetry.addData("must be greater than 14", Math.abs(getPosStrafe() - relativeDistance));
                 opMode.telemetry.update();
-            } else{
-                setDrivetrainMotorVelocity(0);
             }
         }
         setDrivetrainMotorVelocity(0);
-        //stopMechanisms();
     }
     public void intake(){
         intake.setPower(1);
