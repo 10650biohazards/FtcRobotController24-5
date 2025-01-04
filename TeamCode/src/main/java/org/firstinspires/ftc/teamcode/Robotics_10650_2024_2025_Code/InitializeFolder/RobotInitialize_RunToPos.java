@@ -306,6 +306,10 @@ public class RobotInitialize_RunToPos {
     }
 
     public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay) {
+        executeMoveAlt(xDist, yDist, heading, maxSpeed, turnOnly,extenderPos,delay,1,1);
+    }
+
+    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult) {
         final int kP = 4;
         final double kI = 0.07;
 
@@ -401,8 +405,8 @@ public class RobotInitialize_RunToPos {
             int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
 
             // Copy the sign of the sign variables
-            int finalXVelocity = (int)Math.copySign(calcXVelocity, xSignVal);
-            int finalYVelocity = (int)Math.copySign(calcYVelocity, ySignVal);
+            int finalXVelocity = (int)(Math.copySign(calcXVelocity, xSignVal)*xMult);
+            int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal)*yMult);
 
             opMode.telemetry.addData("finalXVelocity",finalXVelocity);
             opMode.telemetry.addData("finalYVelocity",finalYVelocity);
