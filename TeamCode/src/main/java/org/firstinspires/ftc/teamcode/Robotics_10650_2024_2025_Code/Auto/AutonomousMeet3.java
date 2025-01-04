@@ -42,6 +42,7 @@ public class AutonomousMeet3 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
+
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
         robot.moveLiftPitch(840, 0.8,false);
@@ -95,9 +96,9 @@ public class AutonomousMeet3 extends LinearOpMode {
         score(); //Third sample in the high basket
 
 
-        robot.executeMoveAlt(1400, 0, 0, 4000, false);
-        robot.executeMoveAlt(0, -700, 0, 4000, false);
-
+        robot.executeMoveLastStrafe(1300, 0, 0, 4000);
+        robot.parkingServo.setPosition(0.946);
+        robot.executeMoveLastStraight(0, -650, 0, 4000);
 
 
     }
