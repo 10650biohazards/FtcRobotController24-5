@@ -174,7 +174,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             //maxLifEtxtension = 121 / (Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
             maxLifEtxtension = 482;
         } else {
-            maxLifEtxtension = 980;
+            maxLifEtxtension = 900;
         }
 
 
@@ -237,7 +237,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             robot.liftPitchPosition = 1051;
         } else if (gamepad2.triangle) {//to score high basket
             robot.liftPitchPosition = 1051;
-            liftExtenderPosition = 940;
+            liftExtenderPosition = 900;
         }
 
         if (gamepad2.options) {//sets the zero point after adjusting with right stick button
