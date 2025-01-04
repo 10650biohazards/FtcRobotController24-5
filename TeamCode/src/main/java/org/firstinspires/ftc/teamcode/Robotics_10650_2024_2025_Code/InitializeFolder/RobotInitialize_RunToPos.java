@@ -372,8 +372,39 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
 
             opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+
+
+            // The values from which the final velocity will inherit its sign from
+            double xSignVal = xerr*xVel;
+            double ySignVal = yerr*yVel;
+            // Calculated from:
+            //       +xVel    -xVel
+            //       ----------------
+            // +xErr | +v   |  -v   |
+            // -xErr | -v   |  +v   |
+            //       ----------------
+
+            opMode.telemetry.addData("xSignVal",xSignVal);
+            opMode.telemetry.addData("ySignVal",ySignVal);
+
+            // Calculate the velocity with PID constants
+            int calcXVelocityBeforeClamp = (int) (xerr * kP + xI * kI);
+            int calcYVelocityBeforeClamp = (int) (yerr * kP + yI * kI);
+
+            // Clamp to max speed found in xVel and yVel
+            int calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
+            int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
+
+            // Copy the sign of the sign variables
+            int finalXVelocity = (int)Math.copySign(calcXVelocity, xSignVal);
+            int finalYVelocity = (int)Math.copySign(calcYVelocity, ySignVal);
+
+            opMode.telemetry.addData("finalXVelocity",finalXVelocity);
+            opMode.telemetry.addData("finalYVelocity",finalYVelocity);
+
+            setVel(finalXVelocity, finalYVelocity, zErr);
+
             opMode.telemetry.update();
-            setVel((int)Math.copySign(clamp((int) (xerr * kP + xI * kI), xVel), xVel), (int)Math.copySign(clamp((int) (yerr * kP + yI * kI), yVel),yVel), zErr);
 
         }
 

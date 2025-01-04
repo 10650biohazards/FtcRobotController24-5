@@ -18,9 +18,6 @@ public class TestingAutonomousMeet3 extends LinearOpMode {
     // Execute the function from the RobotInitialize class
     RobotInitialize_RunToPos robot;
 
-    public void score() {
-
-    }
 
     // The code that runs in Auto
     @Override
@@ -34,16 +31,19 @@ public class TestingAutonomousMeet3 extends LinearOpMode {
         robot.executeMoveAlt(30, 300, 0, 2500, false); //ydist was 345
         //First position
 
-
+        sleep(1000);
         //Process of scoring preloaded sample
 
 
-        robot.executeMoveAlt(1000, -345, 0, 3000, false);
+        robot.executeMoveAlt(1100, -345, 0, 3000, false);
+        robot.executeMoveAlt(-100, -0, 0, 3000, false);
+
 
 
         robot.executeMoveAlt(0, 189, 0, 3500, false);
 
         robot.executeMoveAlt(-1000, 145, 0, 2500, false); //First position again
+        sleep(1000);
 
 
         robot.executeMoveAlt(994, -102, 0, 3000, false);
@@ -53,8 +53,9 @@ public class TestingAutonomousMeet3 extends LinearOpMode {
 
         robot.executeMoveAlt(-981, -115, 0, 3000, false); //First position again
 
+        sleep(1000);
 
-        robot.executeMoveAlt(400, 0, 0, 2000, false);
+        robot.executeMoveAlt(1400, -700, 0, 2000, false);
 
 
 
