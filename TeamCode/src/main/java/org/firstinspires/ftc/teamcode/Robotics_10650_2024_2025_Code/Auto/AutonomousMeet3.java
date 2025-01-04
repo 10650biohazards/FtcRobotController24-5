@@ -45,24 +45,28 @@ public class AutonomousMeet3 extends LinearOpMode {
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
         robot.moveLiftPitch(840, 0.8,false);
-        robot.executeMoveAlt(20, 315, 0, 3000, false); //ydist was 345
-        //First position
+
+        //First position (move forward and right from original location)
+        robot.executeMoveAlt(20, 315, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,2); //ydist was 345
+
 
 
         //Process of scoring preloaded sample
         score();
 
-        //Pushes first spike mark sample out of the way
+        //Pushes first spike mark sample out of the way (going right)
         robot.executeMoveAlt(1110, -360, 0, 3000, false);
 
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Moves back left to get second spike mark sample
-        robot.executeMoveAlt(-125, -0, 0, 5000, false);
-
         robot.moveLiftPitch(3100, 0.9,false);
+
+        robot.executeMoveAlt(-125, -0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,2,1);
+
+        //Pick up sample off of second spike mark
         robot.intake();
-        robot.executeMoveAlt(0, 189, 0, 4500, false);
+        robot.executeMoveAlt(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3);
         robot.intake.setPower(0);
         robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
        // robot.extenderToPos(890, 0.8,false);
@@ -75,20 +79,26 @@ public class AutonomousMeet3 extends LinearOpMode {
 
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
+        //Go to position to get sample from third spike mark
         robot.executeMoveAlt(1025, -70, 0, 3000, false);
 
-        robot.moveLiftPitch(3100, 0.9,false);
+        robot.moveLiftPitch(3100, 1,false);
+
+        //Pick up sample from third spike mark
         robot.intake();
-        robot.executeMoveAlt(0, 168, 0, 3500, false);
+        robot.executeMoveAlt(0, 138, 0, 3500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1);
         robot.intake.setPower(0);
         robot.moveLiftPitch(840, 0.9,true);
         robot.pitch.setPosition(BASKET_PITCH_POS);
-        robot.executeMoveAlt(-1011, -85, 0, 3000, false, 860, 600,1,2); //First position again
+        robot.executeMoveAlt(-1011, -70, 0, 3000, false, 860, 600,1,2); //First position again
 
         score(); //Third sample in the high basket
 
 
-        robot.executeMoveAlt(400, 0, 0, 2000, false);
+        robot.executeMoveAlt(1400, 0, 0, 4000, false);
+        robot.executeMoveAlt(0, -700, 0, 4000, false);
+
+
 
     }
 
