@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 
-@TeleOp (name = "TeleOp_RobotCentric_Cleaned")
+@TeleOp (name = "TeleOp_RobotCentric")
 public class TeleOpCode_RobotCentric extends LinearOpMode {
 
     // Run the initialize function
