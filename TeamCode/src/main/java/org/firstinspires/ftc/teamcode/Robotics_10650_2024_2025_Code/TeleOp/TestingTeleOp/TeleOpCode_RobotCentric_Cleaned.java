@@ -119,7 +119,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             robot.bRight.setVelocity(-strafeVelocity + straightMovementVelocity + turnVelocity); // Overall
             // negative value
         }
-
+        int maxPitch = 3900;
 
 
 
@@ -129,8 +129,8 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
 //
 //            }
 
-        if (robot.liftPitchPosition <= 3238 && robot.liftPitchPosition >= 0 ||
-                (robot.liftPitchPosition >= 3237 && gamepad2.left_stick_y > 0) || // 3200 goes to the
+        if (robot.liftPitchPosition <= maxPitch && robot.liftPitchPosition >= 0 ||
+                (robot.liftPitchPosition >= maxPitch && gamepad2.left_stick_y > 0) || // 3200 goes to the
                 (robot.liftPitchPosition <= 0 && gamepad2.left_stick_y < 0)) {
 
             robot.liftPitchPosition += (int)(-40*Math.pow(gamepad2.left_stick_y, 3));
@@ -138,8 +138,8 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             //cannot go outside these bounds
             if (robot.liftPitchPosition < 885) {
                 robot.liftPitchPosition = 885;
-            } else if (robot.liftPitchPosition > 3237) {
-                robot.liftPitchPosition = 3237;
+            } else if (robot.liftPitchPosition > maxPitch) {
+                robot.liftPitchPosition = maxPitch;
             }
 
             //horizontal bound
@@ -218,7 +218,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             robot.pitch.setPosition(0);
             //robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
         } else if (gamepad2.dpad_up) {//pitch claw up
-            robot.pitch.setPosition(0.0339);
+            robot.pitch.setPosition(0.1856);
             //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
         }
 
@@ -237,7 +237,7 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
             robot.liftPitchPosition = 1051;
         } else if (gamepad2.triangle) {//to score high basket
             robot.liftPitchPosition = 1051;
-            liftExtenderPosition = 900;
+            liftExtenderPosition = 846;
         }
 
         if (gamepad2.options) {//sets the zero point after adjusting with right stick button
@@ -253,12 +253,14 @@ public class TeleOpCode_RobotCentric_Cleaned extends LinearOpMode {
         }
 
         if (gamepad1.right_bumper) {
-            robot.parkingServo.setPosition(0.946); //Where it can touch the bar
-        } else {
+            robot.parkingServo.setPosition(0.9567); //Where it can touch the bar
+        } else if(gamepad1.left_bumper){
             robot.parkingServo.setPosition(1); //all the way down
         }
 
-
+        telemetry.addData("parking", robot.parkingServo.getPosition());
+        telemetry.addData("intake pitch pos", robot.pitch.getPosition());
+        telemetry.addData(" pitch pos", robot.liftPitch.getCurrentPosition());
 
         // Prints to the robot driver station screen
         telemetry.update();

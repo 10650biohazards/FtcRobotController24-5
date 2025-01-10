@@ -21,7 +21,7 @@ public class AutonomousMeet3 extends LinearOpMode {
 
     public void score() {
         robot.moveLiftPitch(840, 0.8,false);
-        robot.extenderToPos(860, 0.8,true);
+        robot.extenderToPos(860, 0.8,true);//830 today apparently
         robot.moveLiftPitch(1030, 0.5,true);
         robotSleep(800);
         robot.extake(500);
@@ -30,8 +30,9 @@ public class AutonomousMeet3 extends LinearOpMode {
         robot.extenderToPos(0, 0.4,false);
     }
 
-    final double GROUND_PITCH_POS = 0.0339;
-    final double BASKET_PITCH_POS = 0.0309;
+    final double GROUND_PITCH_POS = 0.1856;
+    final double BASKET_PITCH_POS = 0.155;
+    //0.0309
 
     // The code that runs in Auto
     @Override
@@ -97,7 +98,7 @@ public class AutonomousMeet3 extends LinearOpMode {
 
 
         robot.executeMoveLastStrafe(1300, 0, 0, 4000);
-        robot.parkingServo.setPosition(0.946);
+        robot.parkingServo.setPosition(0.9567);
         robot.executeMoveLastStraight(0, -650, 0, 4000);
 
 
