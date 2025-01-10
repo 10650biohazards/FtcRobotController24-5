@@ -123,7 +123,7 @@ public class RobotInitialize {
 
             //Initial conditions of the liftExtender MOTOR
         //liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
-        liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
+//        liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
 
 
         liftExtender.setDirection(DcMotorSimple.Direction.REVERSE);
