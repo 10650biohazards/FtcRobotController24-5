@@ -71,7 +71,7 @@ public class RobotInitialize_RunToPos {
     LinearOpMode opMode;
 
     // Enables the class to be referenced in other classes such as the Autonomous Code
-    // and the TeleOpCode_RobotCentric
+    // and the OLD_TeleOpCode_RobotCentric
     public RobotInitialize_RunToPos(LinearOpMode opMode, boolean isAuto) {
         this.opMode = opMode; //Sets the argument for opMode to be the current opMode
         initialize(isAuto);

@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize_RunToPos;
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
-@Autonomous(name = "Measure Auto", preselectTeleOp = "TeleOpCode_RobotCentric")
+@Autonomous(name = "Measure Auto", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
 public class MeasureAuto extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class
