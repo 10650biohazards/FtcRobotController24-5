@@ -98,7 +98,7 @@ public class AutonomousMeet3 extends LinearOpMode {
 
 
         robot.executeMoveLastStrafe(1300, 0, 0, 4000);
-        robot.parkingServo.setPosition(0.9567);
+        robot.parkingServo.setPosition(0.9622);
         robot.executeMoveLastStraight(0, -650, 0, 4000);
 
 
