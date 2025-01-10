@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFo
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
 @Disabled
-@Autonomous(name = "Demo Auto", preselectTeleOp = "TeleOpCode_RobotCentric")
+@Autonomous(name = "Demo Auto", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
 public class DemoAuto extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class

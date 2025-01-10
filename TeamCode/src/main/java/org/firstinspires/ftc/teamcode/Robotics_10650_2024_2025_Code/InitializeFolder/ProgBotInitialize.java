@@ -39,7 +39,7 @@ public class ProgBotInitialize {
     LinearOpMode opMode;
 
     // Enables the class to be referenced in other classes such as the Autonomous Code
-    // and the TeleOpCode_RobotCentric
+    // and the OLD_TeleOpCode_RobotCentric
     public ProgBotInitialize(LinearOpMode opMode, boolean isAuto) {
         this.opMode = opMode;
         initialize(isAuto);
