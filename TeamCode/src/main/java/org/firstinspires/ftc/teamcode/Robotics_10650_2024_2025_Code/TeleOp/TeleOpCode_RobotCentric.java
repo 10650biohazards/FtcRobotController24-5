@@ -3,12 +3,14 @@
 
 package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 
+@Disabled
 @TeleOp (name = "TeleOp_RobotCentric")
 public class TeleOpCode_RobotCentric extends LinearOpMode {
 
