@@ -119,7 +119,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
             robot.bRight.setVelocity(-strafeVelocity + straightMovementVelocity + turnVelocity); // Overall
             // negative value
         }
-        int maxPitch = 3900;
+        int maxPitch = 3430;
 
 
 
@@ -230,7 +230,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
         }
 
         if (gamepad2.circle) {//reaches into submersible
-            robot.liftPitchPosition = 3111;
+            robot.liftPitchPosition = 3201;
             liftExtenderPosition = 0;
         } else if (gamepad2.square) {//slaps it in
             liftExtenderPosition = 0;
