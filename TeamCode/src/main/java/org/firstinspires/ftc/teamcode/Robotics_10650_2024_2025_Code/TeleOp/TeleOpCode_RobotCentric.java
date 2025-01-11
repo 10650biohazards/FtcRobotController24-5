@@ -253,7 +253,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
         }
 
         if (gamepad1.right_bumper) {
-            robot.parkingServo.setPosition(0.9567); //Where it can touch the bar
+            robot.parkingServo.setPosition(0.9617); //Where it can touch the bar
         } else if(gamepad1.left_bumper){
             robot.parkingServo.setPosition(1); //all the way down
         }
