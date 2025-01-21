@@ -7,12 +7,14 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeF
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -42,6 +44,8 @@ public class RobotInitialize_RunToPos {
     public Servo parkingServo;
 
     public Servo pitch;
+    public RevTouchSensor touch1;
+    public RevTouchSensor touch2;
 
 
     // Create the empty normal motor variables
@@ -94,6 +98,10 @@ public class RobotInitialize_RunToPos {
         odom = opMode.hardwareMap.get(GoBildaPinpointDriver.class,"odo");
         odom.resetPosAndIMU();
         odom.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+
+        touch1 = opMode.hardwareMap.get(RevTouchSensor.class, "touchSensor1");
+        touch2 = opMode.hardwareMap.get(RevTouchSensor.class, "touchSensor2");
+
 
 
         // The front left and back right motors are reversed so all wheels go in the same direction
@@ -306,10 +314,10 @@ public class RobotInitialize_RunToPos {
     }
 
     public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay) {
-        executeMoveAlt(xDist, yDist, heading, maxSpeed, turnOnly,extenderPos,delay,1,1);
+        executeMoveAlt(xDist, yDist, heading, maxSpeed, turnOnly,extenderPos,delay,1,1, false);
     }
 
-    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult) {
+    public void executeMoveAlt(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit) {
         final int kP = 4;
         final double kI = 0.07;
 
@@ -350,6 +358,9 @@ public class RobotInitialize_RunToPos {
             if (turnOnly && zerr < 2) {
                 break;
             }
+            if (System.currentTimeMillis()-startTime>=4000&&forceQuit==true){
+                break;
+            }
 
             if (Math.abs(xerr) <= 20 && Math.abs(yerr) <= 20 && zerr <2) {
                 break;
@@ -382,7 +393,7 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
 
 
-            // The values from which the final velocity will inherit its sign from
+            // The values from which the final velocity will inherit its sign
             double xSignVal = xerr*xVel;
             double ySignVal = yerr*yVel;
             // Calculated from:
@@ -451,6 +462,160 @@ public class RobotInitialize_RunToPos {
     }
 
 
+
+    public void executeMoveTouchSensor(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, int touchDelay) {
+        final int kP = 4;
+        final double kI = 0.07;
+
+        // Reset position
+        odom.update();
+        odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+
+        long startTime = System.currentTimeMillis();
+        while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
+
+        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
+
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double xI = 0;
+        double yI = 0;
+
+        boolean extenderMoved = false;
+        startTime = System.currentTimeMillis();
+        long startTime2 = System.currentTimeMillis();
+
+
+
+        //Odometry references to x and y Dist need to be made
+        while(opMode.opModeIsActive()) {
+            odom.update();
+            double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
+            double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
+            double zerr = heading - gyroScope.getRobotYawPitchRollAngles().getYaw();
+
+            xI += xerr;
+            yI += yerr;
+
+            xI = clamp(xI, 200 / kI);
+            yI = clamp(yI, 200 / kI);
+
+
+
+
+
+
+
+            int zErr = clamp((int) ((heading - (gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
+            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("xerr", xerr);
+            opMode.telemetry.addData("yerr", yerr);
+
+
+            opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
+
+
+            // The values from which the final velocity will inherit its sign
+            double xSignVal = xerr * xVel;
+            double ySignVal = yerr * yVel;
+            // Calculated from:
+            //       +xVel    -xVel
+            //       ----------------
+            // +xErr | +v   |  -v   |
+            // -xErr | -v   |  +v   |
+            //       ----------------
+
+            opMode.telemetry.addData("xSignVal", xSignVal);
+            opMode.telemetry.addData("ySignVal", ySignVal);
+
+            // Calculate the velocity with PID constants
+            int calcXVelocityBeforeClamp = (int) (xerr * kP + xI * kI);
+
+            int calcYVelocityBeforeClamp = (int) (yerr * kP + yI * kI);
+
+            // Clamp to max speed found in xVel and yVel
+            int calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
+            int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
+
+            // Copy the sign of the sign variables
+            int finalXVelocity = (int) (Math.copySign(calcXVelocity, xSignVal) * xMult);
+            int finalYVelocity = (int) (Math.copySign(calcYVelocity, ySignVal) * yMult);
+
+
+            while(xerr<150){
+                opMode.telemetry.addData("stuckkk", "gg");
+
+                finalXVelocity = (int) Math.copySign(700, xDist);
+                if ((!touch1.isPressed())){//need to turn left
+                    bLeft.setVelocity(900);
+                    bRight.setVelocity(-900);
+                }
+
+                if(!touch2.isPressed()){//need to turn right
+                    fLeft.setVelocity(900);
+                    fRight.setVelocity(-900);
+                }
+
+
+
+                if (touch1.isPressed() && touch2.isPressed()) {
+                    opMode.telemetry.addData("stuck here", "gg");
+                    setVel(0, 0, 0);
+
+                    return;
+//                    opMode.telemetry.addData("shis pressed", "fhhf");
+//
+//                    startTime2 = System.currentTimeMillis();
+//                    if ((System.currentTimeMillis() - startTime2) >= touchDelay) {
+//                        opMode.telemetry.addData("waiting for delay: time left", (System.currentTimeMillis() - startTime2));
+//                    }
+//                    return;
+                }
+            }
+            opMode.telemetry.addData("stuck somwehere else", "gg");
+
+
+
+
+
+
+            opMode.telemetry.addData("finalXVelocity", finalXVelocity);
+            opMode.telemetry.addData("finalYVelocity", finalYVelocity);
+
+            setVel(finalXVelocity, finalYVelocity, zErr);
+
+            opMode.telemetry.update();
+
+
+            // EXTENDER MOVE CODE
+            if (extenderPos != Integer.MIN_VALUE && delay != Integer.MIN_VALUE) {
+                opMode.telemetry.addData("worst place to be stuck", "hhee");
+
+                if (!extenderMoved) {
+                    if ((System.currentTimeMillis() - startTime) >= delay) {
+                        extenderMoved = true;
+                        extenderToPos(extenderPos, 0.9, false);
+                    }
+                }
+            }
+
+        }
+
+        setVel(0, 0, 0);
+
+        // Check to see if the extender still hasn't moved. If it hasn't, move it.
+        if(extenderPos != Integer.MIN_VALUE && delay != Integer.MIN_VALUE) {
+            if(!extenderMoved) {
+                while(opMode.opModeIsActive() && (System.currentTimeMillis() - startTime) <= delay) {}
+                extenderMoved = true;
+                extenderToPos(extenderPos, 0.8, false);
+            }
+        }
+    }
 
 
 

@@ -71,6 +71,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
         }
         telemetry.addData("drive speed", speed);
 
+        telemetry.addData("angle", robot.gyroScope.getRobotYawPitchRollAngles().getYaw());
 
 
         // TESTING??????

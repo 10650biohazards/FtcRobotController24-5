@@ -9,12 +9,11 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.Auto;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize_RunToPos;
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
-@Autonomous(name = "AutoMeet3", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
-public class AutonomousMeet3 extends LinearOpMode {
+@Autonomous(name = "AutoMeet4", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
+public class AutonomousMeet4 extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class
     RobotInitialize_RunToPos robot;
@@ -43,7 +42,9 @@ public class AutonomousMeet3 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
+        robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 1000);
 
+        sleep(400000);
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
         robot.moveLiftPitch(840, 0.8,false);
