@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize_RunToPos;
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
-@Autonomous(name = "AutoMeet4", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
-public class AutonomousMeet4 extends LinearOpMode {
+@Autonomous(name = "AutoMeet4Testing", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
+public class AutonomousMeet4Testing extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class
     RobotInitialize_RunToPos robot;
@@ -22,7 +22,7 @@ public class AutonomousMeet4 extends LinearOpMode {
         robot.moveLiftPitch(840, 0.8,false);
         robot.extenderToPos(860, 0.8,true);//830 today apparently
         robot.moveLiftPitch(1030, 0.5,true);
-        robotSleep(1600);
+        robotSleep(800);
         robot.extake(500);
         robotSleep(300);
         robot.moveLiftPitch(800, 0.9,true);
@@ -41,13 +41,14 @@ public class AutonomousMeet4 extends LinearOpMode {
         // Waits for a person to press start on the control hub
         // then it runs the rest of the program
         waitForStart();
+        //robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 800);
 
         //robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 800);
 
         //sleep(400000);
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
-        robot.moveLiftPitch(840, 0.8,false);
+        //robot.moveLiftPitch(840, 0.8,false);
 
         //First position (move forward and right from original location)
         robot.executeMoveAlt(20, 315, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,2, false); //ydist was 345
@@ -55,7 +56,7 @@ public class AutonomousMeet4 extends LinearOpMode {
 
 
         //Process of scoring preloaded sample
-        score();
+       // score();
 
         //Pushes first spike mark sample out of the way (going right)
         robot.executeMoveAlt(1110, -360, 0, 3000, false);
@@ -63,7 +64,7 @@ public class AutonomousMeet4 extends LinearOpMode {
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Moves back left to get second spike mark sample
-        robot.moveLiftPitch(3100, 0.9,false);
+        //robot.moveLiftPitch(3100, 0.9,false);
 
         robot.executeMoveAlt(-125, -0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,2,1, false);
 
@@ -71,37 +72,37 @@ public class AutonomousMeet4 extends LinearOpMode {
         robot.intake();
         robot.executeMoveAlt(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false);
         robot.intake.setPower(0);
-        robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
+        //robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
        // robot.extenderToPos(890, 0.8,false);
 
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
-        robot.executeMoveTouchSensor(-1015, 169, 0, 2500, false, 860, 600, 1, 1, 400); //First position again
+        robot.executeMoveTouchSensor(-1015, 145, 0, 2500, false, 0, 600, 1, 1, 800); //First position again
 
-        score(); //Second sample in the high basket
+        //score(); //Second sample in the high basket
 
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Go to position to get sample from third spike mark
         robot.executeMoveAlt(1025, -70, 0, 3000, false);
 
-        robot.moveLiftPitch(3100, 1,false);
+        //robot.moveLiftPitch(3100, 1,false);
 
         //Pick up sample from third spike mark
         robot.intake();
-        robot.executeMoveAlt(0, 153, 0, 3500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, true);
+        robot.executeMoveAlt(0, 138, 0, 3500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, false);
         robot.intake.setPower(0);
-        robot.moveLiftPitch(840, 0.9,true);
+        //robot.moveLiftPitch(840, 0.9,true);
         robot.pitch.setPosition(BASKET_PITCH_POS);
-        robot.executeMoveTouchSensor(-1011, -61, 0, 3000, false, 860, 600,1,2, 400); //First position again
+        robot.executeMoveTouchSensor(-1011, -70, 0, 3000, false, 0, 600,1,2, 800); //First position again
 
-        score(); //Third sample in the high basket
+        //score(); //Third sample in the high basket
 
 
-        robot.executeMoveLastStrafe(400, 0, 0, 4000);
-//        robot.parkingServo.setPosition(0.9617);
-//        robot.executeMoveLastStraight(0, -650, 0, 4000);
-//        robot.parkingServo.setPosition(0.9617);
+        robot.executeMoveLastStrafe(1300, 0, 0, 4000);
+        robot.parkingServo.setPosition(0.9617);
+        robot.executeMoveLastStraight(0, -650, 0, 4000);
+        robot.parkingServo.setPosition(0.9617);
 
 
     }

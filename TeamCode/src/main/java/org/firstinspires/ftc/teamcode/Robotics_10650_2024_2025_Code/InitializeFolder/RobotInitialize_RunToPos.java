@@ -358,11 +358,11 @@ public class RobotInitialize_RunToPos {
             if (turnOnly && zerr < 2) {
                 break;
             }
-            if (System.currentTimeMillis()-startTime>=4000&&forceQuit==true){
+            if (System.currentTimeMillis()-startTime>=2250&&forceQuit==true){
                 break;
             }
 
-            if (Math.abs(xerr) <= 20 && Math.abs(yerr) <= 20 && zerr <2) {
+            if (Math.abs(xerr) <= 20 && Math.abs(yerr) <= 20 && zerr <1) {
                 break;
             }
 
@@ -496,7 +496,7 @@ public class RobotInitialize_RunToPos {
             odom.update();
             double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
             double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
-            double zerr = heading - gyroScope.getRobotYawPitchRollAngles().getYaw();
+            double zerror = heading - gyroScope.getRobotYawPitchRollAngles().getYaw();
 
             xI += xerr;
             yI += yerr;
@@ -511,7 +511,7 @@ public class RobotInitialize_RunToPos {
 
 
             int zErr = clamp((int) ((heading - (gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
-            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("zerr", zerror);
             opMode.telemetry.addData("xerr", xerr);
             opMode.telemetry.addData("yerr", yerr);
 
@@ -546,34 +546,35 @@ public class RobotInitialize_RunToPos {
             int finalYVelocity = (int) (Math.copySign(calcYVelocity, ySignVal) * yMult);
 
 
-            while(xerr<150){
+            while(xerr<50){
                 opMode.telemetry.addData("stuckkk", "gg");
 
                 finalXVelocity = (int) Math.copySign(700, xDist);
                 if ((!touch1.isPressed())){//need to turn left
-                    bLeft.setVelocity(900);
-                    bRight.setVelocity(-900);
+                    bLeft.setVelocity(1250);
+                    bRight.setVelocity(-1250);
                 }
 
                 if(!touch2.isPressed()){//need to turn right
-                    fLeft.setVelocity(900);
-                    fRight.setVelocity(-900);
+                    fLeft.setVelocity(1250);
+                    fRight.setVelocity(-1250);
                 }
 
 
 
                 if (touch1.isPressed() && touch2.isPressed()) {
                     opMode.telemetry.addData("stuck here", "gg");
+                    startTime2 = System.currentTimeMillis();
+                    while ((System.currentTimeMillis() - startTime2) <= touchDelay) {
+                        opMode.telemetry.addData("waiting for delay: time left", (System.currentTimeMillis() - startTime2));
+                    }
                     setVel(0, 0, 0);
 
+
+                    opMode.telemetry.addData("shis pressed", "fhhf");
+
+
                     return;
-//                    opMode.telemetry.addData("shis pressed", "fhhf");
-//
-//                    startTime2 = System.currentTimeMillis();
-//                    if ((System.currentTimeMillis() - startTime2) >= touchDelay) {
-//                        opMode.telemetry.addData("waiting for delay: time left", (System.currentTimeMillis() - startTime2));
-//                    }
-//                    return;
                 }
             }
             opMode.telemetry.addData("stuck somwehere else", "gg");
