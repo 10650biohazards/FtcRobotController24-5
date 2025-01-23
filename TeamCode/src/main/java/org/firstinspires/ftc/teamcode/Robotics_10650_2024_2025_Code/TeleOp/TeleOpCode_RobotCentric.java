@@ -231,8 +231,9 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
         }
 
         if (gamepad2.circle) {//reaches into submersible
-            robot.liftPitchPosition = 3201;
-            liftExtenderPosition = 0;
+            //robot.liftPitchPosition = 3201;
+            robot.liftPitchPosition=(int)((-500*(Math.asin(998/(((22.0/246.0)* robot.liftExtender.getCurrentPosition())+1000))))+3944);
+            //liftExtenderPosition = 0;
         } else if (gamepad2.square) {//slaps it in
             liftExtenderPosition = 0;
             robot.liftPitchPosition = 1051;
@@ -253,15 +254,21 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
             robot.liftPitchPosition = 2235;
         }
 
+
         if (gamepad1.right_bumper) {
             robot.parkingServo.setPosition(0.9617); //Where it can touch the bar
         } else if(gamepad1.left_bumper){
             robot.parkingServo.setPosition(1); //all the way down
         }
 
+        double gorundModePos = -190*(Math.asin(1000/(((22/24)* robot.liftExtender.getCurrentPosition())+1000))+3490);
         telemetry.addData("parking", robot.parkingServo.getPosition());
         telemetry.addData("intake pitch pos", robot.pitch.getPosition());
         telemetry.addData(" pitch pos", robot.liftPitch.getCurrentPosition());
+        telemetry.addData(" ext pos", robot.liftExtender.getCurrentPosition());
+        telemetry.addData("ground mode pos", (-500*(Math.asin(998/(((22.0/246.0)* robot.liftExtender.getCurrentPosition())+1000))))+3944);
+
+
 
         // Prints to the robot driver station screen
         telemetry.update();

@@ -22,7 +22,7 @@ public class AutonomousMeet4 extends LinearOpMode {
         robot.moveLiftPitch(840, 0.8,false);
         robot.extenderToPos(860, 0.8,true);//830 today apparently
         robot.moveLiftPitch(1030, 0.5,true);
-        robotSleep(1600);
+        robotSleep(1400);
         robot.extake(500);
         robotSleep(300);
         robot.moveLiftPitch(800, 0.9,true);
@@ -85,7 +85,7 @@ public class AutonomousMeet4 extends LinearOpMode {
         //Go to position to get sample from third spike mark
         robot.executeMoveAlt(1025, -70, 0, 3000, false);
 
-        robot.moveLiftPitch(3100, 1,false);
+        robot.moveLiftPitch(3100, 1,true);
 
         //Pick up sample from third spike mark
         robot.intake();
@@ -95,10 +95,17 @@ public class AutonomousMeet4 extends LinearOpMode {
         robot.pitch.setPosition(BASKET_PITCH_POS);
         robot.executeMoveTouchSensor(-1011, -61, 0, 3000, false, 860, 600,1,2, 400); //First position again
 
-        score(); //Third sample in the high basket
+        robot.moveLiftPitch(840, 0.8,false);
+        robot.extenderToPos(860, 0.8,true);//830 today apparently
+        robot.moveLiftPitch(1030, 0.5,true);
+        robotSleep(1000);
+        robot.extake(500);
+        robotSleep(300);
+        robot.moveLiftPitch(780, 0.9,true);
+        robot.extenderToPos(0, 0.4,false); //Third sample in the high basket
 
 
-        robot.executeMoveLastStrafe(400, 0, 0, 4000);
+        robot.executeMoveLastStrafe(0, -40, 0, 4000);
 //        robot.parkingServo.setPosition(0.9617);
 //        robot.executeMoveLastStraight(0, -650, 0, 4000);
 //        robot.parkingServo.setPosition(0.9617);

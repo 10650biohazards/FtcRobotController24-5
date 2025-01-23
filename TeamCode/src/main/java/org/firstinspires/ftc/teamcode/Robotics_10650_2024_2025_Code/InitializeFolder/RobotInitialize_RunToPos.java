@@ -358,7 +358,10 @@ public class RobotInitialize_RunToPos {
             if (turnOnly && zerr < 2) {
                 break;
             }
+            opMode.telemetry.addData("time left", System.currentTimeMillis()-startTime);
+
             if (System.currentTimeMillis()-startTime>=2250&&forceQuit==true){
+                opMode.telemetry.addData("FORCESTOPPED", "HEHE");
                 break;
             }
 
