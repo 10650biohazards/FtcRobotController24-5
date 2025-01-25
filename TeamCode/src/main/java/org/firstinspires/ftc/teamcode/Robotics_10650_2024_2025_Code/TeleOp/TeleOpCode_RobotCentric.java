@@ -171,7 +171,7 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
             robot.liftPitchPosition=(int)((-500*(Math.asin(999/(((22.0/220.0)* robot.liftExtender.getCurrentPosition())+1000))))+3953);
 
             robot.liftPitch.setTargetPositionTolerance(30);
-            robot.liftPitch.setPower(0.6);
+            robot.liftPitch.setPower(1.0);
             robot.pitch.setPosition(((1.0/13000.0)* robot.liftExtender.getCurrentPosition())+0.1856);
         }
         if (circleOn==false){
