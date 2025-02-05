@@ -6,10 +6,12 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeF
 // Imports all of the necessary FTC libraries and code
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -46,7 +48,7 @@ public class RobotInitialize_RunToPos {
     public Servo pitch;
     public RevTouchSensor touch1;
     public RevTouchSensor touch2;
-
+    public AnalogInput distanceSensor;
 
     // Create the empty normal motor variables
     public DcMotorEx fLeft;
@@ -101,6 +103,8 @@ public class RobotInitialize_RunToPos {
 
         touch1 = opMode.hardwareMap.get(RevTouchSensor.class, "touchSensor1");
         touch2 = opMode.hardwareMap.get(RevTouchSensor.class, "touchSensor2");
+        distanceSensor = opMode.hardwareMap.get(AnalogInput.class, "distanceSensor");
+
 
 
 

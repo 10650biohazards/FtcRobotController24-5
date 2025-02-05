@@ -38,6 +38,7 @@ public class RobotInitialize {
     public Servo parkingServo;
 
     public Servo pitch;
+    public Servo sweep;
 
 
     // Create the empty normal motor variables
@@ -50,6 +51,9 @@ public class RobotInitialize {
     public DcMotorEx liftExtender; //Extends the lift outwards and pulls it inwards
     public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
     // with the drivetrain (uses worm gear)
+    public DcMotorEx lActuator;
+    public DcMotorEx rActuator;
+
 
     public GoBildaPinpointDriver odom;
 
@@ -85,7 +89,7 @@ public class RobotInitialize {
         bLeft = opMode.hardwareMap.get(DcMotorEx.class, "bleft");
 
 
-        odom = opMode.hardwareMap.get(GoBildaPinpointDriver.class,"odo");
+        odom = opMode.hardwareMap.get(GoBildaPinpointDriver.class, "odo");
         odom.resetPosAndIMU();
         odom.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
@@ -93,7 +97,6 @@ public class RobotInitialize {
         // When a positive or negative value is used
         fLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
 
 
         // Resetting the encoders (distance measurement sensors)
@@ -117,37 +120,60 @@ public class RobotInitialize {
 
         //Manipulator mechanisms
 
-            //Lift motors
+        //Lift motors
 
-        liftExtender = opMode.hardwareMap.get(DcMotorEx.class, "liftExtender");
 
-            //Initial conditions of the liftExtender MOTOR
+        //Initial conditions of the liftExtender MOTOR
         //liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
 //        liftExtender.setVelocityPIDFCoefficients(2.67,2.05,0, 3.3);
 
-
+        liftExtender = opMode.hardwareMap.get(DcMotorEx.class, "liftExtender");
         liftExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
         if (isAuto) {
             liftExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Needs to not reset once teleop begins
             liftExtender.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // Needs to not reset once teleop begins
         }
-            liftExtender.setZeroPowerBehavior(BRAKE);
+        liftExtender.setZeroPowerBehavior(BRAKE);
 
 
 
+
+        //Initial conditions of the liftPitch MOTOR
+        //PIDFCoefficients pid = new PIDFCoefficients(1, 1, 1, 1); (This does nothing)
+        //PIDF Coefficients for the liftPitch MOTOR
         liftPitch = opMode.hardwareMap.get(DcMotorEx.class, "liftPitch");
-
-            //Initial conditions of the liftPitch MOTOR
-            //PIDFCoefficients pid = new PIDFCoefficients(1, 1, 1, 1); (This does nothing)
-            //PIDF Coefficients for the liftPitch MOTOR
-            liftPitch.setVelocityPIDFCoefficients(1,1,-2.5, 3);
-            liftPitch.setDirection(DcMotorSimple.Direction.REVERSE);
-
+        liftPitch.setVelocityPIDFCoefficients(1, 1, -2.5, 3);
+        liftPitch.setDirection(DcMotorSimple.Direction.REVERSE);
         if (isAuto) {
             liftPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Needs to not reset once teleop begins
         }
-            liftPitch.setZeroPowerBehavior(BRAKE);
+        liftPitch.setZeroPowerBehavior(BRAKE);
+
+
+
+
+//        {
+//            lActuator = opMode.hardwareMap.get(DcMotorEx.class, "lActuator");
+//            lActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            lActuator.setTargetPosition(0);
+//            lActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            lActuator.setTargetPositionTolerance(40);
+//
+//        }
+//
+//
+//        {
+//            rActuator = opMode.hardwareMap.get(DcMotorEx.class, "rActuator");
+//            rActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            rActuator.setTargetPosition(0);
+//            rActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            rActuator.setTargetPositionTolerance(40);
+//
+//        }
+
+
+
 
 
         //Manipulator Servos
@@ -172,6 +198,9 @@ public class RobotInitialize {
         //Regular Servos
         pitch = opMode.hardwareMap.get(Servo.class, "pitch");
         pitch.setPosition(0);
+
+//        sweep = opMode.hardwareMap.get(Servo.class, "sweep");
+//        sweep.setPosition(0);
 
 //        pitch.setDirection(Servo.)
         { //This was causing problems
