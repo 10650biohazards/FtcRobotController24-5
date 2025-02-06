@@ -30,6 +30,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Pose2D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.GoBildaPinpointDriver;
 
+import java.util.LinkedList;
+
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 // How to connect to robot procedure (see file called
@@ -245,8 +247,27 @@ public class RobotInitialize_RunToPos {
 
     }
 
+    LinkedList <Double> pastDist = new LinkedList<>();
+    final int MAXLIST = 10;
+
     public double getDistance(){
-        return ((distanceSensor.getVoltage()*48.7)-4.9);
+        double newDist = ((distanceSensor.getVoltage()*48.7)-4.9);
+
+        pastDist.add(newDist);
+
+        if (pastDist.size()>MAXLIST){
+            pastDist.remove(0);
+        }
+        double avgDist =0;
+
+        for (int i = 0; i<pastDist.size(); i++){
+            avgDist =+ pastDist.get(i);
+        }
+
+        avgDist = avgDist/pastDist.size();
+
+
+        return avgDist;
     }
     //z represents rotation not z axis movement
     public void setVel(int x, int y, int z){
