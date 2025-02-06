@@ -41,6 +41,7 @@ public class DistanceSensorTest extends LinearOpMode {
 
     public void controllerInput() {
         //robot.intake.setPower(0);
+        robot.pitch.setPosition(0.1856);
         telemetry.addData("raw voltage", robot.distanceSensor.getVoltage());
         telemetry.addData("voltage to distance 15", (robot.distanceSensor.getVoltage()*32.5)-2.6);
         telemetry.addData("voltage to distance 20", (robot.distanceSensor.getVoltage()*48.7)-4.9);
