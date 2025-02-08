@@ -546,7 +546,7 @@ public class RobotInitialize_RunToPos {
         while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
 
         int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(distanceSensorDist*25.4))) * maxSpeed);
-        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(distanceSensorDist*25.4))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs((Math.abs(getDistanceBoth()*25.4)-Math.abs(distanceSensorDist*25.4))))) * maxSpeed);
 
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -563,7 +563,7 @@ public class RobotInitialize_RunToPos {
         while(opMode.opModeIsActive()){
             odom.update();
             double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
-            double yerr = (Math.abs(getDistance1()*25.4)-Math.abs(distanceSensorDist*25.4));
+            double yerr = (Math.abs(getDistanceBoth()*25.4)-Math.abs(distanceSensorDist*25.4));
 
 
             //double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
@@ -606,7 +606,7 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("zerr", zErr);
             opMode.telemetry.addData("xerr", xerr);
             opMode.telemetry.addData("yerr", yerr);
-            opMode.telemetry.addData("sensor dist", getDistance1());
+            opMode.telemetry.addData("sensor dist", getDistanceBoth());
             opMode.telemetry.addData("odom dist", odom.getPosX());
 
 
