@@ -178,7 +178,7 @@ public class RobotInitialize {
 
         //Regular Servos
         pitch = opMode.hardwareMap.get(Servo.class, "pitch");
-        pitch.setPosition(0.1856);
+        pitch.setPosition(0.2206);
 
 
 //        pitch.setDirection(Servo.)

@@ -47,7 +47,7 @@ public class AutonomousMeet4 extends LinearOpMode {
         //sleep(400000);
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
-        robot.executeMoveDistanceSensors(20, 315, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,3, false, 9.6); //ydist was 345
+        //robot.executeMoveDistanceSensors(20, 300, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,3, false, 9.6); //ydist was 345
 
         sleep(1000000000);
         robot.moveLiftPitch(840, 0.8,false);

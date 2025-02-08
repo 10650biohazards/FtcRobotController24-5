@@ -285,7 +285,7 @@ public class RobotInitialize_RunToPos {
         double avgDist =0;
 
         for (int i = 0; i< pastDist2.size(); i++){
-            avgDist =+ pastDist2.get(i);
+            avgDist = avgDist+ pastDist2.get(i);
         }
 
         avgDist = avgDist/ pastDist2.size();
@@ -306,7 +306,15 @@ public class RobotInitialize_RunToPos {
         return avgDist;
     }
 
-
+    public double getValidDistance(boolean nearBasket){
+        double validDistance = getDistanceBoth();
+        if(nearBasket){
+            validDistance = getDistance1();
+        } else{
+            validDistance = getDistanceBoth();
+        }
+        return validDistance;
+    }
 
 
 
@@ -534,7 +542,9 @@ public class RobotInitialize_RunToPos {
     }
 
 
-    public void executeMoveDistanceSensors(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist) {
+    public void executeMoveDistanceSensors(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist, boolean nearBasket) {
+
+
         final int kP = 4;
         final double kI = 0.07;
 
@@ -546,7 +556,7 @@ public class RobotInitialize_RunToPos {
         while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
 
         int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(distanceSensorDist*25.4))) * maxSpeed);
-        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs((Math.abs(getDistanceBoth()*25.4)-Math.abs(distanceSensorDist*25.4))))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs((Math.abs(getValidDistance(nearBasket)*25.4)-Math.abs(distanceSensorDist*25.4))))) * maxSpeed);
 
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -563,7 +573,7 @@ public class RobotInitialize_RunToPos {
         while(opMode.opModeIsActive()){
             odom.update();
             double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
-            double yerr = (Math.abs(getDistanceBoth()*25.4)-Math.abs(distanceSensorDist*25.4));
+            double yerr = (Math.abs(getValidDistance(nearBasket)*25.4)-Math.abs(distanceSensorDist*25.4));
 
 
             //double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
@@ -587,16 +597,10 @@ public class RobotInitialize_RunToPos {
             if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<2 && zerr <1) {
                 break;
             }
-            double yPercent = odom.getPosY()/yDist;
             double xPercent= odom.getPosX()/xDist;
 
             int xCorrecter;
 
-            if (yDist == 0) {
-                xCorrecter = 0;
-            } else {
-                xCorrecter = (int) ((yPercent - xPercent) * 1000);
-            }
 
             int xCorrectSign = xVel == 0 ? 1 : (int) Math.signum(xVel);
 
@@ -615,7 +619,6 @@ public class RobotInitialize_RunToPos {
 //            opMode.telemetry.addData("ypercent",yPercent);
             opMode.telemetry.addData("gyro dist", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
 
-            opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
             opMode.telemetry.addData("distance1", getDistance1());
             opMode.telemetry.addData("distance2", getDistance2());
             opMode.telemetry.addData("distanceBoth", getDistanceBoth());
