@@ -6,17 +6,14 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeF
 // Imports all of the necessary FTC libraries and code
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -50,7 +47,9 @@ public class RobotInitialize_RunToPos {
     public Servo pitch;
     public RevTouchSensor touch1;
     public RevTouchSensor touch2;
-    public AnalogInput distanceSensor;
+    public AnalogInput distanceSensor1;
+    public AnalogInput distanceSensor2;
+
 
     // Create the empty normal motor variables
     public DcMotorEx fLeft;
@@ -105,7 +104,10 @@ public class RobotInitialize_RunToPos {
 
         touch1 = opMode.hardwareMap.get(RevTouchSensor.class, "touchSensor1");
         touch2 = opMode.hardwareMap.get(RevTouchSensor.class, "touchSensor2");
-        distanceSensor = opMode.hardwareMap.get(AnalogInput.class, "distanceSensor");
+
+
+        distanceSensor1 = opMode.hardwareMap.get(AnalogInput.class, "distanceSensor1");
+        distanceSensor2 = opMode.hardwareMap.get(AnalogInput.class, "distanceSensor2");
 
 
 
@@ -247,28 +249,67 @@ public class RobotInitialize_RunToPos {
 
     }
 
-    LinkedList <Double> pastDist = new LinkedList<>();
+    public LinkedList <Double> pastDist1 = new LinkedList<>();
     final int MAXLIST = 10;
 
-    public double getDistance(){
-        double newDist = ((distanceSensor.getVoltage()*48.7)-4.9);
+    public double getDistance1(){
+        double newDist = ((distanceSensor1.getVoltage()*48.7)-4.9);
 
-        pastDist.add(newDist);
+        pastDist1.add(newDist);
 
-        if (pastDist.size()>MAXLIST){
-            pastDist.remove(0);
+        if (pastDist1.size()>MAXLIST){
+            pastDist1.remove(0);
         }
         double avgDist =0;
 
-        for (int i = 0; i<pastDist.size(); i++){
-            avgDist =+ pastDist.get(i);
+        for (int i = 0; i< pastDist1.size(); i++){
+            avgDist = avgDist+ pastDist1.get(i);
         }
 
-        avgDist = avgDist/pastDist.size();
+        avgDist = avgDist/ (pastDist1.size());
 
 
         return avgDist;
     }
+
+    LinkedList <Double> pastDist2 = new LinkedList<>();
+
+    public double getDistance2(){
+        double newDist = ((distanceSensor2.getVoltage()*48.7)-4.9);
+
+        pastDist2.add(newDist);
+
+        if (pastDist2.size()>MAXLIST){
+            pastDist2.remove(0);
+        }
+        double avgDist =0;
+
+        for (int i = 0; i< pastDist2.size(); i++){
+            avgDist =+ pastDist2.get(i);
+        }
+
+        avgDist = avgDist/ pastDist2.size();
+
+
+        return avgDist;
+    }
+
+
+    public double getDistanceBoth(){
+
+        double avgDist =0;
+
+
+        avgDist = (getDistance1()+getDistance2())/2;
+
+
+        return avgDist;
+    }
+
+
+
+
+
     //z represents rotation not z axis movement
     public void setVel(int x, int y, int z){
         x = (int)(x*1.7);
@@ -504,6 +545,165 @@ public class RobotInitialize_RunToPos {
         long startTime = System.currentTimeMillis();
         while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
 
+        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(distanceSensorDist*25.4))) * maxSpeed);
+        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(distanceSensorDist*25.4))) * maxSpeed);
+
+        fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        bRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        double xI = 0;
+        double yI = 0;
+
+        boolean extenderMoved = false;
+        startTime = System.currentTimeMillis();
+
+        //Odometry references to x and y Dist need to be made
+        while(opMode.opModeIsActive()){
+            odom.update();
+            double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
+            double yerr = (Math.abs(getDistance1()*25.4)-Math.abs(distanceSensorDist*25.4));
+
+
+            //double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
+            double zerr = Math.abs(heading-gyroScope.getRobotYawPitchRollAngles().getYaw());
+
+            xI += xerr;
+            yI += yerr;
+
+            xI  = clamp(xI, 200 / kI);
+            yI  = clamp(yI, 200 / kI);
+
+            if (turnOnly && zerr < 2) {
+                break;
+            }
+            opMode.telemetry.addData("time left", System.currentTimeMillis()-startTime);
+
+            if (System.currentTimeMillis()-startTime>=2250&&forceQuit==true){
+                break;
+            }
+
+            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<2 && zerr <1) {
+                break;
+            }
+            double yPercent = odom.getPosY()/yDist;
+            double xPercent= odom.getPosX()/xDist;
+
+            int xCorrecter;
+
+            if (yDist == 0) {
+                xCorrecter = 0;
+            } else {
+                xCorrecter = (int) ((yPercent - xPercent) * 1000);
+            }
+
+            int xCorrectSign = xVel == 0 ? 1 : (int) Math.signum(xVel);
+
+
+
+            int zErr = clamp((int) ((heading-(gyroScope.getRobotYawPitchRollAngles().getYaw())) * 150), 1000);
+            opMode.telemetry.addData("zerr", zErr);
+            opMode.telemetry.addData("xerr", xerr);
+            opMode.telemetry.addData("yerr", yerr);
+            opMode.telemetry.addData("sensor dist", getDistance1());
+            opMode.telemetry.addData("odom dist", odom.getPosX());
+
+
+
+//            opMode.telemetry.addData("xpercent", xPercent);
+//            opMode.telemetry.addData("ypercent",yPercent);
+            opMode.telemetry.addData("gyro dist", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
+
+            opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+            opMode.telemetry.addData("distance1", getDistance1());
+            opMode.telemetry.addData("distance2", getDistance2());
+            opMode.telemetry.addData("distanceBoth", getDistanceBoth());
+
+
+
+            // The values from which the final velocity will inherit its sign
+            double xSignVal = xerr*xVel;
+            double ySignVal = yerr*yVel;
+            // Calculated from:
+            //       +xVel    -xVel
+            //       ----------------
+            // +xErr | +v   |  -v   |
+            // -xErr | -v   |  +v   |
+            //       ----------------
+
+            opMode.telemetry.addData("xSignVal",xSignVal);
+            opMode.telemetry.addData("ySignVal",ySignVal);
+
+
+            // Calculate the velocity with PID constants
+            int calcXVelocityBeforeClamp = (int) (xerr * kP + xI * kI);
+
+            int calcYVelocityBeforeClamp = (int) (yerr * kP + yI * kI);
+
+            // Clamp to max speed found in xVel and yVel
+            int calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
+            int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
+
+            // Copy the sign of the sign variables
+            int finalXVelocity = (int)(Math.copySign(calcXVelocity, xSignVal)*xMult);
+            int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal)*yMult);
+
+            opMode.telemetry.addData("xvel pre clamp",calcXVelocity);
+            opMode.telemetry.addData("yvel pre clamp",calcYVelocity);
+
+
+
+            opMode.telemetry.addData("finalXVelocity",finalXVelocity);
+            opMode.telemetry.addData("finalYVelocity",finalYVelocity);
+            opMode.telemetry.addData("xVel",xVel);
+            opMode.telemetry.addData("yVel",yVel);
+
+
+            setVel(finalXVelocity, finalYVelocity, zErr);
+
+            opMode.telemetry.update();
+
+
+            // EXTENDER MOVE CODE
+            if(extenderPos != Integer.MIN_VALUE && delay != Integer.MIN_VALUE) {
+                if(!extenderMoved) {
+                    if((System.currentTimeMillis() - startTime) >= delay) {
+                        extenderMoved = true;
+                        extenderToPos(extenderPos, 0.9, false);
+                    }
+                }
+            }
+
+        }
+
+        setVel(0, 0, 0);
+
+        // Check to see if the extender still hasn't moved. If it hasn't, move it.
+        if(extenderPos != Integer.MIN_VALUE && delay != Integer.MIN_VALUE) {
+            if(!extenderMoved) {
+                while(opMode.opModeIsActive() && (System.currentTimeMillis() - startTime) <= delay) {}
+                extenderMoved = true;
+                extenderToPos(extenderPos, 0.8, false);
+            }
+        }
+    }
+
+
+
+
+
+    public void executeMoveDistanceSensorsBreak(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist) {
+        final int kP = 4;
+        final double kI = 0.07;
+
+        // Reset position
+        odom.update();
+        odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
+
+        long startTime = System.currentTimeMillis();
+        while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
+
         int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
         int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs(yDist))) * maxSpeed);
 
@@ -523,7 +723,7 @@ public class RobotInitialize_RunToPos {
             odom.update();
             double xerr = Math.abs(xDist) - Math.abs(odom.getPosX());
             double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
-            double sErr = Math.abs(distanceSensorDist) - Math.abs(getDistance());
+            double sErr = Math.abs(distanceSensorDist) - Math.abs(getDistance1());
 
             //double yerr = Math.abs(yDist) - Math.abs(odom.getPosY());
             double zerr = Math.abs(heading-gyroScope.getRobotYawPitchRollAngles().getYaw());
@@ -540,7 +740,6 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("time left", System.currentTimeMillis()-startTime);
 
             if (System.currentTimeMillis()-startTime>=2250&&forceQuit==true){
-                opMode.telemetry.addData("FORCESTOPPED", "HEHE");
                 break;
             }
 
@@ -569,12 +768,18 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("zerr", zErr);
             opMode.telemetry.addData("xerr", xerr);
             opMode.telemetry.addData("yerr", yerr);
+            opMode.telemetry.addData("serr", sErr);
+
 
             opMode.telemetry.addData("xpercent", xPercent);
             opMode.telemetry.addData("ypercent",yPercent);
             opMode.telemetry.addData("gyro", (gyroScope.getRobotYawPitchRollAngles().getYaw()));
 
             opMode.telemetry.addData("xvel corrected", xVel + xCorrecter * (int) Math.signum(xVel));
+            opMode.telemetry.addData("distance1", getDistance1());
+            opMode.telemetry.addData("distance2", getDistance2());
+            opMode.telemetry.addData("distanceBoth", getDistanceBoth());
+
 
 
             // The values from which the final velocity will inherit its sign
@@ -634,6 +839,11 @@ public class RobotInitialize_RunToPos {
             }
         }
     }
+
+
+
+
+
 
     public void executeMoveTouchSensor(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, int touchDelay) {
         final int kP = 4;

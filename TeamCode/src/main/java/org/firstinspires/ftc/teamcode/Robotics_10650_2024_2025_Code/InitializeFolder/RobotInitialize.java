@@ -38,7 +38,6 @@ public class RobotInitialize {
     public Servo parkingServo;
 
     public Servo pitch;
-    public Servo sweep;
 
 
     // Create the empty normal motor variables
@@ -51,8 +50,7 @@ public class RobotInitialize {
     public DcMotorEx liftExtender; //Extends the lift outwards and pulls it inwards
     public DcMotorEx liftPitch; //Makes the lift go down to the floor and back up to perpendicular
     // with the drivetrain (uses worm gear)
-    public DcMotorEx lActuator;
-    public DcMotorEx rActuator;
+
 
 
     public GoBildaPinpointDriver odom;
@@ -153,24 +151,7 @@ public class RobotInitialize {
 
 
 
-//        {
-//            lActuator = opMode.hardwareMap.get(DcMotorEx.class, "lActuator");
-//            lActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            lActuator.setTargetPosition(0);
-//            lActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            lActuator.setTargetPositionTolerance(40);
 //
-//        }
-//
-//
-//        {
-//            rActuator = opMode.hardwareMap.get(DcMotorEx.class, "rActuator");
-//            rActuator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            rActuator.setTargetPosition(0);
-//            rActuator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//            rActuator.setTargetPositionTolerance(40);
-//
-//        }
 
 
 
@@ -197,10 +178,8 @@ public class RobotInitialize {
 
         //Regular Servos
         pitch = opMode.hardwareMap.get(Servo.class, "pitch");
-        pitch.setPosition(0);
+        pitch.setPosition(0.1856);
 
-//        sweep = opMode.hardwareMap.get(Servo.class, "sweep");
-//        sweep.setPosition(0);
 
 //        pitch.setDirection(Servo.)
         { //This was causing problems

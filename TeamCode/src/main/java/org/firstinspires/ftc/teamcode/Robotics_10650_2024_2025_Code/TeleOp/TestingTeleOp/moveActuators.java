@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize;
 
-@TeleOp (name = "TeleOp_RobotCentric")
+@TeleOp (name = "TeleOp_test")
 public class moveActuators extends LinearOpMode {
 
     // Run the initialize function
@@ -31,7 +31,7 @@ public class moveActuators extends LinearOpMode {
         // initialization of the control of the robot when start is pressed
         waitForStart();
         //robot.pitch.setPosition(0.1856);
-        robot.pitch.setPosition(0);
+        robot.pitch.setPosition(0.1856);
 
 
         circleOn=false;
@@ -141,8 +141,8 @@ public class moveActuators extends LinearOpMode {
 //                liftExtenderPosition =robot.liftPitch.getCurrentPosition();
 //
 //            }
-        if (robot.liftPitchPosition < 885) {
-            robot.liftPitchPosition = 885;
+        if (robot.liftPitchPosition < 300) { //used to be 885
+            robot.liftPitchPosition = 300;
         } else if (robot.liftPitchPosition > maxPitch) {
             robot.liftPitchPosition = maxPitch;
 
@@ -156,8 +156,8 @@ public class moveActuators extends LinearOpMode {
             robot.liftPitchPosition += (int)(-40*Math.pow(gamepad2.left_stick_y, 3));
 
             //cannot go outside these bounds
-            if (robot.liftPitchPosition < 885) {
-                robot.liftPitchPosition = 885;
+            if (robot.liftPitchPosition < 300) {
+                robot.liftPitchPosition = 300;
             } else if (robot.liftPitchPosition > maxPitch) {
                 robot.liftPitchPosition = maxPitch;
             }
@@ -242,7 +242,12 @@ public class moveActuators extends LinearOpMode {
 
 
         robot.liftExtender.setTargetPosition(liftExtenderPosition);
-        robot.liftExtender.setPower(0.88);
+
+//        if(robot.liftExtender.getCurrentPosition()>10){
+//            robot.liftExtender.setPower(0.88);
+//        } else{
+//            robot.liftExtender.setPower(0);
+//        }
 
 
 
@@ -278,15 +283,15 @@ public class moveActuators extends LinearOpMode {
 
         if (gamepad2.dpad_down) {//pitch claw down
 
-            groundCorrecter = groundCorrecter+1;
-           // robot.pitch.setPosition(0);
-            //robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
+            //groundCorrecter = groundCorrecter+1;
+            //robot.pitch.setPosition(0);
+            robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
         } else if (gamepad2.dpad_up) {//pitch claw up
 
-            groundCorrecter = groundCorrecter-1;
+            //groundCorrecter = groundCorrecter-1;
 
             // robot.pitch.setPosition(0.1856);
-            //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
+            robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
         }
 
         if (gamepad1.dpad_left) {
@@ -296,7 +301,8 @@ public class moveActuators extends LinearOpMode {
             //robot.lActuator.setTargetPosition(robot.lActuator.getCurrentPosition() + 2);
         }
         if (gamepad1.dpad_right) {
-            robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
+            //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
+            robot.pitch.setPosition(0.1856);
 
             //robot.lActuator.setTargetPosition(robot.lActuator.getCurrentPosition() - 2);
         }
@@ -310,14 +316,16 @@ public class moveActuators extends LinearOpMode {
             circleOn=true;
         } else if (gamepad2.square) {//slaps it in
             circleOn=false;
-            liftExtenderPosition = 0;
             robot.liftPitchPosition = 1051;
+            liftExtenderPosition = 0;
+            robot.pitch.setPosition(0.1856);
+
         } else if (gamepad2.triangle) {//to score high basket
             circleOn=false;
 //            robot.liftPitchPosition = 1051;
-            robot.liftPitchPosition = 1151;
-            robot.pitch.setPosition(0.1828);
-            liftExtenderPosition = 846;
+            robot.liftPitchPosition = 579;
+            robot.pitch.setPosition(0.5828);
+            liftExtenderPosition = 900;
         }
 
         if (gamepad2.options) {//sets the zero point after adjusting with right stick button
@@ -345,14 +353,14 @@ public class moveActuators extends LinearOpMode {
 
             //sweep = groundCorrecter+1;
             // robot.pitch.setPosition(0);
-            robot.sweep.setPosition(robot.sweep.getPosition()-0.001);
+            robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
         } else if (gamepad1.dpad_up) {//pitch claw up
 
             groundCorrecter = groundCorrecter-1;
 
             // robot.pitch.setPosition(0.1856);
             //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
-            robot.sweep.setPosition(robot.sweep.getPosition()+0.001);
+            robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
         }
         /*
 
@@ -395,11 +403,11 @@ public class moveActuators extends LinearOpMode {
         }
 
         double gorundModePos = -190*(Math.asin(1000/(((22/24)* robot.liftExtender.getCurrentPosition())+1000))+3490);
-        telemetry.addData("parking pos", robot.parkingServo.getPosition());
+        //telemetry.addData("parking pos", robot.parkingServo.getPosition());
 
         telemetry.addData("pitch servo pos", robot.pitch.getPosition());
-        telemetry.addData(" pitch pos", robot.liftPitch.getCurrentPosition());
-        telemetry.addData(" ext pos", robot.liftExtender.getCurrentPosition());
+        telemetry.addData("lift pitch pos", robot.liftPitch.getCurrentPosition());
+        telemetry.addData("lift ext pos", robot.liftExtender.getCurrentPosition());
         telemetry.addData("ground mode pos", (-500*(Math.asin(998/(((22.0/246.0)* robot.liftExtender.getCurrentPosition())+1000))))+3944);
         telemetry.addData("ground mode servo pos", ((1.0/9040.0)* robot.liftExtender.getCurrentPosition())+0.1856);
 

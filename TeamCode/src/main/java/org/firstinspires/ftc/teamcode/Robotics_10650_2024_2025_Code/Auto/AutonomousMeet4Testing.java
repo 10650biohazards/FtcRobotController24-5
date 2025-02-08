@@ -41,12 +41,12 @@ public class AutonomousMeet4Testing extends LinearOpMode {
         // Waits for a person to press start on the control hub
         // then it runs the rest of the program
         waitForStart();
-        //robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 800);
+        robot.executeMoveDistanceSensors(200, 300, 0, 2000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, false, 20);
 
         //robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 800);
 
-        //sleep(400000);
-        robot.pitch.setPosition(BASKET_PITCH_POS);
+        sleep(400000);
+        //robot.pitch.setPosition(BASKET_PITCH_POS);
 
         //robot.moveLiftPitch(840, 0.8,false);
 

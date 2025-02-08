@@ -345,14 +345,14 @@ public class TeleOpCode_RobotCentric extends LinearOpMode {
 
             //sweep = groundCorrecter+1;
             // robot.pitch.setPosition(0);
-            robot.sweep.setPosition(robot.sweep.getPosition()-0.001);
+            //robot.sweep.setPosition(robot.sweep.getPosition()-0.001);
         } else if (gamepad1.dpad_up) {//pitch claw up
 
-            groundCorrecter = groundCorrecter-1;
+            //groundCorrecter = groundCorrecter-1;
 
             // robot.pitch.setPosition(0.1856);
             //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
-            robot.sweep.setPosition(robot.sweep.getPosition()+0.001);
+            //robot.sweep.setPosition(robot.sweep.getPosition()+0.001);
         }
         /*
 
