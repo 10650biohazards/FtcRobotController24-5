@@ -6,6 +6,7 @@ package org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeF
 // Imports all of the necessary FTC libraries and code
 
 import com.qualcomm.hardware.bosch.BHI260IMU;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -17,6 +18,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorMRRangeSensor;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -49,6 +51,8 @@ public class RobotInitialize_RunToPos {
     public RevTouchSensor touch2;
     public AnalogInput distanceSensor1;
     public AnalogInput distanceSensor2;
+
+    public ModernRoboticsI2cRangeSensor sonicDistanceSensor;
 
 
     // Create the empty normal motor variables
@@ -108,6 +112,8 @@ public class RobotInitialize_RunToPos {
 
         distanceSensor1 = opMode.hardwareMap.get(AnalogInput.class, "distanceSensor1");
         distanceSensor2 = opMode.hardwareMap.get(AnalogInput.class, "distanceSensor2");
+
+        sonicDistanceSensor = opMode.hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sonicDistanceSensor");
 
 
 
@@ -316,6 +322,10 @@ public class RobotInitialize_RunToPos {
         return validDistance;
     }
 
+    public double getNonErroDist(){
+        //double ultraDist =
+        return 4.4;
+    }
 
 
     //z represents rotation not z axis movement
@@ -622,6 +632,8 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("distance1", getDistance1());
             opMode.telemetry.addData("distance2", getDistance2());
             opMode.telemetry.addData("distanceBoth", getDistanceBoth());
+           // opMode.telemetry.addData("valid distance");
+
 
 
 
@@ -661,6 +673,8 @@ public class RobotInitialize_RunToPos {
             opMode.telemetry.addData("finalYVelocity",finalYVelocity);
             opMode.telemetry.addData("xVel",xVel);
             opMode.telemetry.addData("yVel",yVel);
+            opMode.telemetry.addData("yVel",yVel);
+
 
 
             setVel(finalXVelocity, finalYVelocity, zErr);
