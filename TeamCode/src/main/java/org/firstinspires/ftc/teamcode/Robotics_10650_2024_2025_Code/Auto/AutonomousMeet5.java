@@ -12,16 +12,16 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Robotics_10650_2024_2025_Code.InitializeFolder.RobotInitialize_RunToPos;
 
 // Create an Autonomous program (Auto) that preselects a TeleOp (controller operated)
-@Autonomous(name = "AutoMeet4", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
-public class AutonomousMeet4 extends LinearOpMode {
+@Autonomous(name = "AutoMeet5", preselectTeleOp = "OLD_TeleOpCode_RobotCentric")
+public class AutonomousMeet5 extends LinearOpMode {
 
     // Execute the function from the RobotInitialize class
     RobotInitialize_RunToPos robot;
 
     public void score() {
         robot.moveLiftPitch(840, 0.8,false);
-        robot.extenderToPos(860, 0.8,true);//830 today apparently
-        robot.moveLiftPitch(1030, 0.5,true);
+        robot.extenderToPos(824, 0.8,true);//830 today apparently
+        robot.moveLiftPitch(1061, 0.5,true);
         robotSleep(1400);
         robot.extake(500);
         robotSleep(300);
@@ -29,8 +29,8 @@ public class AutonomousMeet4 extends LinearOpMode {
         robot.extenderToPos(0, 0.4,false);
     }
 
-    final double GROUND_PITCH_POS = 0.1856;
-    final double BASKET_PITCH_POS = 0.155;
+    final double GROUND_PITCH_POS = 0.2206;
+    final double BASKET_PITCH_POS = 0.220;
     //0.0309
 
     // The code that runs in Auto
@@ -50,11 +50,10 @@ public class AutonomousMeet4 extends LinearOpMode {
         //robot.executeMoveDistanceSensors(20, 300, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,3, false, 9.6); //ydist was 345
 
         //sleep(1000000000);
-
-        robot.moveLiftPitch(840, 0.8,false);
+        //robot.moveLiftPitch(840, 0.8,false);hgufwghjsghjgwy
 
         //First position (move forward and right from original location)
-        robot.executeMoveAlt(20, 315, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,2, false); //ydist was 345
+        robot.executeMoveDistanceSensors(20, 315, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,1.35, false, 13.41, true); //ydist was 345
         sleep(1000000000);
 
 

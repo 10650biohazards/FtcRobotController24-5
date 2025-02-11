@@ -242,8 +242,11 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 
 
         robot.liftExtender.setTargetPosition(liftExtenderPosition);
-        robot.liftExtender.setPower(0.88);
-
+        if (liftExtenderPosition==0&&robot.liftExtender.getCurrentPosition()<10){
+            robot.liftExtender.setPower(0);
+        } else {
+            robot.liftExtender.setPower(1.0);
+        }
 
 
 //        if ((Math.abs(gamepad2.right_stick_y) > 0.2) && (liftExtenderPosition <= maxLifEtxtension)
@@ -278,15 +281,15 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 
         if (gamepad2.dpad_down) {//pitch claw down
 
-            groundCorrecter = groundCorrecter+1;
+            //groundCorrecter = groundCorrecter+1;
            // robot.pitch.setPosition(0);
-            //robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
+            robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
         } else if (gamepad2.dpad_up) {//pitch claw up
 
-            groundCorrecter = groundCorrecter-1;
+            //groundCorrecter = groundCorrecter-1;
 
             // robot.pitch.setPosition(0.1856);
-            //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
+            robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
         }
 
 //        if (gamepad1.dpad_left) {
@@ -319,6 +322,10 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
             robot.liftPitchPosition = 579;
             robot.pitch.setPosition(0.5828);
             liftExtenderPosition = 900;
+        } else if (gamepad2.cross){
+            robot.liftPitchPosition = 1240;
+            robot.pitch.setPosition(0.22);
+            liftExtenderPosition = 883;
         }
 
         if (gamepad2.options) {//sets the zero point after adjusting with right stick button
@@ -408,6 +415,8 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         telemetry.addData("powa", robot.liftPitch.getPower());
         telemetry.addData("tolerance", robot.liftPitch.getTargetPositionTolerance());
         telemetry.addData("ideal position", robot.liftPitchPosition);
+        telemetry.addData("ext Powa", robot.liftExtender.getPower());
+
 
 //        telemetry.addData(" lactuator pos", robot.lActuator.getCurrentPosition());
 //        telemetry.addData(" ractuator pos", robot.rActuator.getCurrentPosition());
