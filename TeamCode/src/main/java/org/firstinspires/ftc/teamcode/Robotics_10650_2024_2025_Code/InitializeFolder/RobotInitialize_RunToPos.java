@@ -636,7 +636,7 @@ public class RobotInitialize_RunToPos {
                 break;
             }
 
-            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<2 && Math.abs(zerr) <=1) {
+            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<5 && Math.abs(zerr) <=1) {
                 break;
             }
             double xPercent= odom.getPosX()/xDist;

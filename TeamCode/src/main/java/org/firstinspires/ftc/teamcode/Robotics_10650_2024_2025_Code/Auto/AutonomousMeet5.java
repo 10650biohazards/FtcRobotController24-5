@@ -20,8 +20,8 @@ public class AutonomousMeet5 extends LinearOpMode {
 
     public void score() {
         robot.moveLiftPitch(840, 0.8,false);
-        robot.extenderToPos(824, 0.8,true);//830 today apparently
-        robot.moveLiftPitch(1061, 0.5,true);
+        robot.extenderToPos(856, 0.8,true);//830 today apparently
+        robot.moveLiftPitch(1149, 0.3,true);
         robotSleep(1400);
         robot.extake(500);
         robotSleep(300);
@@ -53,16 +53,16 @@ public class AutonomousMeet5 extends LinearOpMode {
         //robot.moveLiftPitch(840, 0.8,false);hgufwghjsghjgwy
 
         //First position (move forward and right from original location)
-        robot.executeMoveDistanceSensors(20, 200, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,1.75, false, 200, true); //ydist was 345
+        robot.executeMoveDistanceSensors(0, 270, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,2, false, 350, true); //ydist was 345
 
-        robot.extenderToPos(100, 0.8,true);//830 today apparently
-
+       //robot.extenderToPos(100, 0.8,true);//830 today apparently
+        score();
         sleep(1000000000);
 
 
 
         //Process of scoring preloaded sample
-        score();
+        //score();
 
         //Pushes first spike mark sample out of the way (going right)
         robot.executeMoveAlt(1110, -360, 0, 3000, false);
