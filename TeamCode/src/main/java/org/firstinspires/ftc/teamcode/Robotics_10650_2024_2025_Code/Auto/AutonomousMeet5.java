@@ -57,7 +57,6 @@ public class AutonomousMeet5 extends LinearOpMode {
 
        //robot.extenderToPos(100, 0.8,true);//830 today apparently
         score();
-        sleep(1000000000);
 
 
 
@@ -67,12 +66,16 @@ public class AutonomousMeet5 extends LinearOpMode {
         //Pushes first spike mark sample out of the way (going right)
         robot.executeMoveAlt(1110, -360, 0, 3000, false);
 
+
+
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Moves back left to get second spike mark sample
-        robot.moveLiftPitch(3100, 0.9,false);
+        robot.moveLiftPitch(3200, 0.9,false);
 
-        robot.executeMoveAlt(-125, -0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,2,1, false);
+        robot.executeMoveDistanceSensors(-125, 0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, false, 620, false);
+
+        sleep(1000000000);
 
         //Pick up sample off of second spike mark
         robot.intake();

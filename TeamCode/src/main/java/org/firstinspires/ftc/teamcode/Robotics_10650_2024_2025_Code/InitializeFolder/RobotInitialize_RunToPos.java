@@ -597,8 +597,16 @@ public class RobotInitialize_RunToPos {
         long startTime = System.currentTimeMillis();
         while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
 
-        int xVel = Math.round(xDist/(float) (Math.max(Math.abs(xDist), Math.abs(distanceSensorDist))) * maxSpeed);
-        int yVel = Math.round(yDist/(float) (Math.max(Math.abs(xDist), Math.abs((Math.abs(getSonicDistance())-Math.abs(distanceSensorDist))))) * maxSpeed);
+        // As opposed to referencing yDist, which is ALWAYS unused in this function, we
+        // calculate a pseudo yDist with the distance we need to travel as given by the sensor.
+        double yDistanceWeNeedToGoAtTheStart =  Math.abs(getSonicDistance())-Math.abs(distanceSensorDist);
+
+        // Extracted variable from the xVel, yVel calculations
+        double max = Math.max(Math.abs(xDist), Math.abs(yDistanceWeNeedToGoAtTheStart));
+
+        // The MAX SPEED values as used later in clamps to ensure that the motors do not go crazy fast.
+        double xVel = Math.round(xDist/(float) max * maxSpeed);
+        double yVel = Math.round(yDistanceWeNeedToGoAtTheStart/(float) max * maxSpeed);
 
         fLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         fRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -636,7 +644,7 @@ public class RobotInitialize_RunToPos {
                 break;
             }
 
-            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<5 && Math.abs(zerr) <=1) {
+            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<5 && Math.abs(zerr) <=1.2) {
                 break;
             }
             double xPercent= odom.getPosX()/xDist;
@@ -690,11 +698,11 @@ public class RobotInitialize_RunToPos {
             int calcYVelocityBeforeClamp = (int) (yerr * kP + yI * kI);
 
             // Clamp to max speed found in xVel and yVel
-            int calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
-            int calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
+            double calcXVelocity = clamp(calcXVelocityBeforeClamp, xVel);
+            double calcYVelocity = clamp(calcYVelocityBeforeClamp, yVel);
 
             // Copy the sign of the sign variables
-            int finalXVelocity = (int)(Math.copySign(calcXVelocity, xSignVal)*xMult);
+            int finalXVelocity = (int)(Math.copySign(calcXVelocity, xerr)*xMult);
             int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal)*yMult);
             int finalZVelocity =  (int)(zerr*50);
 
