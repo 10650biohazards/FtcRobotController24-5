@@ -123,6 +123,7 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         // Left and right turning (right stick x-axis movement)
         // Strafing left and right (left stick x-axis movement)
         {
+            // Using this RobotInitialize, fleft and bright are reversed.
             robot.fLeft.setVelocity(strafeVelocity - straightMovementVelocity + turnVelocity); // Overall
             // negative value
             robot.fRight.setVelocity(-strafeVelocity - straightMovementVelocity - turnVelocity); // Overall
@@ -408,8 +409,8 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         telemetry.addData("pitch servo pos", robot.pitch.getPosition());
         telemetry.addData(" pitch pos", robot.liftPitch.getCurrentPosition());
         telemetry.addData(" ext pos", robot.liftExtender.getCurrentPosition());
-        telemetry.addData("ground mode pos", (-500*(Math.asin(998/(((22.0/246.0)* robot.liftExtender.getCurrentPosition())+1000))))+3944);
-        telemetry.addData("ground mode servo pos", ((1.0/9040.0)* robot.liftExtender.getCurrentPosition())+0.1856);
+        telemetry.addData("ground mode pos", (-620*(Math.asin(998/(((62.0/220.0)* robot.liftExtender.getCurrentPosition())+1000))))+4136);
+        //telemetry.addData("ground mode servo pos", ((1.0/9040.0)* robot.liftExtender.getCurrentPosition())+0.1856);
 
         telemetry.addData("circle mode?", circleOn);
         telemetry.addData("powa", robot.liftPitch.getPower());

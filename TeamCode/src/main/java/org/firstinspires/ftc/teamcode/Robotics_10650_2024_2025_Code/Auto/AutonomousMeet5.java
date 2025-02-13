@@ -53,7 +53,10 @@ public class AutonomousMeet5 extends LinearOpMode {
         //robot.moveLiftPitch(840, 0.8,false);hgufwghjsghjgwy
 
         //First position (move forward and right from original location)
-        robot.executeMoveDistanceSensors(20, 315, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,1.35, false, 13.41, true); //ydist was 345
+        robot.executeMoveDistanceSensors(20, 200, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,1.75, false, 200, true); //ydist was 345
+
+        robot.extenderToPos(100, 0.8,true);//830 today apparently
+
         sleep(1000000000);
 
 
