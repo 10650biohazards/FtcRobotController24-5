@@ -207,9 +207,9 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         //find positon for extension
         double pitchAngle = (double) (robot.liftPitch.getCurrentPosition() - 885) * (90) / 2595;
 
-        if (pitchAngle >= 31.25) {
+        if (pitchAngle >= 29.9) {
             //maxLifEtxtension = 121 / (Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
-            maxLifEtxtension = 482;
+            maxLifEtxtension = 363;
         } else {
             maxLifEtxtension = 900;
         }
@@ -321,7 +321,7 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 //            robot.liftPitchPosition = 1051;
             robot.liftPitchPosition = 579;
             robot.pitch.setPosition(0.5828);
-            liftExtenderPosition = 900;
+            liftExtenderPosition = 788;
         } else if (gamepad2.cross){
             robot.liftPitchPosition = 1240;
             robot.pitch.setPosition(0.22);

@@ -256,7 +256,7 @@ public class RobotInitialize_RunToPos {
     }
 
     public LinkedList <Double> pastDist1 = new LinkedList<>();
-    final int MAXLIST = 10;
+    final int MAXLIST = 3;
 
     public double getDistance1(){
         double newDist = ((distanceSensor1.getVoltage()*48.7)-4.9);
@@ -325,6 +325,27 @@ public class RobotInitialize_RunToPos {
     public double getNonErroDist(){
         //double ultraDist =
         return 4.4;
+    }
+
+
+    public double getSonicDistance(){
+        double newDist = (sonicDistanceSensor.getDistance(DistanceUnit.MM));
+
+        pastDist1.add(newDist);
+
+        if (pastDist1.size()>MAXLIST){
+            pastDist1.remove(0);
+        }
+        double avgDist =0;
+
+        for (int i = 0; i< pastDist1.size(); i++){
+            avgDist = avgDist+ pastDist1.get(i);
+        }
+
+        avgDist = avgDist/ (pastDist1.size());
+
+
+        return avgDist;
     }
 
 
