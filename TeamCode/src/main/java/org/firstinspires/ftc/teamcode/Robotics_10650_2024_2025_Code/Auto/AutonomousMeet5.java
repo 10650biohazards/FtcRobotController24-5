@@ -42,12 +42,18 @@ public class AutonomousMeet5 extends LinearOpMode {
         // then it runs the rest of the program
         waitForStart();
 
+
+
+//        robot.executeMoveDistanceSensors(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false, 440, false, 0, 50, .5);//
+//        sleep(1000000000);
+
         //robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 800);
 
 
 //        robot.executeMoveDistanceSensors(975, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 380, false, 0, 220); //380mm form wall
 //        robot.intake(500);
-//        sleep(1000000);
+
+
 
 
         //sleep(400000);
@@ -80,14 +86,14 @@ public class AutonomousMeet5 extends LinearOpMode {
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Moves back left to get second spike mark sample
-        robot.moveLiftPitch(3200, 0.9,false);
+        robot.moveLiftPitch(3256, 0.9,false);
 
         robot.executeMoveDistanceSensors(-145, 0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, false, 620, false, 0);
 
 
         //Pick up sample off of second spike mark
         robot.intake();
-        robot.executeMoveDistanceSensors(0, 0, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false, 440, false, 0);
+        robot.executeMoveDistanceSensors(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false, 440, false, 0, 50, 1);//
         robot.intake.setPower(0);
 
         robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
@@ -96,7 +102,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
 
-        robot.executeMoveTouchAndDistance(-900, 169, 0, 2500, false, 856, 600, 1, 1.5, false, 350, true, 600); //First position again
+        robot.executeMoveTouchAndDistance(-900, 169, 0, 2500, false, 856, 600, 1, 1.5, false, 350, true, 600, 1); //First position again
 
         score(); //Second sample in the high basket
 
@@ -104,7 +110,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Go to position to get sample from third spike mark
-        robot.executeMoveDistanceSensors(975, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 380, false, 0, 220); //380mm form wall
+        robot.executeMoveDistanceSensors(1005, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 380, false, 0, 220, 1); //380mm form wall
 
 
 
@@ -113,23 +119,25 @@ public class AutonomousMeet5 extends LinearOpMode {
 
         //Pick up sample from third spike mark
         robot.intake();
-        robot.executeMoveDistanceSensors(0, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 230, false, 0, 100); //380mm form wall
-        sleep(10000000);
+        robot.executeMoveDistanceSensors(0, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 230, false, 0, 100, 1); //380mm form wall
 
         robot.intake.setPower(0);
         robot.moveLiftPitch(840, 0.9,true);
 
         robot.pitch.setPosition(BASKET_PITCH_POS);
-        robot.executeMoveTouchSensor(-1011, -61, 0, 3000, false, 860, 600,1,2, 400); //First position again
+        robot.executeMoveTouchAndDistance(-900, -61, 0, 3000, false,  Integer.MIN_VALUE, Integer.MIN_VALUE,1,2.2, false,350, true, 500, 1); //First position again
 
-        robot.moveLiftPitch(840, 0.8,false);
-        robot.extenderToPos(860, 0.8,true);//830 today apparently
-        robot.moveLiftPitch(1030, 0.5,true);
-        robotSleep(1000);
-        robot.extake(500);
-        robotSleep(300);
-        robot.moveLiftPitch(780, 0.9,true);
-        robot.extenderToPos(0, 0.4,false); //Third sample in the high basket
+        score();
+        sleep(10000000);
+
+//        robot.moveLiftPitch(840, 0.8,false);
+//        robot.extenderToPos(860, 0.8,true);//830 today apparently
+//        robot.moveLiftPitch(1030, 0.5,true);
+//        robotSleep(1000);
+//        robot.extake(500);
+//        robotSleep(300);
+//        robot.moveLiftPitch(780, 0.9,true);
+//        robot.extenderToPos(0, 0.4,false); //Third sample in the high basket
 
 
         robot.executeMoveLastStrafe(0, -40, 0, 4000);

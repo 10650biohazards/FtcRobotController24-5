@@ -582,9 +582,9 @@ public class RobotInitialize_RunToPos {
     }
 
     public void executeMoveDistanceSensors(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist, boolean touch, int touchDelay){
-        executeMoveDistanceSensors(xDist,  yDist,  heading,  maxSpeed,  turnOnly,  extenderPos,  delay,  xMult,  yMult,  forceQuit,  distanceSensorDist,  touch,  touchDelay, 50);
+        executeMoveDistanceSensors(xDist,  yDist,  heading,  maxSpeed,  turnOnly,  extenderPos,  delay,  xMult,  yMult,  forceQuit,  distanceSensorDist,  touch,  touchDelay, 50, 1);
     }
-    public void executeMoveDistanceSensors(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist, boolean touch, int touchDelay, int zMulti) {
+    public void executeMoveDistanceSensors(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist, boolean touch, int touchDelay, int zMulti, double distanceChange) {
 
 
         final int kP = 4;
@@ -594,7 +594,7 @@ public class RobotInitialize_RunToPos {
         odom.update();
         odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
 
-        //distanceSensorDist=distanceSensorDist/2;
+        distanceSensorDist=distanceSensorDist*distanceChange;
 
         long startTime = System.currentTimeMillis();
         while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
@@ -701,7 +701,7 @@ public class RobotInitialize_RunToPos {
 
             // Copy the sign of the sign variables
             int finalXVelocity = (int)(Math.copySign(calcXVelocity, xerr)*xMult);
-            int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal)*yMult);
+            int finalYVelocity = (int)(Math.copySign(calcYVelocity, yerr)*yMult);
             int finalZVelocity =  (int)(zerr*zMulti);
 
             opMode.telemetry.addData("yerr kp", yerr * kP);
@@ -764,7 +764,7 @@ public class RobotInitialize_RunToPos {
 
 
 
-    public void executeMoveTouchAndDistance(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist, boolean touch, int touchDelay) {
+    public void executeMoveTouchAndDistance(int xDist, int yDist, int heading, int maxSpeed, boolean turnOnly, int extenderPos, int delay, double xMult, double yMult, boolean forceQuit, double distanceSensorDist, boolean touch, int touchDelay, double distanceChange) {
 
 
         final int kP = 4;
@@ -774,7 +774,7 @@ public class RobotInitialize_RunToPos {
         odom.update();
         odom.setPosition(new Pose2D(DistanceUnit.MM, 0, 0, AngleUnit.RADIANS, 0));
 
-        distanceSensorDist=distanceSensorDist/2;
+        distanceSensorDist=distanceSensorDist*distanceChange;
 
         long startTime = System.currentTimeMillis();
         while (opMode.opModeIsActive() && System.currentTimeMillis()-startTime < 500) {}
@@ -879,7 +879,7 @@ public class RobotInitialize_RunToPos {
 
             // Copy the sign of the sign variables
             int finalXVelocity = (int)(Math.copySign(calcXVelocity, xerr)*xMult);
-            int finalYVelocity = (int)(Math.copySign(calcYVelocity, ySignVal)*yMult);
+            int finalYVelocity = (int)(Math.copySign(calcYVelocity, yerr)*yMult);
             int finalZVelocity =  (int)(zerr*90);
 
             opMode.telemetry.addData("xvel pre clamp",calcXVelocityBeforeClamp);
@@ -910,7 +910,7 @@ public class RobotInitialize_RunToPos {
          if(touch){
              opMode.telemetry.addData("touching you", "gg");
 
-             while(Math.abs(xerr)<100){
+             while(Math.abs(xerr)<20){
                  opMode.telemetry.addData("stuckkk", "gg");
 
                  finalXVelocity = (int) Math.copySign(700, xDist);
