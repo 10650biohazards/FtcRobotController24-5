@@ -142,8 +142,8 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 //                liftExtenderPosition =robot.liftPitch.getCurrentPosition();
 //
 //            }
-        if (robot.liftPitchPosition < 480) {
-            robot.liftPitchPosition = 480;
+        if (robot.liftPitchPosition < 579) {
+            robot.liftPitchPosition = 579;
         } else if (robot.liftPitchPosition > maxPitch) {
             robot.liftPitchPosition = maxPitch;
 
@@ -157,8 +157,8 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
             robot.liftPitchPosition += (int)(-40*Math.pow(gamepad2.left_stick_y, 3));
 
             //cannot go outside these bounds
-            if (robot.liftPitchPosition < 480) {
-                robot.liftPitchPosition = 480;
+            if (robot.liftPitchPosition < 579) {
+                robot.liftPitchPosition = 579;
             } else if (robot.liftPitchPosition > maxPitch) {
                 robot.liftPitchPosition = maxPitch;
             }
@@ -176,14 +176,14 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 //            robot.liftPitchPosition=(int)((-500*(Math.asin(999/(((22.0/220.0)* robot.liftExtender.getCurrentPosition())+1000))))+3953);
             //robot.liftPitchPosition=(int)((-500*(Math.asin(999/(((22.0/220.0)* robot.liftExtender.getCurrentPosition())+1000))))+3953+groundCorrecter);
 
-//            robot.liftPitch.setTargetPositionTolerance(30);
-//            robot.liftPitch.setPower(1.0);
-
+            robot.liftPitch.setTargetPositionTolerance(20);
+            robot.liftPitch.setPower(0.8);
+            robot.liftPitchPosition = (int)((-1400*(Math.asin(940/(((10.0/220.0)* robot.liftExtender.getCurrentPosition())+941))))+5377+groundCorrecter);
 
             robot.pitch.setPosition(((0.0288/482)* robot.liftExtender.getCurrentPosition())+0.2206);
         } else {
             robot.liftPitch.setTargetPositionTolerance(70);
-            robot.liftPitch.setPower(0.7);
+            robot.liftPitch.setPower(0.8);
         }
         robot.liftPitch.setTargetPosition(robot.liftPitchPosition);
 
@@ -210,7 +210,11 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 
         if (pitchAngle >= 29.9) {
             //maxLifEtxtension = 121 / (Math.sin(Math.toRadians(pitchAngle))); // horizontal bound
-            maxLifEtxtension = 363;
+            //maxLifEtxtension = 363;
+            maxLifEtxtension = 408;
+
+        } else if(pitchAngle <= 0) {
+            maxLifEtxtension = 788;
         } else {
             maxLifEtxtension = 900;
         }
@@ -282,15 +286,15 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
 
         if (gamepad2.dpad_down) {//pitch claw down
 
-            //groundCorrecter = groundCorrecter+1;
+            groundCorrecter = groundCorrecter+1;
            // robot.pitch.setPosition(0);
-            robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
+            //robot.pitch.setPosition(robot.pitch.getPosition()-0.001);
         } else if (gamepad2.dpad_up) {//pitch claw up
 
-            //groundCorrecter = groundCorrecter-1;
+            groundCorrecter = groundCorrecter-1;
 
             // robot.pitch.setPosition(0.1856);
-            robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
+            //robot.pitch.setPosition(robot.pitch.getPosition()+0.001);
         }
 
 //        if (gamepad1.dpad_left) {
@@ -407,16 +411,15 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         telemetry.addData("parking pos", robot.parkingServo.getPosition());
 
         telemetry.addData("pitch servo pos", robot.pitch.getPosition());
-        telemetry.addData(" pitch pos", robot.liftPitch.getCurrentPosition());
-        telemetry.addData(" ext pos", robot.liftExtender.getCurrentPosition());
-        telemetry.addData("ground mode pos", (-620*(Math.asin(998/(((62.0/220.0)* robot.liftExtender.getCurrentPosition())+1000))))+4136);
         //telemetry.addData("ground mode servo pos", ((1.0/9040.0)* robot.liftExtender.getCurrentPosition())+0.1856);
-
         telemetry.addData("circle mode?", circleOn);
         telemetry.addData("powa", robot.liftPitch.getPower());
-        telemetry.addData("tolerance", robot.liftPitch.getTargetPositionTolerance());
-        telemetry.addData("ideal position", robot.liftPitchPosition);
         telemetry.addData("ext Powa", robot.liftExtender.getPower());
+        telemetry.addData("groun mode pos sqrt", 1.7*Math.sqrt(((50*robot.liftExtender.getCurrentPosition())+300))+3190);
+        telemetry.addData("ground mode pos", (-1400*(Math.asin(940/(((10.0/220.0)* robot.liftExtender.getCurrentPosition())+941))))+5377);
+        telemetry.addData(" pitch pos", robot.liftPitch.getCurrentPosition());
+        telemetry.addData(" ext pos", robot.liftExtender.getCurrentPosition());
+
 
 
 //        telemetry.addData(" lactuator pos", robot.lActuator.getCurrentPosition());
