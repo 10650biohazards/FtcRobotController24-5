@@ -44,8 +44,17 @@ public class AutonomousMeet5 extends LinearOpMode {
 
         //robot.executeMoveTouchSensor(-300, 40, 0, 3000,false  ,Integer.MIN_VALUE, Integer.MIN_VALUE, 1, 1, 800);
 
+
+//        robot.executeMoveDistanceSensors(975, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 380, false, 0, 220); //380mm form wall
+//        robot.intake(500);
+//        sleep(1000000);
+
+
         //sleep(400000);
         robot.pitch.setPosition(BASKET_PITCH_POS);
+       // robot.executeMoveDistanceSensors(0, 0, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false, 44, false);
+        // sleep(1000000000);
+
 
         //robot.executeMoveDistanceSensors(20, 300, 0, 3000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,3, false, 9.6); //ydist was 345
 
@@ -53,7 +62,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         //robot.moveLiftPitch(840, 0.8,false);hgufwghjsghjgwy
 
         //First position (move forward and right from original location)
-        robot.executeMoveDistanceSensors(0, 270, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,2, false, 350, true); //ydist was 345
+        robot.executeMoveDistanceSensors(0, 270, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,1, false, 350, false, 0); //ydist was 345
 
        //robot.extenderToPos(100, 0.8,true);//830 today apparently
         score();
@@ -73,35 +82,43 @@ public class AutonomousMeet5 extends LinearOpMode {
         //Moves back left to get second spike mark sample
         robot.moveLiftPitch(3200, 0.9,false);
 
-        robot.executeMoveDistanceSensors(-125, 0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, false, 620, false);
+        robot.executeMoveDistanceSensors(-145, 0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, false, 620, false, 0);
 
-        sleep(1000000000);
 
         //Pick up sample off of second spike mark
         robot.intake();
-        robot.executeMoveAlt(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false);
+        robot.executeMoveDistanceSensors(0, 0, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false, 440, false, 0);
         robot.intake.setPower(0);
+
         robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
        // robot.extenderToPos(890, 0.8,false);
 
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
-        robot.executeMoveTouchSensor(-1015, 169, 0, 2500, false, 860, 600, 1, 1, 400); //First position again
+
+        robot.executeMoveTouchAndDistance(-900, 169, 0, 2500, false, 856, 600, 1, 1.5, false, 350, true, 600); //First position again
 
         score(); //Second sample in the high basket
+
 
         robot.pitch.setPosition(GROUND_PITCH_POS);
 
         //Go to position to get sample from third spike mark
-        robot.executeMoveAlt(1025, -70, 0, 3000, false);
+        robot.executeMoveDistanceSensors(975, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 380, false, 0, 220); //380mm form wall
 
-        robot.moveLiftPitch(3100, 1,true);
+
+
+
+        robot.moveLiftPitch(3256, 1,true);
 
         //Pick up sample from third spike mark
         robot.intake();
-        robot.executeMoveAlt(0, 153, 0, 3500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, true);
+        robot.executeMoveDistanceSensors(0, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 230, false, 0, 100); //380mm form wall
+        sleep(10000000);
+
         robot.intake.setPower(0);
         robot.moveLiftPitch(840, 0.9,true);
+
         robot.pitch.setPosition(BASKET_PITCH_POS);
         robot.executeMoveTouchSensor(-1011, -61, 0, 3000, false, 860, 600,1,2, 400); //First position again
 
