@@ -648,7 +648,7 @@ public class RobotInitialize_RunToPos {
                 break;
             }
 
-            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<5 && Math.abs(zerr) <=1.2) {
+            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<=10 && Math.abs(zerr) <=1.2) {
                 break;
             }
             double xPercent= odom.getPosX()/xDist;
@@ -824,11 +824,20 @@ public class RobotInitialize_RunToPos {
             }
             opMode.telemetry.addData("time left", System.currentTimeMillis()-startTime);
 
+            if(touch) {
+                if (touch1.isPressed() && touch2.isPressed()) {
+                    opMode.telemetry.addData("stuck here", "gg");
+                    xerr=0;
+                    xI=0;
+                    opMode.telemetry.addData("shis pressed", "fhhf");
+                }
+            }
+
             if (System.currentTimeMillis()-startTime>=2250&&forceQuit==true){
                 break;
             }
 
-            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<5 && Math.abs(zerr) <=1.2) {
+            if (Math.abs(xerr) <= 20 &&Math.abs(yerr)<=20 && Math.abs(zerr) <=1.2) {
                 break;
             }
             double xPercent= odom.getPosX()/xDist;
@@ -901,53 +910,6 @@ public class RobotInitialize_RunToPos {
 
             opMode.telemetry.addData("yerr kp", yerr * kP);
             opMode.telemetry.addData("yerr ki",  yI * kI);
-
-
-
-
-
-            //opMode.telemetry.addData("zVel",zVel);
-         if(touch){
-             opMode.telemetry.addData("touching you", "gg");
-
-             while(Math.abs(xerr)<20){
-                 opMode.telemetry.addData("stuckkk", "gg");
-
-                 finalXVelocity = (int) Math.copySign(700, xDist);
-                 if ((!touch1.isPressed())){//need to turn left
-//                     bLeft.setVelocity(1050);
-//                     bRight.setVelocity(-1050);
-                     bLeft.setVelocity(850);
-                     bRight.setVelocity(-850);
-                     opMode.telemetry.addData("1", "gg");
-                 }
-
-                 if(!touch2.isPressed()){//need to turn right
-//                     fLeft.setVelocity(1050);
-//                     fRight.setVelocity(-1050);
-                     fLeft.setVelocity(850);
-                     fRight.setVelocity(-850);
-                     opMode.telemetry.addData("2", "gg");
-                 }
-
-
-
-                 if (touch1.isPressed() && touch2.isPressed()) {
-                     opMode.telemetry.addData("stuck here", "gg");
-                     startTime2 = System.currentTimeMillis();
-                     while ((System.currentTimeMillis() - startTime2) <= touchDelay) {
-                         opMode.telemetry.addData("waiting for delay: time left", (System.currentTimeMillis() - startTime2));
-                     }
-                     setVel(0, 0, 0);
-
-
-                     opMode.telemetry.addData("shis pressed", "fhhf");
-
-
-                     return;
-                 }
-             }
-         }
 
 
             setVel(finalXVelocity, finalYVelocity, finalZVelocity);
@@ -1216,7 +1178,7 @@ public class RobotInitialize_RunToPos {
             int finalYVelocity = (int) (Math.copySign(calcYVelocity, ySignVal) * yMult);
 
 
-            while(xerr<50){
+            while(xerr<50 && opMode.opModeIsActive()){
                 opMode.telemetry.addData("stuckkk", "gg");
 
                 finalXVelocity = (int) Math.copySign(700, xDist);
@@ -1235,7 +1197,7 @@ public class RobotInitialize_RunToPos {
                 if (touch1.isPressed() && touch2.isPressed()) {
                     opMode.telemetry.addData("stuck here", "gg");
                     startTime2 = System.currentTimeMillis();
-                    while ((System.currentTimeMillis() - startTime2) <= touchDelay) {
+                    while ((System.currentTimeMillis() - startTime2) <= touchDelay && opMode.opModeIsActive()) {
                         opMode.telemetry.addData("waiting for delay: time left", (System.currentTimeMillis() - startTime2));
                     }
                     setVel(0, 0, 0);
@@ -1529,7 +1491,7 @@ public class RobotInitialize_RunToPos {
         liftPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftPitch.setPower(power);
         if(block) {
-            while(Math.abs(liftPitch.getTargetPosition() - liftPitch.getCurrentPosition()) >= liftPitch.getTargetPositionTolerance());
+            while(Math.abs(liftPitch.getTargetPosition() - liftPitch.getCurrentPosition()) >= liftPitch.getTargetPositionTolerance() && opMode.opModeIsActive());
         }
     }
 

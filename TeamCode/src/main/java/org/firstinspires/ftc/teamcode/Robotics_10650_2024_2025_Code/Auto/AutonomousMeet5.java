@@ -22,8 +22,8 @@ public class AutonomousMeet5 extends LinearOpMode {
         robot.moveLiftPitch(840, 0.8,false);
         robot.extenderToPos(856, 0.8,true);//830 today apparently
         robot.moveLiftPitch(1149, 0.3,true);
-        robotSleep(1400);
-        robot.extake(500);
+        robotSleep(1000);
+        robot.extake(250);
         robotSleep(300);
         robot.moveLiftPitch(800, 0.9,true);
         robot.extenderToPos(0, 0.4,false);
@@ -68,7 +68,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         //robot.moveLiftPitch(840, 0.8,false);hgufwghjsghjgwy
 
         //First position (move forward and right from original location)
-        robot.executeMoveDistanceSensors(0, 270, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,1, false, 350, false, 0); //ydist was 345
+        robot.executeMoveDistanceSensors(0, 270, 0, 4000, false, Integer.MIN_VALUE, Integer.MIN_VALUE, 1,2.5, false, 340, false, 0); //ydist was 345
 
        //robot.extenderToPos(100, 0.8,true);//830 today apparently
         score();
@@ -79,7 +79,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         //score();
 
         //Pushes first spike mark sample out of the way (going right)
-        robot.executeMoveAlt(1110, -360, 0, 3000, false);
+        robot.executeMoveAlt(1160, -300, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE, 1, 2, false);
 
 
 
@@ -88,12 +88,12 @@ public class AutonomousMeet5 extends LinearOpMode {
         //Moves back left to get second spike mark sample
         robot.moveLiftPitch(3256, 0.9,false);
 
-        robot.executeMoveDistanceSensors(-145, 0, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1, false, 620, false, 0);
+        robot.executeMoveDistanceSensors(-145, 50, 0, 5000, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1.75,1, false, 620, false, 0);
 
 
         //Pick up sample off of second spike mark
         robot.intake();
-        robot.executeMoveDistanceSensors(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,1.3, false, 440, false, 0, 50, 1);//
+        robot.executeMoveDistanceSensors(0, 189, 0, 4500, false,Integer.MIN_VALUE,Integer.MIN_VALUE,1,2, false, 440, false, 0, 50, 1);//
         robot.intake.setPower(0);
 
         robot.moveLiftPitch(840, 0.9,false);//maybe chnage to true
@@ -102,7 +102,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         robot.pitch.setPosition(BASKET_PITCH_POS);
 
 
-        robot.executeMoveTouchAndDistance(-900, 169, 0, 2500, false, 856, 600, 1, 1.5, false, 350, true, 600, 1); //First position again
+        robot.executeMoveTouchAndDistance(-1020, 169, 0, 2500, false, 856, 600, 1, 1.5, false, 340, true, 600, 1); //First position again
 
         score(); //Second sample in the high basket
 
@@ -119,13 +119,13 @@ public class AutonomousMeet5 extends LinearOpMode {
 
         //Pick up sample from third spike mark
         robot.intake();
-        robot.executeMoveDistanceSensors(0, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 2, false, 230, false, 0, 100, 1); //380mm form wall
+        robot.executeMoveDistanceSensors(0, 0, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE,1, 1.5, false, 230, false, 0, 100, 1); //380mm form wall
 
         robot.intake.setPower(0);
         robot.moveLiftPitch(840, 0.9,true);
 
         robot.pitch.setPosition(BASKET_PITCH_POS);
-        robot.executeMoveTouchAndDistance(-900, -61, 0, 3000, false,  Integer.MIN_VALUE, Integer.MIN_VALUE,1,2.2, false,350, true, 500, 1); //First position again
+        robot.executeMoveTouchAndDistance(-1020, -61, 0, 3000, false, 856, 600,1,1.7, false,340, true, 500, 1); //First position again
 
         score();
         sleep(10000000);
