@@ -25,7 +25,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         robotSleep(1000);
         robot.extake(250);
         robotSleep(300);
-        robot.moveLiftPitch(800, 0.9,true);
+        robot.moveLiftPitch(885, 0.75,true);
         robot.extenderToPos(0, 0.4,false);
     }
 
