@@ -79,7 +79,7 @@ public class AutonomousMeet5 extends LinearOpMode {
         //score();
 
         //Pushes first spike mark sample out of the way (going right)
-        robot.executeMoveAlt(1160, -300, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE, 1, 2, false);
+        robot.executeMoveAlt(1160, -300, 0, 3000, false, Integer.MIN_VALUE,Integer.MIN_VALUE, 1, 1.5, false);
 
 
 
