@@ -167,7 +167,6 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
             if (robot.liftPitchPosition >= 1793 && robot.liftExtender.getCurrentPosition() >= 1808 && liftExtenderPosition >= 483){
                 robot.liftPitchPosition = 483;
             }
-
             // TODO: Prevent liftPitch from going above a certain amount IF the liftExtender currentPos is not retracted
         }
 
@@ -187,6 +186,9 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         }
         robot.liftPitch.setTargetPosition(robot.liftPitchPosition);
 
+        if (gamepad2.left_stick_y!=0){
+            circleOn=false;
+        }
 
         //determines the speed
 //        if (Math.abs(robot.liftPitch.getCurrentPosition() - robot.liftPitchPosition) > 20) {
@@ -249,6 +251,8 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
         robot.liftExtender.setTargetPosition(liftExtenderPosition);
         if (liftExtenderPosition==0&&robot.liftExtender.getCurrentPosition()<10){
             robot.liftExtender.setPower(0);
+        }else if (gamepad2.square){
+            robot.liftExtender.setPower(0.5);
         } else {
             robot.liftExtender.setPower(1.0);
         }
@@ -318,8 +322,10 @@ public class TeleOpCode_RobotCentric_States extends LinearOpMode {
             circleOn=true;
         } else if (gamepad2.square) {//slaps it in
             circleOn=false;
+
             liftExtenderPosition = 0;
             robot.liftPitchPosition = 1051;
+
             robot.pitch.setPosition(0.2206);
         } else if (gamepad2.triangle) {//to score high basket
             circleOn=false;
